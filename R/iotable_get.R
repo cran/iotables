@@ -5,18 +5,33 @@
 #' functionality to avoid some pitfalls.
 #' Unless you want to work with bulk data files, you should not invoke  \code{\link{iotables_download}} 
 #' directly, rather via this function, if and when it is necessary. 
-#' @param source A data source, for example "naio_10_cp1700". Possible codes are "naio_10_cp1700",
-#' "naio_10_cp1750", "naio_10_pyp1700", "naio_10_pyp1750", "naio_cp17_r2", "naio_17_agg_60_r2", 
-#' "naio_17_agg_10_r2", "croatia_2010_1700", "croatia_2010_1800", 
-#' "croatia_2010_1900". For further information consult the 
+#' @param source A data source, for example \code{naio_10_cp1700}. 
+#' Symmetric input-output table at basic prices (product by product) (naio_10_cp1700)	
+#' Symmetric input-output table at basic prices (industry by industry) (naio_10_cp1750)
+#' Symmetric input-output table at basic prices (product by product) (previous years prices) (naio_10_pyp1700)
+#' Symmetric input-output table at basic prices (industry by industry) (previous years prices) (naio_10_pyp1750)
+#' Table of trade and transport margins at basic prices (naio_10_cp1620) and 
+#' at previous' years prices (naio_10_pyp1620)
+#' Table of taxes less subsidies on products at basic prices (naio_10_cp1630)	and
+#' at previous' years prices (naio_10_pyp1630)
+#' For further information consult the 
 #' \href{http://ec.europa.eu/eurostat/web/esa-supply-use-input-tables/methodology/symmetric-input-output-tables}{Eurostat Symmetric Input-Output Tables} page.
-#' @param geo A country code or a country name.  For example, "SK" or as "Slovakia".
-#' @param year A numeric variable containing the year. Defaults to 2010, because this year has the most data. 
-#' @param unit A character string containing the currency unit, defaults to "MIO_NAC" (million national currency unit). The alternative is "MIO_EUR". 
-#' @param stk_flow Defaults to "DOM", alternative "IMP". 
-#' @param labelling Defaults to "iotables" which gives standard row and column names regardless of the
+#' @param geo A country code or a country name.  For example, \code{SK} or as \code{Slovakia}.
+#' @param year A numeric variable containing the year. Defaults to \code{2010}, because this year has the most data. 
+#' @param unit A character string containing the currency unit, defaults to \code{MIO_NAC} (million national currency unit). 
+#' The alternative is \code{MIO_EUR}. 
+#' @param stk_flow Defaults to \code{DOM} as domestic output, alternative \code{IMP} for imports 
+#' and code{'TOTAL'} for total output. For \code{source = 'naio_10_cp1620'} and 
+#' trade and transport margins and  \code{source = 'naio_10_cp1630'} taxes 
+#' less subsidies only \code{TOTAL} is not used.
+#' @param labelling Defaults to \code{iotables} which gives standard row and column names regardless of the
 #' source of the table, or if it is a product x product, industry x industry or product x industry table.
-#' The alternative is "short" which is the original short row or column code of Eurostat or OECD.
+#' The alternative is \code{short} which is the original short row or column code of Eurostat or OECD.
+#' @param data_directory Defaults to \code{NULL}, if a valid directory, it will try to save the pre-processed 
+#' data file here with labelling. 
+#' @param force_download Defaults to \code{TRUE}. If \code{FALSE} it will use the existing downloaded file
+#' in the \code{data_directory} or the temporary directory, if it exists. Will force
+#' download only in a new session.
 #' @importFrom magrittr %>%
 #' @importFrom dplyr filter select mutate rename left_join arrange mutate_if
 #' @importFrom tidyr spread
@@ -24,13 +39,15 @@
 #' @examples 
 #' germany_table <- iotable_get( source = "germany_1990", geo = 'DE', 
 #'              year = 1990,   unit = "MIO_EUR", 
-#'              labelling  = 'iotables')
+#'              labelling  = "iotables")
 #' @export 
 
 iotable_get <- function ( source = "germany_1990", geo = "DE",
                           year = 1990, unit = "MIO_EUR", 
-                          stk_flow = "DOM", labelling = "iotables") { 
-  ##Initialize variables ------------
+                          stk_flow = "DOM", labelling = "iotables", 
+                          data_directory = NULL, 
+                          force_download = TRUE) { 
+##Initialize variables ------------
   time = NULL; t_cols2 = NULL; t_rows2 = NULL; 
   values = NULL ; .= NULL #non-standard evaluation creates a varning in build. 
   iotables_row <- iotables_col <- prod_na <- induse <- variable <-  NULL
@@ -41,12 +58,22 @@ iotable_get <- function ( source = "germany_1990", geo = "DE",
   if (! labelling %in% c("iotables", "short")) {
     stop("Only iotables or original short columns can be selected.")
   }
+  if (! unit  %in% c("MIO_NAC", "MIO_EUR", "T_NAC")) {
+    stop("Currency unit must be MIO_NAC, MIO_EUR or T_NAC")
+  }
+  if ( source %in% c("naio_10_cp1620", "naio_10_cp1630")) {
+    if ( stk_flow != "TOTAL") {
+      stk_flow_input <- "TOTAL"
+    warning ( "The parameter stk_flow was changed to TOTAL." )
+    }
+    }
   source_inputed <- source
 
 ##Veryfing source parameter and loading the labelling  ----
-  prod_ind <- c("naio_10_cp1700", "naio_10_cp1750", "naio_10_pyp1700", "naio_10_pyp1750")
-  trow_tcol <-  c("naio_cp17_r2", "naio_17_agg_60_r2", "naio_17_agg_10_r2", 
-                  "croatia_2010_1700", "croatia_2010_1800", "croatia_2010_1900")
+  prod_ind <- c("naio_10_cp1700", "naio_10_cp1750", "naio_10_pyp1700",
+                "naio_10_pyp1750", "naio_10_cp1620", "naio_10_cp1630", 
+                "naio_10_pyp1620", "naio_10_pyp1630" )
+  trow_tcol <-  c(  "croatia_2010_1700", "croatia_2010_1800", "croatia_2010_1900")
   croatia_files <- c( "croatia_2010_1700", "croatia_2010_1800", "croatia_2010_1900")
   
   if ( source %in% prod_ind ) { 
@@ -90,8 +117,8 @@ iotable_get <- function ( source = "germany_1990", geo = "DE",
   metadata_cols <- dplyr::mutate_if ( metadata_cols, is.factor, as.character )
   
 ##Creating a temporary file name for the input-output table ----
-  tmp_rds <- paste0(tempdir(), "\\", source, "_", labelling, ".rds")
-  
+  tmp_rds <- file.path(tempdir(), paste0(source, "_", labelling, ".rds"))
+
 ##Loading the data and Veryfing other parameters ----  
    if ( nchar(geo) == 2 & geo == tolower(geo)) { 
     geo_input <- toupper(geo)
@@ -111,11 +138,12 @@ iotable_get <- function ( source = "germany_1990", geo = "DE",
     if ( tmp_rds %in% list.files (path = tempdir()) ) {
       labelled_io_data <- readRDS( tmp_rds ) 
     } else { 
-      labelled_io_data <- iotables_download ( source, 
-                                              stk_flow = stk_flow_input ) 
+      labelled_io_data <- iotables_download ( source,
+                                              data_directory = data_directory, 
+                                              force_download = force_download ) 
       }
   } # use eurostat files 
-  
+ 
   if ( ! unit_input %in% labelled_io_data$unit ) { 
     stop("This currency unit is not found in the raw data frame.")
   }
@@ -199,7 +227,16 @@ iotable_get <- function ( source = "germany_1990", geo = "DE",
       tidyr::spread (t_cols2, values )
   }
   
- return( iotable_labelled_w  )
+  if (!is.null(data_directory) ) {
+    save_file_name <- paste0(geo, '_', year, '_', 
+      source, '_', stk_flow, '_', unit, 
+      '.rds')
+    save_file_name <- file.path(data_directory, save_file_name)
+    message ( "Saving ", save_file_name, '.')
+    saveRDS(iotable_labelled_w, save_file_name)
+  }
+  
+ iotable_labelled_w
 }
 
 

@@ -1,20 +1,20 @@
 #' Get an output vector
 #' 
 #' @param source A data source, for example "naio_10_cp1700". Possible codes are "naio_10_cp1700",
-#' "naio_10_cp1750", "naio_10_pyp1700", "naio_10_pyp1750", "naio_cp17_r2", "naio_17_agg_60_r2", 
-#' "naio_17_agg_10_r2", "croatia_2010_1700", "croatia_2010_1800", 
+#' "naio_10_cp1750", "naio_10_pyp1700", "naio_10_pyp1750", "naio_10_cp1620", "naio_10_pyp1620",
+#' "naio_10_cp1630", "naio_10_pyp1630", "croatia_2010_1700", "croatia_2010_1800", 
 #' "croatia_2010_1900". For further information consult the 
 #' \href{http://ec.europa.eu/eurostat/web/esa-supply-use-input-tables/methodology/symmetric-input-output-tables}{Eurostat Symmetric Input-Output Tables} page.
-#' @param geo A country code or a country name.  For example, "SK" or as "Slovakia".
+#' @param geo A country code or a country name.  For example, \code{SK} or as \code{Slovakia}.
 #' @param year A numeric variable containing the year. Defaults to 2010, because this year has the most data. 
-#' @param unit A character string containing the currency unit, defaults to "MIO_NAC" (million national currency unit). The alternative is "MIO_EUR". 
-#' @param stk_flow Defaults to "DOM", alternative "IMP". 
+#' @param unit A character string containing the currency unit, defaults to \code{MIO_NAC} (million national currency unit). The alternative is \code{MIO_EUR}. 
+#' @param stk_flow Defaults to \code{DOM}, alternative \code{IMP}. 
 #' @param households If you need to make household demand endogenous, or "close the households off", TRUE selects 
 #' wages and final household consumption. This is needed for induced-effects calculations.
-#' @param labelling Defaults to "iotables" which gives standard row and column names regardless of the
+#' @param labelling Defaults to \code{iotables} which gives standard row and column names regardless of the
 #' source of the table, or if it is a product x product, industry x industry or product x industry table.
-#' The alternative is "short" which is the original short row or column code of Eurostat or OECD.
-#' @param keep_total Logical variable. Defaults to FALSE and removes the totaling row and column from the matrix.  
+#' The alternative is \code{short} which is the original short row or column code of Eurostat or OECD.
+#' @param keep_total Logical variable. Defaults to \code{FALSE} and removes the totaling row and column from the matrix.  
 #' @importFrom magrittr %>%
 #' @importFrom dplyr filter select mutate left_join mutate_if arrange
 #' @importFrom tidyr gather spread 
@@ -36,7 +36,7 @@ output_get <- function ( source = "germany_1990", geo = "DE",
   unit_input <- unit ; geo_input <- geo; stk_flow_input <- stk_flow
   source_inputed <- source 
   
-  tmp_rds <- paste0(tempdir(), "\\", source, "_", labelling, ".rds")
+  tmp_rds <- file.path(tempdir(), paste0(source, "_", labelling, ".rds"))
   
   ##Exception handling --------------
   if (source == "croatia_2010_1900") {
@@ -123,7 +123,8 @@ output_get <- function ( source = "germany_1990", geo = "DE",
     }
     
   } # end of no household case 
-  return ( output_vector ) 
+  
+  output_vector 
 }
 
 

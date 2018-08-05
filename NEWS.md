@@ -41,6 +41,17 @@ errors were corrected.
 # iotables 0.2.4
 * Some documentation improvements. This version was submitted for CRAN for release.
 
-#Forthcoming 0.3 version 
-For the 0.3 version the OECD downloader will work, too. The sysdata.rda has to be updated with correct metadata info for OECD bulk downloaded files.
+# iotables 0.2.5
+* Some documentation improvements.
 
+# iotables 0.2.6
+* Download `naio_10_cp1620` (trade and transport margins) or `naio_10_cp1630` (net taxes) with the parameter `stk_flow="TOTAL"`.  Correctly builds on Windows and Mac OS (old and release version) but problem with the dependency `eurostat` in Linux on Travis.
+
+# iotables 0.2.7 
+Default data directory for faster programmatic use and phasing out discountinued Eurostat statistics. A bit improved messages and documentation.
+
+# iotables 0.2.8
+Handles tables with purchasers' prices. Imports Eurostat employment data.
+
+# iotables 0.2.9
+Error corrected concerning creation of temporary files on non-Windows environments. No uses `file.path()` to create platform-independent files.

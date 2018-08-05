@@ -4,34 +4,35 @@
 \alias{iotables_download}
 \title{Download input-output tables}
 \usage{
-iotables_download(source = "naio_cp17_r2", stk_flow = "DOM")
+iotables_download(source = "naio_10_cp1700", data_directory = NULL,
+  force_download = TRUE)
 }
 \arguments{
-\item{source}{Currently only source = "eurostat" works. Later OECD Stan will be added.}
+\item{source}{Currently only source = \code{eurostat} works. Later OECD Stan will be added.}
 
-\item{stk_flow}{Defaults to "TOTAL". Possible values are "DOM", "IMP", "TOTAL". In tables
-where no distinction is made it is not needed.}
+\item{data_directory}{Defaults to \code{NULL}, if a valid directory, it will try to save the pre-processed 
+data file here with labelling.}
+
+\item{force_download}{Defaults to \code{TRUE}. If \code{FALSE} it will use the existing downloaded file
+in the \code{data_directory} or the temporary directory, if it exists.}
 }
 \description{
 This function downloads standard input-output table files. Currently only Eurostat files are supported.
 You are not likely to use this function, because \code{\link{iotable_get}} will
 call this function if necessary and properly filter out an input-output table.
 The only parameter is the Eurostat code of the table: 
-Symmetric input-output table - current prices (NACE Rev. 2) [naio_cp17_r2]
 Symmetric input-output table at basic prices (product by product) (naio_10_cp1700)	
 Symmetric input-output table at basic prices (industry by industry) (naio_10_cp1750)
 Symmetric input-output table at basic prices (product by product) (previous years prices) (naio_10_pyp1700)
 Symmetric input-output table at basic prices (industry by industry) (previous years prices) (naio_10_pyp1750)
+Table of trade and transport margins at basic prices (naio_10_cp1620) and 
+at previous' years prices (naio_10_pyp1620)
+Table of taxes less subsidies on products at basic prices (naio_10_cp1630)	and
+at previous' years prices (naio_10_pyp1630)
 }
 \details{
-EU-level tables
-Input-output table for domestic output at current prices, 60 branches - EU aggregates (NACE Rev. 2) (naio_18_agg_60_r2)
-Input-output table at current prices, 10 branches - EU aggregates (NACE Rev. 2) (naio_17_agg_10_r2)
-Input-output table at current prices, 6 branches - EU aggregates (naio_17_agg_6)
-
-At the moment import and domestic tables are not yet supported in the package.
-The data is downloaded in the tempdir() under the name the statistical product as an
-rds file. (For example: naio_10_cp1750.rds)
+The data is downloaded in the \code{tempdir()}under the name the statistical product as an
+rds file. (For example: \code{naio_10_cp1750.rds})
 The temporary directory is emptied at every normal R session exit.
 }
 \examples{

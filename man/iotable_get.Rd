@@ -5,26 +5,44 @@
 \title{Get an input-output table from bulk file}
 \usage{
 iotable_get(source = "germany_1990", geo = "DE", year = 1990,
-  unit = "MIO_EUR", stk_flow = "DOM", labelling = "iotables")
+  unit = "MIO_EUR", stk_flow = "DOM", labelling = "iotables",
+  data_directory = NULL, force_download = TRUE)
 }
 \arguments{
-\item{source}{A data source, for example "naio_10_cp1700". Possible codes are "naio_10_cp1700",
-"naio_10_cp1750", "naio_10_pyp1700", "naio_10_pyp1750", "naio_cp17_r2", "naio_17_agg_60_r2", 
-"naio_17_agg_10_r2", "croatia_2010_1700", "croatia_2010_1800", 
-"croatia_2010_1900". For further information consult the 
+\item{source}{A data source, for example \code{naio_10_cp1700}. 
+Symmetric input-output table at basic prices (product by product) (naio_10_cp1700)    
+Symmetric input-output table at basic prices (industry by industry) (naio_10_cp1750)
+Symmetric input-output table at basic prices (product by product) (previous years prices) (naio_10_pyp1700)
+Symmetric input-output table at basic prices (industry by industry) (previous years prices) (naio_10_pyp1750)
+Table of trade and transport margins at basic prices (naio_10_cp1620) and 
+at previous' years prices (naio_10_pyp1620)
+Table of taxes less subsidies on products at basic prices (naio_10_cp1630)    and
+at previous' years prices (naio_10_pyp1630)
+For further information consult the 
 \href{http://ec.europa.eu/eurostat/web/esa-supply-use-input-tables/methodology/symmetric-input-output-tables}{Eurostat Symmetric Input-Output Tables} page.}
 
-\item{geo}{A country code or a country name.  For example, "SK" or as "Slovakia".}
+\item{geo}{A country code or a country name.  For example, \code{SK} or as \code{Slovakia}.}
 
-\item{year}{A numeric variable containing the year. Defaults to 2010, because this year has the most data.}
+\item{year}{A numeric variable containing the year. Defaults to \code{2010}, because this year has the most data.}
 
-\item{unit}{A character string containing the currency unit, defaults to "MIO_NAC" (million national currency unit). The alternative is "MIO_EUR".}
+\item{unit}{A character string containing the currency unit, defaults to \code{MIO_NAC} (million national currency unit). 
+The alternative is \code{MIO_EUR}.}
 
-\item{stk_flow}{Defaults to "DOM", alternative "IMP".}
+\item{stk_flow}{Defaults to \code{DOM} as domestic output, alternative \code{IMP} for imports 
+and code{'TOTAL'} for total output. For \code{source = 'naio_10_cp1620'} and 
+trade and transport margins and  \code{source = 'naio_10_cp1630'} taxes 
+less subsidies only \code{TOTAL} is not used.}
 
-\item{labelling}{Defaults to "iotables" which gives standard row and column names regardless of the
+\item{labelling}{Defaults to \code{iotables} which gives standard row and column names regardless of the
 source of the table, or if it is a product x product, industry x industry or product x industry table.
-The alternative is "short" which is the original short row or column code of Eurostat or OECD.}
+The alternative is \code{short} which is the original short row or column code of Eurostat or OECD.}
+
+\item{data_directory}{Defaults to \code{NULL}, if a valid directory, it will try to save the pre-processed 
+data file here with labelling.}
+
+\item{force_download}{Defaults to \code{TRUE}. If \code{FALSE} it will use the existing downloaded file
+in the \code{data_directory} or the temporary directory, if it exists. Will force
+download only in a new session.}
 }
 \description{
 This function is used to filter out  a single input-output table from a database, 
@@ -36,5 +54,5 @@ directly, rather via this function, if and when it is necessary.
 \examples{
 germany_table <- iotable_get( source = "germany_1990", geo = 'DE', 
              year = 1990,   unit = "MIO_EUR", 
-             labelling  = 'iotables')
+             labelling  = "iotables")
 }

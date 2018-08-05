@@ -1,6 +1,15 @@
 library (testthat)
 library (iotables)
 context ("Creating an IO Table")
+#iotable_get ( source = "naio_10_cp1620", geo = "CZ", 
+#              stk_flow = "TOTAL", year = 2010, 
+#              unit = "MIO_NAC", data_directory = 'data-raw')
+
+#test <- iotable_get ( source = "naio_10_pyp1620", geo = "CZ", 
+#              stk_flow = "TOTAL", year = 2010, 
+#              unit = "MIO_NAC", data_directory = 'data-raw')
+
+
 
 test_that("get_iotable errors ", {
   expect_error(iotable_get(source = "germany_1990", 
@@ -42,6 +51,8 @@ test_that("correct data is returned", {
 
 #Slovakia A01, A01 shoud be 497.37
 
-
-
+#test <- iotable_get ( source = "naio_10_cp1750", stk_flow = "TOTAL",
+#                      geo = "CZ", unit = "MIO_NAC", year = 2010, 
+#                      data_directory = "data-raw", force_download = FALSE)
+# A01, A01 should yield 10,161
 

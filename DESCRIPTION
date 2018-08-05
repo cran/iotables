@@ -1,8 +1,8 @@
 Package: iotables
 Type: Package
 Title: Importing and Manipulating Symmetric Input-Output Tables
-Version: 0.2.4
-Author: Daniel Antal CFA
+Version: 0.2.9
+Author: Daniel Antal
 Maintainer: Daniel Antal <daniel.antal@ceemid.eu>
 Description: Pre-processing tasks related to working with Eurostat's symmetric input-output
     tables and provide basic input-output economics calculations. The package is 
@@ -12,12 +12,12 @@ BugReports: https://github.com/rOpenGov/iotables/issues
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 6.0.1
+RoxygenNote: 6.1.0
 Imports: dplyr, eurostat, magrittr, tidyr, stats, forcats, utils, plyr
 Suggests: testthat, knitr, rmarkdown
 Depends: R(>= 2.10.0)
 VignetteBuilder: knitr
 NeedsCompilation: no
-Packaged: 2018-01-30 14:14:40 UTC; Daniel Antal
+Packaged: 2018-08-05 21:28:59 UTC; Daniel Antal
 Repository: CRAN
-Date/Publication: 2018-01-30 14:31:53 UTC
+Date/Publication: 2018-08-05 21:50:07 UTC
