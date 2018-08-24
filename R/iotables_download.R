@@ -22,12 +22,14 @@
 #' @param force_download Defaults to \code{TRUE}. If \code{FALSE} it will use the existing downloaded file
 #' in the \code{data_directory} or the temporary directory, if it exists.
 #' @importFrom magrittr %>%
-#' @importFrom dplyr filter select mutate left_join rename
+#' @importFrom dplyr filter select mutate left_join rename group_by
+#' @importFrom tidyr nest
 #' @importFrom eurostat get_eurostat label_eurostat
 #' @importFrom stats setNames
+#' @importFrom lubridate year
 #' @examples
 #' \dontrun{
-#'  io_tables <- iotables_download ( source = "naio_cp17_r2" )
+#'  io_tables <- iotables_download ( source = "naio_10_cp1700" )
 #'  }
 #' @export
 
@@ -36,6 +38,7 @@ iotables_download <- function ( source = "naio_10_cp1700",
                                 force_download = TRUE ) {
   t_cols2_lab <- t_rows2_lab <- values_lab <- stk_flow <- NULL
   . <- downloaded <- downloaded_labelled <- NULL
+  time_lab <- geo <- time <- unit <- NULL
 
   possible_download_sources <- c( "naio_10_cp1700", "naio_10_cp1750", 
                          "naio_10_pyp1700", "naio_10_pyp1750",
@@ -74,13 +77,14 @@ iotables_download <- function ( source = "naio_10_cp1700",
     eurostat::label_eurostat (., fix_duplicated = TRUE) %>%          #add meaningful labels to raw data
     stats::setNames( ., paste0( names (.), "_lab" ) )    %>%  
     dplyr::mutate ( rows = 1:nrow(.) ) %>%  #because long and wide formats are not symmetric
-    dplyr::rename ( values = values_lab ) 
+    dplyr::rename ( values = values_lab ) %>%
+    dplyr::mutate ( year = lubridate::year( time_lab ))
   
   #join the labelled and the not labelled files, so that both versions are avialable
   
   downloaded <- downloaded  %>%
     dplyr::mutate ( rows = 1:nrow(.)) %>%
-    dplyr::left_join (., downloaded_labelled, by = c("rows", "values")) 
+    dplyr::left_join (., downloaded_labelled, by = c("rows", "values"))
   #message ("Joined labelled and not labelled data.")
   
   if ( "stk_flow" %in% names ( downloaded )) {
@@ -121,6 +125,8 @@ iotables_download <- function ( source = "naio_10_cp1700",
     )
   } #end of _r2 
   
+  downloaded <- tidyr::nest ( dplyr::group_by ( downloaded, geo, time, year, unit ) )
+  
   if( !is.null(data_directory) ) {
     
     save_file_name <- file.path(data_directory, paste0(source, ".rds"))
@@ -129,5 +135,5 @@ iotables_download <- function ( source = "naio_10_cp1700",
                save_file_name, "." )
   }
   
-  downloaded
+  downloaded 
 }

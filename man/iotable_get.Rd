@@ -4,11 +4,17 @@
 \alias{iotable_get}
 \title{Get an input-output table from bulk file}
 \usage{
-iotable_get(source = "germany_1990", geo = "DE", year = 1990,
-  unit = "MIO_EUR", stk_flow = "DOM", labelling = "iotables",
-  data_directory = NULL, force_download = TRUE)
+iotable_get(labelled_io_data = NULL, source = "germany_1990",
+  geo = "DE", year = 1990, unit = "MIO_EUR", stk_flow = "DOM",
+  labelling = "iotables", data_directory = NULL,
+  force_download = TRUE)
 }
 \arguments{
+\item{labelled_io_data}{If you have downloaded a bulk data file with 
+\code{\link{iotables_download}}, it is faster to work with the data
+in the memory. Defaults to \code{NULL} when  the data will be retrieved from
+the hard disk or from the Eurostat website invoking the same function.}
+
 \item{source}{A data source, for example \code{naio_10_cp1700}. 
 Symmetric input-output table at basic prices (product by product) (naio_10_cp1700)    
 Symmetric input-output table at basic prices (industry by industry) (naio_10_cp1750)
@@ -29,7 +35,7 @@ For further information consult the
 The alternative is \code{MIO_EUR}.}
 
 \item{stk_flow}{Defaults to \code{DOM} as domestic output, alternative \code{IMP} for imports 
-and code{'TOTAL'} for total output. For \code{source = 'naio_10_cp1620'} and 
+and \code{TOTAL} for total output. For \code{source = 'naio_10_cp1620'} and 
 trade and transport margins and  \code{source = 'naio_10_cp1630'} taxes 
 less subsidies only \code{TOTAL} is not used.}
 
@@ -40,9 +46,9 @@ The alternative is \code{short} which is the original short row or column code o
 \item{data_directory}{Defaults to \code{NULL}, if a valid directory, it will try to save the pre-processed 
 data file here with labelling.}
 
-\item{force_download}{Defaults to \code{TRUE}. If \code{FALSE} it will use the existing downloaded file
-in the \code{data_directory} or the temporary directory, if it exists. Will force
-download only in a new session.}
+\item{force_download}{Defaults to \code{TRUE}. If \code{FALSE} it will use the existing 
+downloaded file in the \code{data_directory} or the temporary directory, 
+if it exists. Will force download only in a new session.}
 }
 \description{
 This function is used to filter out  a single input-output table from a database, 

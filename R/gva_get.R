@@ -1,4 +1,4 @@
-#' Get an output vector
+#' Get the gross value added (GVA) vector
 #' 
 #' @param source A data source, for example "naio_10_cp1700". Possible codes are "naio_10_cp1700",
 #' "naio_10_cp1750", "naio_10_pyp1700", "naio_10_pyp1750", "naio_10_cp1620", "naio_10_pyp1620",
@@ -25,20 +25,20 @@
 #' @importFrom tidyr gather spread 
 #' @importFrom forcats fct_reorder
 #' @examples 
-#' output_get (  source = "germany_1990", geo = "DE",
+#' gva_get (  source = "germany_1990", geo = "DE",
 #'               year = 1990, unit = "MIO_EUR", 
 #'               stk_flow = "DOM", labelling = "iotables")
 #'\dontrun{
-#' output <-  iotables_download ( "naio_10_cp1700" ) %>%
+#' GVA <-  iotables_download ( "naio_10_cp1700" ) %>%
 #'  iotable_get (labelled_io_data = ., geo = "CZ", 
 #'               source = "naio_10_cp1700",
 #'               year = 2015, unit = "MIO_NAC", 
 #'               labelling = "short") %>% 
-#'  output_get ()
+#'  gva_get ()
 #' }                              
 #' @export 
 
-output_get <- function ( labelled_io_table = NULL,
+gva_get <- function ( labelled_io_table = NULL,
                          source = "germany_1990", geo = "DE",
                          year = 1990, unit = "MIO_EUR",
                          households = FALSE,  
@@ -68,13 +68,13 @@ output_get <- function ( labelled_io_table = NULL,
                                          geo = geo_input, year = year, 
                                          unit = unit_input, 
                                          labelling = labelling )     # use germany example 
-      output_vector <- labelled_io_table[16,]
+      gva_vector <- labelled_io_table[15,]
       if (households == TRUE ) {
-        output_vector <- output_vector [1,1:8]
+        gva_vector <- gva_vector [1,1:8]
       } else {
-        output_vector <- output_vector [1,1:7]
+        gva_vector <- gva_vector [1,1:7]
       }
-      return ( output_vector )  #return simplified example table and do not run rest of the code
+      return ( gva_vector )  #return simplified example table and do not run rest of the code
     } else {
       if ( tmp_rds %in% list.files (path = tempdir()) ) {
         labelled_io_table <- readRDS( tmp_rds ) #if already downloaded and saved as rds 
@@ -103,51 +103,51 @@ output_get <- function ( labelled_io_table = NULL,
     if ( length( household_consumption_col) == 0 ) {
       stop ( "No household consumption data was found.")
     }
-    output_row <- which (labelled_io_table[[1]] %in%  
-                                     c('output_bp', 'P1', 'output') )
+    gva_row <- which (labelled_io_table[[1]] %in%  
+                                     c('B1G', 'gva') ) #induse different?
    
-    if ( length( output_row) == 0 ) {
+    if ( length( gva_row) == 0 ) {
       stop ( "No output data was found.")
     }
     
      
     if (keep_total == TRUE) {
       message ( "Households were added to the matrix.")
-      output_vector <- labelled_io_table[output_row[1] , 
+      gva_vector <- labelled_io_table[gva_row[1] , 
                                           c(1:total_col, household_consumption_col[1]) ] 
-      output_vector [1,total_col+1] <- 0
+      gva_vector [1,total_col+1] <- 0
     } else {
       message ( "Households were added to the matrix.")
       message ( "Total column was removed from the matrix.")
-      output_vector <- labelled_io_table[    output_row[1] , 
+      gva_vector <- labelled_io_table[    gva_row[1] , 
                                              c(1:total_col-1,
                                                household_consumption_col[1]) ] 
-      output_vector [1,total_col] <- 0
+      gva_vector [1,total_col] <- 0
     }
   } else {    #no households case
-    output_row <- which (labelled_io_table[[1]] %in%  
+    gva_row <- which (labelled_io_table[[1]] %in%  
                            c('output_bp', 'P1', 'output') )
     if (source == "naio_cp17_r2") {
-      output_row <- which (labelled_io_table[[1]] %in%  
+      gva_row <- which (labelled_io_table[[1]] %in%  
                              c('total', "CPA_TOTAL") )
     }
     
-    if ( length( output_row) == 0 ) {
+    if ( length( gva_row) == 0 ) {
       stop ( "No output data was found.")
     }
     
     
     ##Keep total column?
     if (keep_total == TRUE) {
-      output_vector <- labelled_io_table[ output_row[1], 1:total_col   ] 
+      gva_vector <- labelled_io_table[ gva_row[1], 1:total_col   ] 
     } else {
-      output_vector <- labelled_io_table[ output_row[1], 1:total_col-1 ]
+      gva_vector <- labelled_io_table[ gva_row[1], 1:total_col-1 ]
       message ( "Total column was removed from the matrix.")
     }
     
   } # end of no household case 
   
-  output_vector 
+  gva_vector 
 }
 
 
