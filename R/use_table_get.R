@@ -46,9 +46,10 @@ use_table_get <- function ( labelled_io_table  = NULL,
                             year = 1990, unit = "MIO_EUR", stk_flow = "DOM",
                             households = FALSE, keep_total = FALSE, 
                             labelling = "iotables" ) {  
+  
   ##Initialize variables ------------
-  time = NULL; t_cols2 = NULL; t_rows2 = NULL; values = NULL ;.= NULL #non-standard evaluation creates a varning in build. 
-  iotables_row =NULL; iotables_col = NULL; prod_na = NULL; induse = NULL
+  time <- t_cols2 <- t_rows2 <- values <- . <-  NULL #non-standard evaluation creates a varning in build. 
+  iotables_row <- iotables_col <- prod_na <- induse <- NULL
   unit_input <- unit ; geo_input <- geo; stk_flow_input <- stk_flow
   
   if ( is.null(labelled_io_table) ) { 
@@ -56,28 +57,25 @@ use_table_get <- function ( labelled_io_table  = NULL,
     
     source_inputed <- source ; unit_input = unit
     
-    ##Exception handling ---------------
+ ##Exception handling ---------------
     if ( ! labelling %in% c("iotables", "short")) {
       stop("Currently only labelling = 'iotables' and labelling = 'short' is supported.")
     }
     
-    if ( source == "germany_1990") {
-      labelled_io_table <- iotable_get ( source = source, 
-                                         geo = geo, year = year, 
-                                         unit = unit, labelling = labelling )     # use germany example 
-      use_table <- labelled_io_table[1:7, 1:8]
-      if (keep_total == FALSE ) use_table <- use_table [1:6, 1:8]
-      if (households == TRUE ) {
+    if ( source == "germany_1990" ) {
+      labelled_io_table <- iotable_get ( 
+        labelled_io_data = NULL,
+        source =  source, 
+        geo = geo, year = year, 
+        unit = unit, labelling = labelling )     # use germany example 
+      use_table <- labelled_io_table[1:6, 1:8]
+      
+        if ( households == TRUE ) {
         household_row <- labelled_io_table[11,1:8]
         household_row[1,8] <- 0
-        use_table <- rbind ( use_table, household_row)
-        if ( keep_total == FALSE) use_table <- use_table [ -7, ]
+        use_table <- rbind ( use_table, household_row )
       } else {
-        if (keep_total == TRUE) {
-          use_table <- labelled_io_table[1:7, 1:7]
-        } else {
           use_table <- labelled_io_table[1:6, 1:7]
-        }
       }
       return ( use_table )  #return simplified example table and do not run rest of the code
     } else {

@@ -1,7 +1,7 @@
 Package: iotables
 Type: Package
 Title: Importing and Manipulating Symmetric Input-Output Tables
-Version: 0.3.1
+Version: 0.3.2
 Author: Daniel Antal
 Maintainer: Daniel Antal <daniel.antal@ceemid.eu>
 Description: Pre-processing tasks related to working with Eurostat's symmetric input-output
@@ -18,6 +18,6 @@ Imports: dplyr, eurostat, magrittr, tidyr, stats, forcats, utils, plyr,
 Suggests: testthat, knitr, rmarkdown
 Depends: R(>= 2.10.0)
 NeedsCompilation: no
-Packaged: 2018-08-24 14:37:06 UTC; Daniel Antal
+Packaged: 2018-08-31 23:11:45 UTC; Daniel Antal
 Repository: CRAN
-Date/Publication: 2018-08-24 15:22:15 UTC
+Date/Publication: 2018-09-01 04:50:03 UTC

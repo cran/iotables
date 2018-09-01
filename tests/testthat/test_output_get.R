@@ -2,6 +2,8 @@ library (testthat)
 library (iotables)
 context ("Creating an output vector")
 
+output_get(source = "germany_1990", 
+           geo = 'DE', year = 1990, unit = "MIO_EUR")
 
 test_that("output_get errors ", {
   expect_error(output_get(source = "germany_1990", 
@@ -27,9 +29,25 @@ test_that("correct data is returned", {
   expect_equal(as.numeric(output_get(source = "germany_1990", 
                  geo = 'DE', year = 1990, 
                  unit = "MIO_EUR", households = TRUE, 
-                 labelling = "iotables")[1,8]), 1001060)
+                 labelling = "iotables")$consumption_expenditure_household), 1001060)
   })
 
-
+test_that("households are included or excluded", {
+  expect_equal("consumption_expenditure_household" %in% 
+                 names ( output_get(source = "germany_1990", 
+                                    geo = 'DE', year = 1990, 
+                                    unit = "MIO_EUR", households = FALSE, 
+                                    labelling = "iotables") ), FALSE)
+  expect_equal("consumption_expenditure_household" %in% 
+                 names ( output_get(source = "germany_1990", 
+                                    geo = 'DE', year = 1990, 
+                                    unit = "MIO_EUR", households = TRUE, 
+                                    labelling = "iotables") ), TRUE)
+  expect_equal("consumption_expenditure_government" %in% 
+               names ( output_get(source = "germany_1990", 
+                                  geo = 'DE', year = 1990, 
+                                  unit = "MIO_EUR", households = TRUE, 
+                                  labelling = "iotables") ), FALSE)
+})
 
 

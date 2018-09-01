@@ -28,28 +28,53 @@
 
 equation_solve <- function ( LHS = NULL, Im = NULL ) {
 
-  if ( is.null(LHS)| is.null(Im) ) stop (
+  if ( is.null(LHS) | is.null(Im) ) stop (
       "Error: matrix equation inputs are not given.")
 
   LHS <- LHS %>%
     mutate_if (is.factor, as.character) 
   Im <- Im %>%
     mutate_if (is.factor, as.character) 
+  
+  if ( ncol (Im) < ncol(LHS)) {
+   not_found <-  names(LHS)[ which (! names(LHS) %in% names ( Im )) ]
+   if ( all ( not_found %in% c("CPA_T", "CPA_U", "CPA_L68A", "TOTAL", "CPA_TOTAL"))) {
+     warning ( paste ( not_found, collapse = ','),  
+' from the input vector is removed. These are likely zero values, 
+and cannot be found in the Leontieff-inverse.'
+)
+     LHS <- dplyr::select ( LHS, -dplyr::one_of ( not_found ))
+   } else if  ( any( not_found  %in%  c("households", "P3_S14"))  )  {
+        stop ("The input vector has households but the Leontieff-inverse has not.")
+     } else {
+     stop ("Non confirming input vector and Leontieff-inverse.")
+   }
+  }
 
-  joined <- tryCatch(
+  ###Joining matrixes to find out if all data is present ---------------------   
+  
+
+    joined <- tryCatch(
       full_join (LHS, Im, by = names(LHS)), 
       error = function(e) {
         message ( "The technology columns are not matching.")
         return (NULL)
       }
     )
-    if ( is.null(joined)) stop("Error: no result is returned.")
-    lhs <- joined[1,]
-    lhs <- as.numeric(lhs[1,2:ncol(lhs)])
-    im <- joined[2:nrow(joined),]
-    im <- as.matrix(im[,2:ncol(im)])
+  
+  if ( is.null(joined)) stop("Error: no result is returned.")  #early termination if not
+  
+  ###Joining matrixes to find out if all data is present ---------------------   
+  
+  lhs <- joined[1,]
+  lhs <- as.numeric(lhs[1,2:ncol(lhs)])  #numeric left-hand side in conforming order
+  
+  im <- joined[2:nrow(joined),]
+  im <- as.matrix(im[,2:ncol(im)])  #numeric Leontieff inverse in conforming order
    
 
+  ###Try to solve the matrix equation  ---------------------   
+  
   solution <- tryCatch(
     lhs %*% im, 
     error = function(e) {
@@ -57,7 +82,7 @@ equation_solve <- function ( LHS = NULL, Im = NULL ) {
       return (NULL)}
   )
   
-  return(solution) 
+  solution
  }  #end of function  
 
 
