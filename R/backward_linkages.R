@@ -1,8 +1,9 @@
 #' Backward linkages
 #' 
-#' Backward linkeages as defined by the Eurostat Manual of Supply, Use and Input-Output
-#' Tables (see page 506.)
-#' @param Im A Leontieff inverse matrix created by the \code{\link{leontieff_inverse_create}} function. 
+#' Backward linkages as defined by the Eurostat Manual of Supply, Use and Input-Output
+#' Tables (see p506-507.)
+#' @param Im A Leontieff inverse matrix created by the
+#' \code{\link{leontieff_inverse_create}} function. 
 #' @importFrom dplyr mutate_if
 #' @examples 
 #' de_use <- use_table_get ( source = "germany_1990", geo = "DE",

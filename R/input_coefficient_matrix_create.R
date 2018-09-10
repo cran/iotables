@@ -6,7 +6,7 @@
 #' output vector.
 #'
 #' If there are zero values in the output vector, they will be changed to 
-#' 0.000001 and you will get a warning. Some analyitcal equations cannot be 
+#' 0.000001 and you will get a warning. Some analytical equations cannot be 
 #' solved with zero elements. You either have faulty input data, or you have 
 #' to use some sort of data modification to carry on your analysis. 
 #' 
@@ -15,11 +15,12 @@
 #' equal to zero, i.e. merging an industry or product class that has a positive 
 #' value with another industry or product class that is zero.
 #' 
-#' @param input_flow An input flow matrix created with the \code{\link{use_table_get}} function. 
-#' @param output An output vector with a key column, created by \code{\link{output_get}}.
-#' @param digits An integer showing the precision of the technology matrix in digits. 
-#' If not given, no rounding is applied.
-#' @importFrom tidyr spread
+#' @param input_flow An input flow matrix created with the 
+#' \code{\link{use_table_get}} function. 
+#' @param output An output vector with a key column, created by
+#'  \code{\link{output_get}}.
+#' @param digits An integer showing the precision of the technology matrix in 
+#' digits. Default is \code{NULL} when no rounding is applied.
 #' @importFrom dplyr mutate mutate_if full_join funs
 #' @examples 
 #' de_use <- use_table_get ( source = "germany_1990", geo = "DE",
@@ -39,6 +40,7 @@ input_coefficient_matrix_create <- function ( input_flow,
   if ( ! isTRUE(all.equal (names (input_flow), names (output))) ) {
     stop("Non conforming inputs are given with different column labels.")
   }
+  
   input_flow <- dplyr::mutate_if (input_flow, is.factor, as.character )
   
   non_zero <- function (x) {
@@ -46,12 +48,28 @@ input_coefficient_matrix_create <- function ( input_flow,
     ifelse (  all ( as.numeric ( unlist (x) ) == 0) , FALSE, TRUE )
   }
   
-  non_zero_cols <- vapply ( input_flow[, 1:ncol(input_flow)], non_zero, logical ( 1 ))
+  non_zero_cols <- vapply ( input_flow[, 1:ncol(input_flow)], 
+                            non_zero, logical (1) )
   #non_zero_rows <- which ( rowSums( input_flow[, 2:ncol(input_flow)] ) != 0 )
   #input_flow <- input_flow[non_zero_rows, non_zero_cols] #should be improved 
   non_zero_rows <- as.logical (non_zero_cols[-1] ) 
-
-  input_flow <- input_flow [non_zero_rows, non_zero_cols ]
+  
+  remove_cols <- names (input_flow )[! non_zero_cols]
+  siot_rows <- as.character ( unlist ( input_flow[,1]) )
+  siot_rows
+  #names ( input_flow) [! names ( input_flow ) %in% remove_cols ]
+  # siot_rows [! siot_rows %in% remove_cols ]
+  
+  ##review here
+ 
+  input_flow <- input_flow [! siot_rows %in% remove_cols , 
+                            ! names ( input_flow ) %in% remove_cols  ]
+  input_flow <- dplyr::mutate_if ( input_flow, is.factor, as.character )
+  
+nrow ( input_flow )
+ncol( input_flow)  
+  
+  #input_flow <- input_flow [ non_zero_rows, non_zero_cols ]
   output <- dplyr::mutate_if ( output, is.factor, as.character )
   output <- output [ names (output) %in% names (input_flow )]
   output  <- dplyr::mutate_if (output, is.factor, as.character )

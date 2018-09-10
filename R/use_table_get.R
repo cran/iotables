@@ -50,9 +50,9 @@ use_table_get <- function ( labelled_io_table  = NULL,
   ##Initialize variables ------------
   time <- t_cols2 <- t_rows2 <- values <- . <-  NULL #non-standard evaluation creates a varning in build. 
   iotables_row <- iotables_col <- prod_na <- induse <- NULL
-  unit_input <- unit ; geo_input <- geo; stk_flow_input <- stk_flow
+  unit_input <- unit; geo_input <- geo; stk_flow_input <- stk_flow
   
-  if ( is.null(labelled_io_table) ) { 
+  if ( is.null(labelled_io_table) | source == "germany_1990" ) { 
     tmp_rds <- file.path(tempdir(), paste0(source, "_", labelling, ".rds"))
     
     source_inputed <- source ; unit_input = unit
@@ -63,11 +63,13 @@ use_table_get <- function ( labelled_io_table  = NULL,
     }
     
     if ( source == "germany_1990" ) {
+      
       labelled_io_table <- iotable_get ( 
         labelled_io_data = NULL,
         source =  source, 
-        geo = geo, year = year, 
-        unit = unit, labelling = labelling )     # use germany example 
+        geo = "DE", year = 1990, 
+        unit = "MIO_EUR", labelling = labelling )     # use germany example 
+      
       use_table <- labelled_io_table[1:6, 1:8]
       
         if ( households == TRUE ) {
@@ -75,7 +77,7 @@ use_table_get <- function ( labelled_io_table  = NULL,
         household_row[1,8] <- 0
         use_table <- rbind ( use_table, household_row )
       } else {
-          use_table <- labelled_io_table[1:6, 1:7]
+          use_table <- labelled_io_table[1:6, 1:7] #remove households
       }
       return ( use_table )  #return simplified example table and do not run rest of the code
     } else {
@@ -140,11 +142,11 @@ use_table_get <- function ( labelled_io_table  = NULL,
      message ( "Total row and column removed from the matrix.")
       }
    } else {    #no households case -------------------------
-   if (keep_total == FALSE )  {
+   if ( keep_total == FALSE )  {
      use_table <- labelled_io_table [1:total_row-1,1:total_col-1]
      message ( "Total row and column removed from the matrix.")
    } else {
-     use_table <- use_table[1:total_row, 1:total_col]
+     use_table <- labelled_io_table[1:total_row, 1:total_col]
      }
    } # end of no household case 
     

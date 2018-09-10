@@ -7,12 +7,14 @@
 input_coefficient_matrix_create(input_flow, output, digits = NULL)
 }
 \arguments{
-\item{input_flow}{An input flow matrix created with the \code{\link{use_table_get}} function.}
+\item{input_flow}{An input flow matrix created with the 
+\code{\link{use_table_get}} function.}
 
-\item{output}{An output vector with a key column, created by \code{\link{output_get}}.}
+\item{output}{An output vector with a key column, created by
+\code{\link{output_get}}.}
 
-\item{digits}{An integer showing the precision of the technology matrix in digits. 
-If not given, no rounding is applied.}
+\item{digits}{An integer showing the precision of the technology matrix in 
+digits. Default is \code{NULL} when no rounding is applied.}
 }
 \description{
 Create an input coefficient matrix from the input flow matrix and the
@@ -22,7 +24,7 @@ output vector.
 }
 \details{
 If there are zero values in the output vector, they will be changed to 
-0.000001 and you will get a warning. Some analyitcal equations cannot be 
+0.000001 and you will get a warning. Some analytical equations cannot be 
 solved with zero elements. You either have faulty input data, or you have 
 to use some sort of data modification to carry on your analysis.
 
