@@ -63,6 +63,17 @@ de_gva_indicator  <- input_indicator_create(
 
 print( de_gva_indicator ) 
 
+## ----input_indicator-----------------------------------------------------
+io_table <- iotable_get () 
+#Total column should not be missing:
+io_table <- io_table [, 1:7] 
+io_table$total <- rowSums(io_table[, 2:7])
+
+labelled_io_table <- io_table
+
+direct_effects_de <- direct_effects_create ( labelled_io_table = io_table ) 
+print ( direct_effects_de[1:6,1:4])
+
 ## ----gva_multipliers-----------------------------------------------------
 
 de_gva_multiplier <- multiplier_create( 
@@ -70,6 +81,24 @@ de_gva_multiplier <- multiplier_create(
                             input_vector = de_gva_indicator, 
                             multiplier_name = 'gva_multiplier' )
 print ( de_gva_multiplier )
+
+## ----inputmultipliers----------------------------------------------------
+#Total column should not be missing
+io_table <- io_table [, 1:7] 
+io_table$total <- rowSums(io_table[, 2:7])
+
+labelled_io_table <- io_table
+
+direct_effects_de <- direct_effects_create ( labelled_io_table = io_table ) 
+
+#remove the total column from direct effects to conform with the inverse [,-8]
+
+multipliers <- input_multipliers_create(
+  direct_effects = direct_effects_de [, -8],
+  inverse = I_de, 
+  labelled = TRUE)
+
+print (multipliers[1:3, 1:3])
 
 ## ----employment_multiplier, warning=FALSE--------------------------------
 
@@ -128,8 +157,7 @@ print ( gva_multiplier_2 )
 
 ## ----backward------------------------------------------------------------
 de_bw <- backward_linkages(I_de)
-
-print ( filter ( de_bw, iotables_row == "total"))
+print (de_bw)
 
 ## ----forward-------------------------------------------------------------
 #You need a table that has a total column and either the total 

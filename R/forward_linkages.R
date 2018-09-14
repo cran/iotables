@@ -20,11 +20,11 @@
 #' io_table$total <- rowSums(io_table[, 2:7])
 #' io_table <- cbind (io_table, output_bp)
 #' 
-#' de_out <- output_coefficient_matrix_create ( io_table = io_table, 
+#' de_out_coeff <- output_coefficient_matrix_create ( io_table = io_table, 
 #'                                     type = 'final_demand',
 #'                                     digits = 4)
 #'
-#' forward_linkages ( output_coefficient_matrix = de_out, 
+#' forward_linkages ( output_coefficient_matrix = de_out_coeff, 
 #'                    digits = 4 )
 #' 
 #' @export 
@@ -42,7 +42,7 @@ forward_linkages <- function ( output_coefficient_matrix,
   L  <- leontieff_matrix_create( output_coefficient_matrix  )
   I <- leontieff_inverse_create(L)
   FLm <- I
-  FLm$forward = rowSums(I[, 2:ncol(I)])
+  FLm$forward_linkages = rowSums(I[, 2:ncol(I)])
   
   if ( !is.null(digits)) {
     FLm[, 2:ncol(FLm)] <- round ( FLm[, 2:ncol(FLm)], digits )

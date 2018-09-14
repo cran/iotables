@@ -12,7 +12,7 @@
 
 <meta name="author" content="Daniel Antal, based on the work of Jorg Beutel" />
 
-<meta name="date" content="2018-09-10" />
+<meta name="date" content="2018-09-13" />
 
 <title>Germany 1990</title>
 
@@ -70,7 +70,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 <h1 class="title toc-ignore">Germany 1990</h1>
 <h4 class="author"><em>Daniel Antal, based on the work of Jorg Beutel</em></h4>
-<h4 class="date"><em>2018-09-10</em></h4>
+<h4 class="date"><em>2018-09-13</em></h4>
 
 
 
@@ -177,6 +177,33 @@ de_gva_indicator  &lt;-<span class="st"> </span><span class="kw">input_indicator
 <ol start="44" style="list-style-type: decimal">
 <li><span class="math inline">\(w_{ij}\)</span> = <span class="math inline">\(W_{j}\)</span> / <span class="math inline">\(x_j\)</span> [input coefficients for value added]</li>
 </ol>
+<p>You can create a matrix of input indicators, or direct effects on (final) demand with <code>direct_effects_create()</code>. The function by default creates input requirements for final demand. With the code below it re-creates the Table 15.14 of the Eurostat manual.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">io_table &lt;-<span class="st"> </span><span class="kw">iotable_get</span> () 
+<span class="co">#Total column should not be missing:</span>
+io_table &lt;-<span class="st"> </span>io_table [, <span class="dv">1</span><span class="op">:</span><span class="dv">7</span>] 
+io_table<span class="op">$</span>total &lt;-<span class="st"> </span><span class="kw">rowSums</span>(io_table[, <span class="dv">2</span><span class="op">:</span><span class="dv">7</span>])
+
+labelled_io_table &lt;-<span class="st"> </span>io_table
+
+direct_effects_de &lt;-<span class="st"> </span><span class="kw">direct_effects_create</span> ( <span class="dt">labelled_io_table =</span> io_table ) 
+<span class="kw">print</span> ( direct_effects_de[<span class="dv">1</span><span class="op">:</span><span class="dv">6</span>,<span class="dv">1</span><span class="op">:</span><span class="dv">4</span>])
+<span class="co">#&gt;                   iotables_row agriculture_group manufacturing_group</span>
+<span class="co">#&gt; 7                        total        0.41528126         0.482855094</span>
+<span class="co">#&gt; 8        import_goods_services        0.06665908         0.145169837</span>
+<span class="co">#&gt; 9           net_tax_production        0.02468686         0.006026239</span>
+<span class="co">#&gt; 10 intermediate_consumption_pp        0.50662719         0.634051171</span>
+<span class="co">#&gt; 11      compensation_employees        0.21366431         0.274644586</span>
+<span class="co">#&gt; 12    net_tax_production_other       -0.04582100         0.001349766</span>
+<span class="co">#&gt;    construction_group</span>
+<span class="co">#&gt; 7         0.468258104</span>
+<span class="co">#&gt; 8         0.054668860</span>
+<span class="co">#&gt; 9         0.006302778</span>
+<span class="co">#&gt; 10        0.529229742</span>
+<span class="co">#&gt; 11        0.320916427</span>
+<span class="co">#&gt; 12        0.003920914</span></code></pre></div>
+<blockquote>
+<p>The ‘total’ row above is labelled as Domestic goods and services in the Eurostat Manual. The table can be found on p498.</p>
+</blockquote>
 </div>
 </div>
 <div id="multipliers" class="section level2">
@@ -213,7 +240,31 @@ de_gva_multiplier &lt;-<span class="st"> </span><span class="kw">multiplier_crea
 <blockquote>
 <p>You can check these values against the Table 15.16 of the Eurostat Manual on page 501 (row 10).</p>
 </blockquote>
-<p>These multipliers are Type-I multipliers. The type-I GVA multiplier shows the total effect in the domestic economy. The initial extra demand creates new orders in the backward linking industries, offers new product to build on in the forward-linking industry and creates new corporate and employee income that can be spent. We will soon turn to the problem of Type-II multipliers.</p>
+<p>You can recreate the whole matrix if possible income multipliers with <code>input_multipliers_create()</code>.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#Total column should not be missing</span>
+io_table &lt;-<span class="st"> </span>io_table [, <span class="dv">1</span><span class="op">:</span><span class="dv">7</span>] 
+io_table<span class="op">$</span>total &lt;-<span class="st"> </span><span class="kw">rowSums</span>(io_table[, <span class="dv">2</span><span class="op">:</span><span class="dv">7</span>])
+
+labelled_io_table &lt;-<span class="st"> </span>io_table
+
+direct_effects_de &lt;-<span class="st"> </span><span class="kw">direct_effects_create</span> ( <span class="dt">labelled_io_table =</span> io_table ) 
+
+<span class="co">#remove the total column from direct effects to conform with the inverse [,-8]</span>
+
+multipliers &lt;-<span class="st"> </span><span class="kw">input_multipliers_create</span>(
+  <span class="dt">direct_effects =</span> direct_effects_de [, <span class="op">-</span><span class="dv">8</span>],
+  <span class="dt">inverse =</span> I_de, 
+  <span class="dt">labelled =</span> <span class="ot">TRUE</span>)
+
+<span class="kw">print</span> (multipliers[<span class="dv">1</span><span class="op">:</span><span class="dv">3</span>, <span class="dv">1</span><span class="op">:</span><span class="dv">3</span>])
+<span class="co">#&gt;            iotables_row agriculture_group manufacturing_group</span>
+<span class="co">#&gt; 7                 total        0.70488246          0.84135154</span>
+<span class="co">#&gt; 8 import_goods_services        0.12215911          0.22059291</span>
+<span class="co">#&gt; 9    net_tax_production        0.03283655          0.01473759</span></code></pre></div>
+<blockquote>
+<p>You can check these results against the Table 15.16 on p501 of the Eurostat manual. Again, the label ‘total’ refers to domestic intermediaries. The ordering of the rows is different from the Manual.</p>
+</blockquote>
+<p>These multipliers are Type-I multipliers. The type-I GVA multiplier shows the total effect in the domestic economy. The initial extra demand creates new orders in the backward linking industries, offers new product to build on in the forward-linking industry and creates new corporate and employee income that can be spent. Type-II multipliers will be introduced in a forthcoming vignette [not yet available.]</p>
 </div>
 <div id="employment-multipliers" class="section level3">
 <h3>Employment multipliers</h3>
@@ -314,12 +365,13 @@ gva_multiplier_<span class="dv">2</span> &lt;-<span class="st"> </span><span cla
 <div id="backward-linkages" class="section level3">
 <h3>Backward linkages</h3>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">de_bw &lt;-<span class="st"> </span><span class="kw">backward_linkages</span>(I_de)
-
-<span class="kw">print</span> ( <span class="kw">filter</span> ( de_bw, iotables_row <span class="op">==</span><span class="st"> &quot;total&quot;</span>))
-<span class="co">#&gt;   iotables_row agriculture_group manufacturing_group construction_group</span>
-<span class="co">#&gt; 1        total          1.704922            1.841421           1.813747</span>
-<span class="co">#&gt;   trade_group business_services_group other_services_group</span>
-<span class="co">#&gt; 1    1.603712                1.594974             1.378375</span></code></pre></div>
+<span class="kw">print</span> (de_bw)
+<span class="co">#&gt;        iotables_row agriculture_group manufacturing_group</span>
+<span class="co">#&gt; 1 backward linkages          1.704922            1.841421</span>
+<span class="co">#&gt;   construction_group trade_group business_services_group</span>
+<span class="co">#&gt; 1           1.813747    1.603712                1.594974</span>
+<span class="co">#&gt;   other_services_group</span>
+<span class="co">#&gt; 1             1.378375</span></code></pre></div>
 <blockquote>
 <p>You can check the results against Table 15.19 on page 506 of the Eurostat Manual.</p>
 </blockquote>
@@ -346,13 +398,13 @@ de_out &lt;-<span class="st"> </span><span class="kw">output_coefficient_matrix_
   )
                                     
 <span class="kw">forward_linkages</span> ( <span class="dt">output_coefficient_matrix =</span> de_out )
-<span class="co">#&gt;              iotables_row  forward</span>
-<span class="co">#&gt; 1       agriculture_group 2.112754</span>
-<span class="co">#&gt; 2     manufacturing_group 1.690891</span>
-<span class="co">#&gt; 3      construction_group 1.355896</span>
-<span class="co">#&gt; 4             trade_group 1.584989</span>
-<span class="co">#&gt; 5 business_services_group 2.104036</span>
-<span class="co">#&gt; 6    other_services_group 1.210504</span>
+<span class="co">#&gt;              iotables_row forward_linkages</span>
+<span class="co">#&gt; 1       agriculture_group         2.112754</span>
+<span class="co">#&gt; 2     manufacturing_group         1.690891</span>
+<span class="co">#&gt; 3      construction_group         1.355896</span>
+<span class="co">#&gt; 4             trade_group         1.584989</span>
+<span class="co">#&gt; 5 business_services_group         2.104036</span>
+<span class="co">#&gt; 6    other_services_group         1.210504</span>
 <span class="co">#'</span></code></pre></div>
 <blockquote>
 <p>You can check forward linkages against the Table 15.20 of Eurostat Manual on page 507.</p>
