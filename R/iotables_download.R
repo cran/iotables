@@ -15,14 +15,18 @@
 ##'  \item{\code{naio_10_pyp1700}}{ Symmetric input-output table at basic prices (product by product) (previous years prices)}
 ##'  \item{\code{naio_10_cp1750}}{ Symmetric input-output table at basic prices (industry by industry)}
 ##'  \item{\code{naio_10_pyp1750}}{ Symmetric input-output table at basic prices (industry by industry) (previous years prices) }
+##'  \item{\code{naio_10_cp15}}{ Supply table at basic prices incl. transformation into purchasers' prices }
+##'  \item{\code{naio_10_cp16}}{ Use table at purchasers' prices }
+##'  \item{\code{naio_10_cp1610}}{ Use table at basic prices }
+##'  \item{\code{naio_10_pyp1610}}{ Use table at basic prices (previous years prices) (naio_10_pyp1610) }
 ##'  \item{\code{naio_10_cp1620}}{ Table of trade and transport margins at basic prices}
 ##'  \item{\code{naio_10_pyp1620}}{ Table of trade and transport margins at previous years' prices}
 ##'  \item{\code{naio_10_cp1630}}{ Table of taxes less subsidies on products at basic prices}
 ##'  \item{\code{naio_10_pyp1630}}{Table of taxes less subsidies on products at previous years' prices}
 ##' } 
 #' @param source See the available list of sources above in the Description. 
-#' @param data_directory Defaults to \code{NULL}, if a valid directory, it will try to save the pre-processed 
-#' data file here with labelling. 
+#' @param data_directory Defaults to \code{NULL}, if a valid directory, it will 
+#' try to save the pre-processed data file here with labelling. 
 #' @param force_download Defaults to \code{TRUE}. If \code{FALSE} it will use the existing downloaded file
 #' in the \code{data_directory} or the temporary directory, if it exists.
 #' @importFrom magrittr %>%
@@ -40,12 +44,14 @@
 iotables_download <- function ( source = "naio_10_cp1700", 
                                 data_directory = NULL,
                                 force_download = TRUE ) {
-  t_cols2_lab <- t_rows2_lab <- values_lab <- stk_flow <- NULL
-  . <- downloaded <- downloaded_labelled <- NULL
-  time_lab <- geo <- time <- unit <- NULL
+  t_cols2_lab <- t_rows2_lab <- values_lab <- stk_flow <- stk_flow_lab <- NULL
+  . <- downloaded <- downloaded_labelled <- fix_duplicated <- NULL
+  time_lab <- geo <- geo_lab <- time <- unit <- unit_lab <- NULL
   
   possible_download_sources <- c( "naio_10_cp1700", "naio_10_cp1750", 
                                   "naio_10_pyp1700", "naio_10_pyp1750",
+                                  "naio_10_cp15", "naio_10_cp16",
+                                  "naio_10_cp1610", "naio_10_pyp1610", 
                                   "naio_10_cp1620", "naio_10_pyp1620", 
                                   "naio_10_cp1630", "naio_10_pyp1630" )
   source <- tolower (source)
@@ -76,7 +82,7 @@ iotables_download <- function ( source = "naio_10_cp1700",
   
   #label the raw Eurostat file, add rename variables with _lab suffix
   downloaded_labelled <- downloaded  %>%
-    eurostat::label_eurostat (., fix_duplicated = TRUE) %>%          #add meaningful labels to raw data
+    eurostat::label_eurostat (., fix_duplicated = TRUE) %>%   #add meaningful labels to raw data
     stats::setNames( ., paste0( names (.), "_lab" ) )    %>%  
     dplyr::mutate ( rows = 1:nrow(.) ) %>%  #because long and wide formats are not symmetric
     dplyr::rename ( values = values_lab ) %>%
@@ -89,11 +95,11 @@ iotables_download <- function ( source = "naio_10_cp1700",
     dplyr::left_join (., downloaded_labelled, by = c("rows", "values"))
   #message ("Joined labelled and not labelled data.")
   
-  if ( "stk_flow" %in% names ( downloaded )) {
-    downloaded <- downloaded %>%
-      dplyr::filter ( stk_flow == stk_flow )
+  #if ( "stk_flow" %in% names ( downloaded )) {
+  #  downloaded <- downloaded %>%
+  #    dplyr::filter ( stk_flow == stk_flow )
     #message ("Type " , stk_flow, " is returned.")
-  }
+  #}
   
   if ( source == "naio_cp17_r2" ){
     
@@ -127,15 +133,30 @@ iotables_download <- function ( source = "naio_10_cp1700",
     )
   } #end of _r2 
   
-  downloaded <- tidyr::nest ( dplyr::group_by ( downloaded, geo, time, year, unit ) )
   
+  if ( "stk_flow" %in% names ( downloaded ) ) {
+    downloaded_nested <- tidyr::nest ( dplyr::group_by ( downloaded,
+                                                         geo, geo_lab,
+                                                         time, time_lab, year, 
+                                                         unit, unit_lab, 
+                                                         stk_flow, stk_flow_lab) )
+    
+  } else { 
+    downloaded_nested <- tidyr::nest ( dplyr::group_by ( downloaded,
+                                                         geo, geo_lab,
+                                                         time, time_lab, year, 
+                                                         unit, unit_lab ) )
+    
+    }
+  
+
   if( !is.null(data_directory) ) {
     
     save_file_name <- file.path(data_directory, paste0(source, ".rds"))
-    saveRDS( downloaded, file = save_file_name )
+    saveRDS( downloaded_nested, file = save_file_name )
     message ( "Saved the raw data of this table tpye in ",
               save_file_name, "." )
   }
   
-  downloaded 
+  downloaded_nested 
 }

@@ -10,8 +10,8 @@ iotables_download(source = "naio_10_cp1700", data_directory = NULL,
 \arguments{
 \item{source}{See the available list of sources above in the Description.}
 
-\item{data_directory}{Defaults to \code{NULL}, if a valid directory, it will try to save the pre-processed 
-data file here with labelling.}
+\item{data_directory}{Defaults to \code{NULL}, if a valid directory, it will 
+try to save the pre-processed data file here with labelling.}
 
 \item{force_download}{Defaults to \code{TRUE}. If \code{FALSE} it will use the existing downloaded file
 in the \code{data_directory} or the temporary directory, if it exists.}
@@ -32,6 +32,10 @@ The function will make a copy of the rds file in this directory.
  \item{\code{naio_10_pyp1700}}{ Symmetric input-output table at basic prices (product by product) (previous years prices)}
  \item{\code{naio_10_cp1750}}{ Symmetric input-output table at basic prices (industry by industry)}
  \item{\code{naio_10_pyp1750}}{ Symmetric input-output table at basic prices (industry by industry) (previous years prices) }
+ \item{\code{naio_10_cp15}}{ Supply table at basic prices incl. transformation into purchasers' prices }
+ \item{\code{naio_10_cp16}}{ Use table at purchasers' prices }
+ \item{\code{naio_10_cp1610}}{ Use table at basic prices }
+ \item{\code{naio_10_pyp1610}}{ Use table at basic prices (previous years prices) (naio_10_pyp1610) }
  \item{\code{naio_10_cp1620}}{ Table of trade and transport margins at basic prices}
  \item{\code{naio_10_pyp1620}}{ Table of trade and transport margins at previous years' prices}
  \item{\code{naio_10_cp1630}}{ Table of taxes less subsidies on products at basic prices}

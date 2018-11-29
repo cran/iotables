@@ -6,14 +6,20 @@
 #' Unless you want to work with bulk data files, you should not invoke  \code{\link{iotables_download}} 
 #' directly, rather via this function, if and when it is necessary. 
 #' @param source A data source, for example \code{naio_10_cp1700}. 
-#' Symmetric input-output table at basic prices (product by product) (naio_10_cp1700)	
-#' Symmetric input-output table at basic prices (industry by industry) (naio_10_cp1750)
-#' Symmetric input-output table at basic prices (product by product) (previous years prices) (naio_10_pyp1700)
-#' Symmetric input-output table at basic prices (industry by industry) (previous years prices) (naio_10_pyp1750)
-#' Table of trade and transport margins at basic prices (naio_10_cp1620) and 
-#' at previous' years prices (naio_10_pyp1620)
-#' Table of taxes less subsidies on products at basic prices (naio_10_cp1630)	and
-#' at previous' years prices (naio_10_pyp1630)
+#'  \itemize{
+##'  \item{\code{naio_10_cp1700}}{ Symmetric input-output table at basic prices (product by product)}
+##'  \item{\code{naio_10_pyp1700}}{ Symmetric input-output table at basic prices (product by product) (previous years prices)}
+##'  \item{\code{naio_10_cp1750}}{ Symmetric input-output table at basic prices (industry by industry)}
+##'  \item{\code{naio_10_pyp1750}}{ Symmetric input-output table at basic prices (industry by industry) (previous years prices) }
+##'  \item{\code{naio_10_cp15}}{ Supply table at basic prices incl. transformation into purchasers' prices }
+##'  \item{\code{naio_10_cp16}}{ Use table at purchasers' prices }
+##'  \item{\code{naio_10_cp1610}}{ Use table at basic prices }
+##'  \item{\code{naio_10_pyp1610}}{ Use table at basic prices (previous years prices) (naio_10_pyp1610) }
+##'  \item{\code{naio_10_cp1620}}{ Table of trade and transport margins at basic prices}
+##'  \item{\code{naio_10_pyp1620}}{ Table of trade and transport margins at previous years' prices}
+##'  \item{\code{naio_10_cp1630}}{ Table of taxes less subsidies on products at basic prices}
+##'  \item{\code{naio_10_pyp1630}}{Table of taxes less subsidies on products at previous years' prices}
+##' } 
 #' For further information consult the 
 #' \href{http://ec.europa.eu/eurostat/web/esa-supply-use-input-tables/methodology/symmetric-input-output-tables}{Eurostat Symmetric Input-Output Tables} page.
 #' @param labelled_io_data If you have downloaded a bulk data file with 
@@ -61,6 +67,7 @@ iotable_get <- function ( labelled_io_data = NULL,
   iotables_row <- iotables_col <- prod_na <- induse <- variable <-  NULL
   row_order <- col_order <- iotables_label <- code <- numeric_label <- label <- NULL
   
+  source_inputed <- source;   unit_input <- unit
   stk_flow_input <- stk_flow; geo_input <- geo
 
   if ( source %in% c("naio_10_cp1620", "naio_10_cp1630", 
@@ -70,7 +77,8 @@ iotable_get <- function ( labelled_io_data = NULL,
   }
 ##Veryfing source parameter and loading the labelling  ----
   prod_ind <- c("naio_10_cp1700", "naio_10_cp1750", "naio_10_pyp1700",
-                "naio_10_pyp1750", "naio_10_cp1620", "naio_10_cp1630", 
+                "naio_10_pyp1750", "naio_10_cp15", "naio_10_cp16",
+                "naio_10_cp1610", "naio_10_cp1620", "naio_10_cp1630", 
                 "naio_10_pyp1620", "naio_10_pyp1630" )
   trow_tcol <-  c(  "croatia_2010_1700", "croatia_2010_1800", "croatia_2010_1900")
   croatia_files <- c( "croatia_2010_1700", "croatia_2010_1800", "croatia_2010_1900")
@@ -117,7 +125,7 @@ iotable_get <- function ( labelled_io_data = NULL,
   metadata_cols <- dplyr::mutate_if ( metadata_cols, is.factor, as.character )
   
   ###Exception handling for wrong paramters-----
-  if ( is.null(labelled_io_data) ) {
+  if ( is.null(labelled_io_data) ) {  #if not directly inputed data 
     if (is.null(geo)) stop ("Error: no country selected.")
     if (! labelling %in% c("iotables", "short")) {
       stop("Only iotables or original short columns can be selected.")
@@ -131,21 +139,19 @@ iotable_get <- function ( labelled_io_data = NULL,
         warning ( "The parameter stk_flow was changed to TOTAL." )
       }
     }
-    source_inputed <- source
-    
-     
+
     ##Creating a temporary file name for the input-output table ----
     tmp_rds <- file.path(tempdir(), paste0(source, "_", labelling, ".rds"))
-    if ( source == "germany_1990" ) {
+    if ( source_inputed == "germany_1990" ) {
       labelled_io_data <- iotables::germany_1990    # use germany example 
       labelled_io_data$year = 1990
-    } else if ( source == "croatia_2010_1700" ) { 
+    } else if ( source_inputed == "croatia_2010_1700" ) { 
       labelled_io_data <- iotables::croatia_2010_1700 %>%
         mutate ( year = lubridate::year ( time ))
-    } else if ( source == "croatia_2010_1800" )  {
+    } else if ( source_inputed == "croatia_2010_1800" )  {
       labelled_io_data <- iotables::croatia_2010_1800   %>%
         mutate ( year = lubridate::year ( time ))
-    } else if ( source == "croatia_2010_1900" )  {
+    } else if ( source_inputed == "croatia_2010_1900" )  {
       labelled_io_data <- iotables::croatia_2010_1900 %>%
         mutate ( year = lubridate::year ( time ))
     } else  {
@@ -157,25 +163,25 @@ iotable_get <- function ( labelled_io_data = NULL,
                                                 force_download = force_download ) 
       }
     } # use eurostat files 
-  } #end of possible downloads or data retrieval
+  } #end of possible downloads or data retrieval if not directly inputed
   
- ##Loading the data and veryfing parameters ----  
+ ##Veryfing parameters ----  
   
-  if ( nchar(geo) == 2 & geo == tolower(geo)) { 
-     geo <- toupper (geo)
+  if ( nchar(geo_input) == 2 & geo_input == tolower(geo_input)) { 
+     geo_input <- toupper (geo_input)
     warning("Warning: country code changed to upper case.")
   }
   
-  if ( ! unit %in% labelled_io_data$unit ) { 
+  if ( ! unit_input %in% labelled_io_data$unit ) { 
     stop("This currency unit is not found in the raw data frame.")
   }
   
-  if ( ! geo %in% labelled_io_data$geo ) { 
+  if ( ! geo_input %in% labelled_io_data$geo ) { 
     stop("This currency unit is not found in the raw data frame.")
   }
   
   if ( ! year %in% labelled_io_data$year ) { 
-    stop("This currency unit is not found in the raw data frame.")
+    stop("This year is not found in the raw data frame.")
   }
   
 
@@ -187,9 +193,16 @@ iotable_get <- function ( labelled_io_data = NULL,
       labelled_io_data$unit == unit)
  
  if ( length( selected_table) == 0  )  {
-   stop ( "There is no available table for country ", geo, " in the year ", year , 
-          " with ", unit, " units.")
- }
+   stop ( paste0("There is no available table for country ", geo_input, 
+                 " in the year ", year, 
+          " with ", unit_input, " units.") )
+ } else if (length( selected_table) == 3) { 
+   selected_table <- which (   ##get the number of table to be selected
+     labelled_io_data$year == year & 
+       as.character(labelled_io_data$geo) == geo &
+       labelled_io_data$unit == unit  &
+       labelled_io_data$stk_flow == stk_flow_input)
+   }  #in case of DOM, IMP, TOTAL stk_flow must be selected, too.
  
 if ( ! source %in% c("croatia_2010_1700" , "croatia_2010_1800" , "croatia_2010_1900" , 
                        "germany_1990") ) {
@@ -263,8 +276,6 @@ if ( ! source %in% c("croatia_2010_1700" , "croatia_2010_1800" , "croatia_2010_1
       dplyr::select ( iotables_col, iotables_row, values ) %>% 
       tidyr::spread ( iotables_col, values )
     
-    nrow (iotable_labelled_w )
-    ncol (iotable_labelled_w )    
   } else if ( labelling == "short" & source %in% prod_ind ) {
     
     iotable_labelled_w <- iotable_labelled %>%
