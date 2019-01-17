@@ -2,43 +2,34 @@
 % Please edit documentation in R/input_multipliers_create.R
 \name{input_multipliers_create}
 \alias{input_multipliers_create}
-\title{Create input multipliers}
+\title{Create input indicators}
 \usage{
-input_multipliers_create(direct_effects, inverse, labelled = TRUE,
-  digits = NULL)
+input_multipliers_create(input_requirements, inverse, digits = NULL)
 }
 \arguments{
-\item{direct_effects}{A direct effects matrix created by 
-\code{\link{direct_effects_create}}}
+\item{input_requirements}{A matrix or vector created by 
+\code{\link{input_indicator_create}}}
 
 \item{inverse}{A Leontieff-inverse created by \code{\link{leontieff_inverse_create}}.}
-
-\item{labelled}{Defaults to \code{TRUE}. If you use not labelled matrixes, i.e. 
-both inputed matrixes are numerical only without the first key row, select 
-\code{FALSE}.}
 
 \item{digits}{Rounding digits, defaults to \code{NULL}, in which case 
 no rounding takes place.}
 }
 \description{
-The function creates the input multipliers.  See Eurostat Manual p500-501..
+The function creates the multipliers (direct + indirect effects).
 }
 \examples{
  
-de_use <- use_table_get()
-L_de  <- leontieff_matrix_create( de_use )
-I_de <- leontieff_inverse_create( L_de )
+nl <- netherlands_2006
 
-io_table <- iotable_get () 
-#Total column should not be missing
-io_table <- io_table [, 1:7] 
-io_table$total <- rowSums(io_table[, 2:7])
+input_coeff_nl <- input_coefficient_matrix_create(
+ data_table  = netherlands_2006, 
+ households = FALSE) 
 
-labelled_io_table <- io_table
-direct_effects_de <- direct_effects_create ( io_table ) 
+compensation_indicator <- input_indicator_create(netherlands_2006, 'compensation_employees')
 
-multipliers <- input_multipliers_create(
-      direct_effects = direct_effects_de [, -8],
-      inverse = I_de, 
-      labelled = TRUE)
+I_nl <- leontieff_inverse_create( input_coeff_nl )
+
+input_multipliers_create(input_requirements = compensation_indicator, 
+                        inverse = I_nl)
 }

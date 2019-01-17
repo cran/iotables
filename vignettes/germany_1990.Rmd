@@ -9,13 +9,13 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-```{r setup, include=FALSE}
+```{r setup, include=TRUE}
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
 )
 library(iotables)
-require(dplyr)
+require(dplyr); require(tidyr)
 ```
 
 ## Germany sample files
@@ -24,18 +24,19 @@ The Germany example is used to test the code of the package. It follows the exam
 
 The `germany_1990` dataset is a simplified 6x6 sized SIOT taken from the Eurostat Manual (page 481). It is brought to a long form similar to the Eurostat bulk files. The testthat infrastructure of the iotables package is checking data processing functions and analytical calculations against these published results.
 
-The following data processing functions select and order the data from the Eurostat-type bulk file. 
+The following data processing functions select and order the data from the Eurostat-type bulk file. Since the first version of this package, Eurostat moved all SIOT data products to the ESA2010 vocabulary, but the manual still follows the ESA95 vocabulary. The labels of the dataset were slightly changed to match the current metadata names. The changes are minor and self-evident, the comparison of the `germany_1990` dataset and the Manual should cause no misunderstandings.
 
 ```{r iotables}
-de_use    <- use_table_get ( source = "germany_1990", geo = "DE",
-                       year = 1990, unit = "MIO_EUR", 
-                       households = FALSE, labelling = "iotables")
+data_table <- iotable_get( labelling = "iotables" )
+input_flow <- input_flow_get ( 
+                  data_table = data_table, 
+                  households = FALSE)
 
-de_output <- output_get ( source = "germany_1990", geo = "DE",
-                       year = 1990, unit = "MIO_EUR",
-                       households = FALSE, labelling = "iotables")
+de_output <- primary_input_get ( data_table, "output" )
 print (de_output[c(1:4)])
 ```
+
+This vignette uses `library(tidyverse)`, more particularly `dplyr` and `tidyr`, just like all analytical functions of `iotables`.  Even if you do not use `tidyverse`, this packages will be installed together with `iotables`. These functions are only used in the vignette to print the output, and they are not essential for the examples.
 
 ## Direct effects
 
@@ -54,30 +55,34 @@ It checks the correct ordering of columns, and furthermore it fills up 0 values 
 
 
 ```{r inputcoeff, echo=FALSE}
-de_input_coeff <- input_coefficient_matrix_create( de_use, de_output, digits = 4)
+de_input_coeff <- input_coefficient_matrix_create( 
+     data_table = data_table, 
+     digits = 4)
+
+##which is equivalent to 
+
+de_input_coeff <- coefficient_matrix_create( data_table, 
+                             total = "output", 
+                             return_part = "products", 
+                             households = FALSE,
+                             digits = 4)
 
 print ( de_input_coeff[1:3, 1:3])
 ```
 
-Similarly, the output coefficient matrix is 
+Similarly, the output coefficient matrix is the following:
 
 ```{r outputcoeff, echo=FALSE}
-#Sample data table has not total column
-io_table <- iotable_get () 
-io_table <- io_table [1:which(tolower(io_table[,1]) =="total" ), ]
-
-output_bp <- dplyr::select ( io_table, output_bp )
-io_table <- io_table [, 1:7] 
-io_table$total <- rowSums(io_table[, 2:7])
-io_table <- cbind (io_table, output_bp)
-
-de_out <- output_coefficient_matrix_create ( io_table = io_table, 
-                                    type = 'final_demand',
+de_out <- output_coefficient_matrix_create ( 
+                                    io_table = data_table, 
+                                    total = 'tfu',
                                     digits = 4)
 
 #Rounding is slightly different in the manual
 print ( de_out[1:3, 1:3] )
 ```
+
+These results can be checked on page 468 in the Manual.
 
 The Leontieff matrix is derived from Leontieff equation system.  
 
@@ -88,10 +93,11 @@ The Leontieff matrix is defined as (I-A) and it is created with the `leontieff_m
 The Leontieff inverse is (I-A)^-1^ and it is created with the `leontieff_inverse_create()` function from the Leontieff-matrix.
 
 ```{r leontieff}
-L_de <- leontieff_matrix_create( technology_coefficients_matrix =
-                                de_input_coeff )
-I_de <- leontieff_inverse_create(L_de)
-print (I_de[,1:3])
+L_de <- leontieff_matrix_create ( technology_coefficients_matrix =
+                                 de_input_coeff )
+I_de <- leontieff_inverse_create(de_input_coeff)
+I_de_4 <- leontieff_inverse_create(de_input_coeff, digits = 4)
+print (I_de_4[,1:3])
 ```
 
 >You can check the Leontieff matrix against Table 15.9 on page 487 of the Euorstat manual, and the Leontieff inverse against Table 15.10 on page 488. The ordering of the industries is different in the manual.
@@ -107,53 +113,48 @@ Technical indicators assume constant returns to scale and fixed relationship of 
 The helper function `primary_input_get()` selects a row from the SIOT and brings it to a conforming form. The `input_indicator_create()` creates the vector of technical input coefficients.
 
 ```{r employment_indicator}
-de_emp <- primary_input_get ( input = "employment_total",
-                              source = "germany_1990", geo = "DE",
-                              year = 1990,  
-                              households = FALSE, labelling = "iotables")
+de_emp <- primary_input_get ( data_table,
+                              primary_input = "employment_domestic_total" )
 
-de_emp_indicator <- input_indicator_create (de_emp, de_output)
-print ( de_emp_indicator[1:4])
+de_emp_indicator <- input_indicator_create ( 
+    data_table  = data_table,
+    input_vector = "employment_domestic_total")
 
+print ( tidyr::gather( de_emp_indicator, indicators, values, !!2:ncol(de_emp_indicator))[,-1] )
 ```
 
 Often we want to analyze the effect of growing domestic demand on some natural units, such as employment or $CO_2$ emissions. The only difficulty is that we need data that is aggregated / disaggregated precisely with the same industry breakup as our SIOT table.
 
-European employment statistics have greated detail than our tables, so employment statistics must be aggregated to conform the 60 (61, 62) columns of the SIOT.  There is a difference in the columns based on how national statistics offices treat imputed real estate income and household production, and trade margins. Czech SIOTs are smaller than most SIOTS because they do not have these columns and rows.
+European employment statistics have greater detail than our tables, so employment statistics must be aggregated to conform the 60 (61, 62) columns of the SIOT.  There is a difference in the columns based on how national statistics offices treat imputed real estate income and household production, and trade margins. Czech SIOTs are smaller than most SIOTS because they do not have these columns and rows.
 
 In another vignette we will show examples on how to work with these real-life data. For the sake of following the calculations, we are continuing with the simplified 1990 German data. 
 
 ###Creating income indicators
 
-The `gva_get()` helper function selects the gross value added row from a SIOT.
+The input coefficients for value added are created with `input_indicator_create()`. 
 
 ```{r gva_indicator}
-de_gva <- gva_get ( source = "germany_1990" )
+de_gva <- primary_input_get ( data_table,
+                              primary_input = "gva") 
 
 de_gva_indicator  <- input_indicator_create( 
-    input_matrix = de_gva, 
-    output_vector = de_output)
+    data_table  = data_table,
+    input_vector = "gva")
 
-print( de_gva_indicator ) 
+print( tidyr::gather(de_gva_indicator, indicators, values,!!2:ncol(de_gva_indicator))[,-1]  ) 
 ```
 
-The input coefficients for value added are created with `input_indicator_create`. 
 
-This is equal to the equation on page 495 of the Eurostat Manual.
+This is equal to the equation on page 495 of the Eurostat Manual. The results above can be checked on the bottom of page 498.
 
 (44) $w_{ij}$ = $W_{j}$ / $x_j$  [input coefficients for value added]
 
-You can create a matrix of input indicators, or direct effects on (final) demand with `direct_effects_create()`. The function by default creates input requirements for final demand.  With the code below it re-creates the Table 15.14 of the Eurostat manual. 
+You can create a matrix of input indicators, or direct effects on (final) demand with `direct_supply_effects_create()`. The function by default creates input requirements for final demand.  With the code below it re-creates the Table 15.14 of the Eurostat manual. 
 
 ```{r input_indicator}
-io_table <- iotable_get () 
-#Total column should not be missing:
-io_table <- io_table [, 1:7] 
-io_table$total <- rowSums(io_table[, 2:7])
-
-labelled_io_table <- io_table
-
-direct_effects_de <- direct_effects_create ( labelled_io_table = io_table ) 
+direct_effects_de <- coefficient_matrix_create(data_table  = data_table, 
+                                               total       = 'output', 
+                                             return_part = 'primary_inputs')
 print ( direct_effects_de[1:6,1:4])
 ```
 
@@ -183,45 +184,26 @@ B = vector of input coefficients for wages or GVA or taxes.
 
 Z = direct and indirect requirements for wages (or other income)
 
-The `multiplier_create()` function performs the matrix multiplication, after handling many exceptions and problems with real-life data, such as different missing columns and rows in the national variations of the standard European table. 
-
-Please send a bug report on [Github](https://github.com/rOpenGov/iotables/issues) if you run into further real-life problems. 
-
-```{r gva_multipliers}
-
-de_gva_multiplier <- multiplier_create( 
-                            Im = I_de, 
-                            input_vector = de_gva_indicator, 
-                            multiplier_name = 'gva_multiplier' )
-print ( de_gva_multiplier )
-```
-
-The indicator shows that manufacturing has the lowest, and other services has the highest gross value added component. This is hardly suprising, because manufacturing needs a lot of materials and imported components. When the demand for manufacturing in the domestic economy is growing by 1 unit, the gross value added is `r as.numeric(de_gva_indicator[3])`.
+The indicator shows that manufacturing has the lowest, and other services has the highest gross value added component. This is hardly surprising, because manufacturing needs a lot of materials and imported components. When the demand for manufacturing in the domestic economy is growing by 1 unit, the gross value added is `r as.numeric(de_gva_indicator[3])`.
 
 > You can check these values against the Table 15.16 of the Eurostat Manual on page 501 (row 10).
 
-You can recreate the whole matrix if possible income multipliers with `input_multipliers_create()`.
+You can recreate the whole matrix, when the data data permits, with `input_multipliers_create()` as shown here. Alternatively, you can create your own custom multipliers with `multiplier_create()` as shown in the following example. 
 
 ```{r inputmultipliers}
-#Total column should not be missing
-io_table <- io_table [, 1:7] 
-io_table$total <- rowSums(io_table[, 2:7])
-
-labelled_io_table <- io_table
-
-direct_effects_de <- direct_effects_create ( labelled_io_table = io_table ) 
-
-#remove the total column from direct effects to conform with the inverse [,-8]
+input_reqr <- coefficient_matrix_create(
+    data_table  = iotable_get (), 
+    total       = 'output', 
+    return_part = 'primary_inputs') 
 
 multipliers <- input_multipliers_create(
-  direct_effects = direct_effects_de [, -8],
-  inverse = I_de, 
-  labelled = TRUE)
+  input_requirements = input_reqr,
+  inverse = I_de)
 
-print (multipliers[1:3, 1:3])
+knitr::kable(multipliers, digits= 4)
 ```
 
-> You can check these results against the Table 15.16 on p501 of the Eurostat manual. Again, the label 'total' refers to domestic intermediaries. The ordering of the rows is different from the Manual.
+> You can check these results against the Table 15.16 on p501 of the Eurostat manual. the label 'total' refers to domestic intermediaries. The ordering of the rows is different from the Manual.
 
 These multipliers are Type-I multipliers. The type-I GVA multiplier shows the total effect in the domestic economy. The initial extra demand creates new orders in the backward linking industries, offers new product to build on in the forward-linking industry and creates new corporate and employee income that can be spent. Type-II multipliers will be introduced in a forthcoming vignette [not yet available.]
 
@@ -231,14 +213,14 @@ The E matrix contains the input coefficients for labor (created by `input_indica
 
 (64) Z = E(I-A)^-1^ 
 
-```{r employment_multiplier, warning=FALSE}
+The `multiplier_create()` function performs the matrix multiplication, after handling many exceptions and problems with real-life data, such as different missing columns and rows in the national variations of the standard European table. 
 
-de_emp <- primary_input_get ( input = "employment_total",
-                              source = "germany_1990", geo = "DE",
-                              year = 1990,  
-                              households = FALSE, labelling = "iotables")
+Please send a bug report on [Github](https://github.com/rOpenGov/iotables/issues) if you run into further real-life problems. 
 
-de_emp_indicator <- input_indicator_create (de_emp, de_output)
+```{r employment_multiplier}
+de_emp_indicator <- input_indicator_create (
+  data_table = data_table, 
+  input = 'employment_domestic_total') 
 
 employment_multipliers <- multiplier_create ( 
   input_vector    = de_emp_indicator,
@@ -246,11 +228,11 @@ employment_multipliers <- multiplier_create (
   multiplier_name = "employment_multiplier", 
   digits = 4 )
 
-print (employment_multipliers)
-
+print (tidyr::gather(employment_multipliers,
+              multipliers, values, !!2:ncol(employment_multipliers))[-1])
 ```
 
-You can check against page 502 in the Eurostat manual that the highest employment multiplier is indeed $z_i$ = `r max ( as.numeric ( employment_multipliers), na.rm=TRUE)`, the employment multiplier of agriculture.
+You can check against page 501 that these values are correct and on page 501 that the highest employment multiplier is indeed $z_i$ = `r max ( as.numeric ( employment_multipliers), na.rm=TRUE)`, the employment multiplier of agriculture.
 
 For working with real-life, current employment data, there is a helper function to retrieve and process Eurostat employment statistics to a SIOT-conforming vector `employment_get()`. This function will be explained in a separate vignette. 
 
@@ -265,50 +247,16 @@ $x_i$: output of sector i
 
 ```{r outputmult}
 de_input_coeff <- input_coefficient_matrix_create( 
-                           de_use, de_output, digits = 4)
+                         data_table = iotable_get(), 
+                         digits = 4)
                            
 output_multipliers <- output_multiplier_create ( 
                         input_coefficient_matrix = de_input_coeff )
 
-print (output_multipliers)
+print (tidyr::gather(output_multipliers, multipliers, values)[-1,])
 ```
 
 These multipliers can be checked against the Table 15.15 on p500 of the Eurostat Manual.
-
-##Working with Type-II multipliers or induced effects
-
-When working with the type-II multipliers we need to include the household consumption column and the household earnings row in the tables. The dimensions of the table are growing by 1, so all matrixes and vectors need to be re-created. Not applicable cells, such as gross value added for households is filled up with zero values. 
-
-```{r type2}
-de_use_2    <- use_table_get ( source = "germany_1990", geo = "DE",
-                       year = 1990, unit = "MIO_EUR", 
-                       households = TRUE, labelling = "iotables")
-
-de_output_2 <- output_get ( source = "germany_1990", geo = "DE",
-                       year = 1990, unit = "MIO_EUR",
-                       households = TRUE, labelling = "iotables")
-
-gva_de_2 <- gva_get (source = "germany_1990", geo = "DE",
-                       year = 1990, unit = "MIO_EUR",
-                       households = TRUE, labelling = "iotables")
-
-de_input_coeff_2 <- input_coefficient_matrix_create( de_use_2, de_output_2)
-
-gva_indicator_de_2  <- input_indicator_create( 
-    input_matrix = gva_de_2, 
-    output_vector = de_output_2)
-
-L_de_2 <- leontieff_matrix_create( technology_coefficients_matrix =
-                                de_input_coeff_2 )
-I_de_2 <- leontieff_inverse_create(L_de_2)
-
-gva_multiplier_2 <- multiplier_create( Im = I_de_2,
-                                       input_vector = gva_indicator_de_2)
-
-print ( gva_multiplier_2 )
-```
-
-With the induced effects, the type-II multipliers are much larger. The Eurostat Manual does not cover type II multipliers, and this will be covered in a later vignette.
 
 ##Interindustrial linkage analysis
 
@@ -316,46 +264,34 @@ The backward linkages, i.e. demand side linkages, show how much incremental dema
 
 Forward linkages on the other hand show the effect of increased production, which gives either more or cheaper supplies for other industries that rely on the output of the given industry.
 
-For example, when a new concert is put on stage, orders are filled for real estate, security services, catering, etc, which show in the backward linkages. The concert attracts visitors that creates new opportunities for the hotelling industry in forward linkages. 
+For example, when a new concert is put on stage, orders are filled for real estate, security services, catering, etc, which show in the backward linkages. The concert attracts visitors that creates new opportunities for the hotel industry in forward linkages. 
 
-Currently `iotables` only caclulates backward linkages, but the creation of forward linkages on the basis of output coefficients is simple. Both output coefficients and forward linkages will be added to the package soon. 
+Currently `iotables` only calculates backward linkages, but the creation of forward linkages on the basis of output coefficients is simple. Both output coefficients and forward linkages will be added to the package soon. 
 
 ###Backward linkages 
 
 ```{r backward}
+de_coeff <- input_coefficient_matrix_create( iotable_get(), digits = 4)
+I_de <- leontieff_inverse_create ( de_coeff )
+
 de_bw <- backward_linkages(I_de)
-print (de_bw)
+print (tidyr::gather(de_bw, backward_linkages, values)[-1,])
 ```
 
 >You can check the results against Table 15.19 on page 506 of the Eurostat Manual.
 
 Manufacturing has the highest backward linkages, and other services the least. An increased demand for manufacturing usually effects supplier industries. Service industry usually have a high labor input, and their main effect is increased spending of the wages earned in the services.
 
-
 ###Forward linkages 
 
 Forward linkages show the strength of the new business opportunities when industry i starts to increase its production. Whereas backward linkages show the increased demand of the suppliers in industry i, forward linkages show the increased availability of inputs for other industries that rely on industry i as a supplier.
 
 ```{r forward}
-#You need a table that has a total column and either the total 
-#intermediate use or final use
-#This is usually the case with Eurostat tables, but with the Germany data
-#file total must be added.
-
-io_table <- iotable_get () 
-io_table <- io_table [1:which(tolower(io_table[,1]) =="total" ), ]
-
-output_bp <- dplyr::select ( io_table, output_bp )
-io_table <- io_table [, 1:7] 
-io_table$total <- rowSums(io_table[, 2:7])
-io_table <- cbind (io_table, output_bp)
-
 de_out <- output_coefficient_matrix_create ( 
-  io_table, "final_demand", digits = 4
+  data_table, "final_demand", digits = 4
   )
                                     
 forward_linkages ( output_coefficient_matrix = de_out )
-#'
 ```
 
 >You can check forward linkages against the Table 15.20 of Eurostat Manual on page 507.

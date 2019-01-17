@@ -1,42 +1,27 @@
 library (testthat)
 library (iotables)
-library (dplyr)
+require (dplyr)
+context ("Creating an  input coefficient matrix")
 
-context ("Creating input multipliers")
-io_table <- iotable_get () 
-#Total column should not be missing
-io_table <- io_table [, 1:7] 
-io_table$total <- rowSums(io_table[, 2:7])
+nl <- netherlands_2006
 
-labelled_io_table <- io_table
+input_coeff_nl <- input_coefficient_matrix_create(
+  data_table  = netherlands_2006, 
+  households = FALSE) 
 
-direct_effects_de <- direct_effects_create ( labelled_io_table = io_table ) 
-direct_effects <- direct_effects_de [, -8] 
+compensation_indicator <- input_indicator_create(netherlands_2006, 'compensation_employees')
 
-de_use <- use_table_get()
-de_output <- output_get()
-de_icoeff <- input_coefficient_matrix_create( de_use, de_output )
+I_nl <- leontieff_inverse_create( input_coeff_nl )
 
-L_de  <- leontieff_matrix_create( de_icoeff )
-I_de <- leontieff_inverse_create( L_de )
+mult <- input_multipliers_create(input_requirements = compensation_indicator, 
+                             inverse = I_nl)
+
+published_multipliers <- c(2.466, 2.333, 1.84, 2.372, 1.953, 1.417 )
 
 
-multipliers <- input_multipliers_create(
-  direct_effects = direct_effects_de [, -8],
-  inverse = I_de, 
-  labelled = TRUE)
-
-value_added_row <- multipliers [ direct_effects[,1] == "gva_bp", ]
-
-emp_row <- which ( multipliers[,1] == "compensation_employees")
-agr_col <- which ( names(multipliers) == "agriculture_group")
-
-agr_employees <- multipliers [emp_row, agr_col ]
-
-
-test_that("correct data is returned", {
-  expect_equal(as.numeric (agr_employees), 0.4172, tolerance=1e-3)
-  expect_equal(as.numeric(value_added_row[2:7]), 
-               c(0.845,0.7647,0.8615, 0.9019,0.9393, 0.9199), 
-               tolerance=1e-3)
+test_that("get_input_flow correct input coefficients are returned", {
+  expect_equal(as.numeric(mult[2:7]), published_multipliers, 
+               tolerance = .0005)
 })
+
+

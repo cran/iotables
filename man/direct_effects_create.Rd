@@ -4,30 +4,32 @@
 \alias{direct_effects_create}
 \title{Create direct effects}
 \usage{
-direct_effects_create(labelled_io_table, type = "final_demand",
-  digits = NULL)
+direct_effects_create(input_requirements, inverse, digits = NULL)
 }
 \arguments{
-\item{labelled_io_table}{A named (primary) input(s) vector or matrix created by \code{\link{primary_input_get}}}
+\item{input_requirements}{A matrix or vector created by 
+\code{\link{input_indicator_create}}}
 
-\item{type}{Defaults to \code{final_demand}. Alternatives are \code{domestic_demand} or 
-or \code{'intermediate_demand'}.}
+\item{inverse}{A Leontieff-inverse created by \code{\link{leontieff_inverse_create}}.}
 
 \item{digits}{Rounding digits, defaults to \code{NULL}, in which case 
 no rounding takes place.}
 }
 \description{
-The function creates the direct effects on total supply (or other supply 
-category). See Eurostat Manual p498.
+The function creates the effects.
 }
 \examples{
  
+nl <- netherlands_2006
 
-io_table <- iotable_get () 
-#Total column should not be missing
-io_table <- io_table [, 1:7] 
-io_table$total <- rowSums(io_table[, 2:7])
+input_coeff_nl <- input_coefficient_matrix_create(
+ data_table  = netherlands_2006, 
+ households = FALSE) 
 
-labelled_io_table <- io_table
-direct_effects_create ( io_table ) 
+compensation_indicator <- input_indicator_create(netherlands_2006, 'compensation_employees')
+
+I_nl <- leontieff_inverse_create( input_coeff_nl )
+
+direct_effects_create(input_requirements = compensation_indicator, 
+                           inverse = I_nl)
 }

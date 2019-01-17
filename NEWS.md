@@ -2,7 +2,7 @@
 
 * Added a `NEWS.md` file to track changes to the package.
 * Added Contributor Code of Conduct in `CONDUCT.md`
-* Some functions have paralell versions, and will be brought to [rOpenSci](https://github.com/ropensci/onboarding) naming conventions (`object_verb()`)
+* Some functions have paralel versions, and will be brought to [rOpenSci](https://github.com/ropensci/onboarding) naming conventions (`object_verb()`)
 * Asked to join [rOpenGov](http://ropengov.github.io/) - excited but inexperienced in this!
 
 # iotables 0.1.4
@@ -13,7 +13,7 @@ New functions are added which enable a very simple IO analysis. As an important 
 * The `README` contains examples to use this new functions. 
 * Some new tests are added to the  `testthat` functions.
 * Further example data is added from Croatia, together with the `employment_aggregate()` helper function to match SIOT data with non-conforming employment statistics.
-* There is a vignette called _Working with Crotian Symmetric Input-Output Tables_ that shows some real-life uses. 
+* There is a vignette called _Working with Croatian Symmetric Input-Output Tables_ that shows some real-life uses. 
 * Testing on Travis (ubuntu and OSX tests.)
 
 # iotables 0.2 
@@ -24,7 +24,7 @@ The forthcoming update will rewrite and generalize some of the earlier functions
 * Some earlier functions are phased out, because they are successfully generalized.
 * The standard system.rda contains the metadata necessary to re-order the bulk files. This will require a lot of patient testing, and it can be always updated with new data sources.
 
-At this point I will go with prepareing a release the table on CRAN. The current version builds without warnings or notes on Windows and Linux. 
+At this point I will go with preparing a release the table on CRAN. The current version builds without warnings or notes on Windows and Linux. 
 
 iotables 0.2 is moved to rOpenGov.
 
@@ -81,7 +81,48 @@ Error corrected concerning creation of temporary files on non-Windows environmen
 * New [package website](http://iotables.ceemid.eu/).
 * The [ReadMe](http://iotables.ceemid.eu/index.html) file shortened, most of the contents are moved now to the two vignettes.
 
-
 # iotables 0.3.5
 * New function `iotable_year_get()` which returns the available tables by year or time from the bulk database for a given country and currency unit. 
 * Package now handles `Use table at basic prices` (naio_10_cp1610 and naio_10_pyp1610), `Supply table at basic prices incl. transformation into purchasers' prices` (naio_10_cp15), `Use table at purchasers' prices` (naio_10_cp16) after correcting a vocabulary error.
+* This version is a release candidate for CRAN.
+
+# iotables 0.3.6
+* New analytical function `coefficient_matrix_create()` which is a more general version of `input_coefficient_matrix_create()` and will eventually replace that 
+function.
+* Custom SIOTs are supported, but there is no vignette yet to describe their 
+use in detail.  
+
+# iotables 0.3.7
+* New example `data(netherlands_2006)`, terminology and analytical improvements following  [Input-Output Multipliers Specification Sheet and Supporting Material, Spicosa Project Report](http://www.coastal-saf.eu/output-step/pdf/Specification sheet I_O_final.pdf). Results are checked against the publication.
+* For terminological clarity, earlier `direct_supply_effects_create()` function is renamed `direct_supply_effects_create()`.
+* The function `effects_create()` currently refers to the function returning direct effects of a change in demand.
+* The function `multipliers_create()` refers to the function returning direct and indirect effects of a change in demand.
+* The Germany 1990 vignette needs to be reviewed. Currently it may not be consistent with effects and multipliers, it will be included in the next development version.
+
+# iotables 0.3.8
+* Function `input_indicator_create()` has a new, optional parameter for naming the new indicators in the key column.
+* New convenience function for nicer printing of structured SIOT tables and related matrix results.  Not yet exported, first will be used on vignettes only. 
+
+# iotables 0.3.9
+This is a much improved, simplified pre-release version, with highly improved
+performance, more consistent function interface and far more readable code. The last CRAN release is stable, the following version will be a stable, better release candidate.
+* The Germany example is converted to the ESA2010 vocabulary. 
+* The `output_get()` is now a wrapper around `primary_input_get()` and 
+`gva_get()` is completely deprecated.
+*  The `input_coefficient_matrix_create()` is now a wrapper around the more
+ general `coefficient_matrix_create()`.
+*  The `use_table_get()` function is now named `input_flow_get()` but it 
+is seldom used, as the analytical function will call it as needed.
+* A completely dataset, metadata and vignette was added to test the functions on the United Kingdom Input-Output Analytical Tables, 2010. article and dataset.	
+* The new function `supplementary_add()` can add a supplementary account or row to the table, useful to add employment data, for example.
+* The new function `total_tax_add()` adds a summary of product and production taxes among the primary inputs.
+* Clearly divided analytical functions, `direct_effects_create()` , `indirect_effects_create()`, `input_multiplier_create()` create the direct, indirect and total effects matrix. 
+
+# iotables 0.4
+
+New vignette *United Kingdom Input-Output Analyitcal Tables* to compare analytical function results with published results from the UK National Office for Statistics.
+
+# iotables 0.4.1
+A small formatting error in the documentation of `netherlands_2006` threw up a note on CRAN.
+
+This is a CRAN Release candidate.

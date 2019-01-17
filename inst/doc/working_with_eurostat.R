@@ -47,7 +47,6 @@ load (system.file('extdata', 'naio_10_product_x_product.rda', package = 'iotable
 
 
 ## ----preprocess----------------------------------------------------------
-message ( "IO tables")
 cz_io <-  iotable_get ( labelled_io_data = naio_10_cp1700, 
                          source = "naio_10_cp1700", geo = "CZ", 
                          year = 2015, unit = "MIO_NAC", 
@@ -60,125 +59,119 @@ sk_io <-  iotable_get ( labelled_io_data = naio_10_cp1700,
                         stk_flow = "TOTAL",
                         labelling = "short" )
 
-message ( "Use tables")
-cz_use <- use_table_get( labelled_io_table = cz_io, 
-                         source = "naio_10_cp1700", geo = "CZ", 
-                         year = 2015, unit = "MIO_NAC", 
-                         stk_flow = "TOTAL",
-                         labelling = "short")
+cz_input_flow <- input_flow_get( data_table = cz_io )
 
-sk_use <- use_table_get( labelled_io_table = sk_io, 
-                         source = "naio_10_cp1700", geo = "SK", 
-                         year = 2010, unit = "MIO_EUR", 
-                         stk_flow = "TOTAL",
-                         labelling = "short")
+sk_input_flow <- input_flow_get( data_table = sk_io)
 
-message ( "Output vectors")
-cz_output <- output_get( labelled_io_table = cz_io)
-sk_output <- output_get( labelled_io_table = sk_io)
+cz_output <- output_get( data_table = cz_io)
+sk_output <- output_get( data_table = sk_io)
 
 ## ----inputcoeff, results='asis'------------------------------------------
-message ("Czech Republic")
 input_coeff_matrix_cz <- input_coefficient_matrix_create(
-  cz_use, 
-  cz_output
+  data_table = cz_io
 )
 
-message ("Slovak Republic")
 input_coeff_matrix_sk <- input_coefficient_matrix_create(
-  sk_use, 
-  sk_output
+  data_table = sk_io
 )
 
 knitr::kable(head(input_coeff_matrix_cz[,1:8]))
 
 ## ----leontieff, results='asis'-------------------------------------------
 L_cz <- leontieff_matrix_create( input_coeff_matrix_cz  )
-I_cz <- leontieff_inverse_create( L_cz )
+I_cz <- leontieff_inverse_create( input_coeff_matrix_cz )
 
 L_sk <- leontieff_matrix_create( input_coeff_matrix_sk  )
-I_sk <- leontieff_inverse_create( L_sk )
+I_sk <- leontieff_inverse_create( input_coeff_matrix_sk )
 
 knitr::kable(head(I_cz[,1:8]))
 
 ## ----direct, results='asis'----------------------------------------------
-message ( "Czech Republic:")
-direct_cz <- direct_effects_create( labelled_io_table = cz_io, 
-                                    digits = 4)
+primary_inputs_cz <- coefficient_matrix_create(data_table = cz_io, 
+                                              total = 'output', 
+                                              return = 'primary_inputs') 
 
-message ( "Slovak Republic:")
-direct_sk <- direct_effects_create( labelled_io_table = sk_io )
+primary_inputs_sk <- coefficient_matrix_create(data_table = sk_io, 
+                                              total = 'output', 
+                                              return = 'primary_inputs')
 
-knitr::kable (head(direct_cz[,1:8]))
+direct_cz <- direct_effects_create( primary_inputs_cz, I_cz )  
+direcz_sk <- direct_effects_create( primary_inputs_sk, I_sk )  
+
+knitr::kable (head(direct_cz[,1:8]), digits = 4)
 
 ## ----total, results='asis'-----------------------------------------------
-message ( "Czech Republic:")
-multipliers_cz <- input_multipliers_create( direct_cz[, 1:62], I_cz)
+primary_inputs_cz <- coefficient_matrix_create(data_table = cz_io, 
+                                              total = 'output', 
+                                              return = 'primary_inputs') 
 
-message ( "No messages.")
-message ( "Slovak Republic:")
-multipliers_sk <- input_multipliers_create( direct_sk, I_sk, digits = 4)
+primary_inputs_sk <- coefficient_matrix_create(data_table = sk_io, 
+                                              total = 'output', 
+                                              return = 'primary_inputs')
 
-knitr::kable (head(multipliers_cz[,1:8]))
+multipliers_cz <- input_multipliers_create( primary_inputs_cz, I_cz )  
+multipliers_sk <- input_multipliers_create( primary_inputs_sk, I_sk ) 
+
+knitr::kable (head(multipliers_cz[,1:8]), digits = 4)
+
+## ----employmenteffect, results='asis', message=FALSE---------------------
+#New function is needed to add employment vector to SIOT
+names ( emp_sk )[1] <- 'prod_na'
+names ( emp_cz )[1] <- 'prod_na'
+
+emp_indicator_sk <- rbind ( 
+  sk_io[, 1:66], 
+  emp_sk) %>% coefficient_matrix_create(., 
+       return_part = 'primary_inputs') %>%
+  filter ( prod_na == "employment_total" )
+
+emp_indicator_cz <- full_join ( 
+  cz_io, 
+  emp_cz) %>% coefficient_matrix_create(., 
+       return_part = 'primary_inputs') %>%
+  filter ( prod_na == "employment_total" )
+
+
+emp_effect_sk <- direct_effects_create( emp_indicator_sk, I_sk )  
+emp_effect_cz <- direct_effects_create( emp_indicator_cz, I_cz )  
+
+knitr::kable (emp_effect_cz[1:8], digits = 5)
 
 ## ----employmentindicator, results='asis'---------------------------------
-message("Slovak Republic")
-emp_indicator_sk  <- input_indicator_create( 
-  input_matrix = emp_sk, 
-  output_vector = sk_output)
+#New function is needed to add employment vector to SIOT
 
-message("\nCzech Republic")
-emp_indicator_cz  <- input_indicator_create( 
-  input_matrix = emp_cz, 
-  output_vector = cz_output)
+emp_multiplier_sk <- input_multipliers_create( emp_indicator_sk, I_sk )  
+emp_multiplier_cz <- input_multipliers_create( emp_indicator_cz, I_cz )  
 
-message("\nSlovak Republic")
-employment_multipliers_sk <- multiplier_create ( 
-  input_vector    = emp_indicator_sk,
-  Im              = I_sk,
-  multiplier_name = "employment_multiplier", 
-  digits = 4 ) %>% 
-  tidyr::gather (industry, values, !!2:ncol(.))
-
-message("\nCzech Republic")
-employment_multipliers_cz <- multiplier_create ( 
-  input_vector    = emp_indicator_cz,
-  Im              = I_cz,
-  multiplier_name = "employment_multiplier", 
-  digits = 4 ) %>% 
-  tidyr::gather (industry, values, !!2:ncol(.)) %>% 
-  dplyr::mutate ( values = values * 1000 )
-
-knitr::kable (head(employment_multipliers_cz))
+knitr::kable (emp_multiplier_cz[1:8], digits=5)
 
 ## ----output_multipliers, results='asis'----------------------------------
 
 output_multipliers_cz <- output_multiplier_create (input_coeff_matrix_cz)
 output_multipliers_sk <- output_multiplier_create (input_coeff_matrix_sk)
 
-knitr::kable (head(output_multipliers_cz[,1:8]))
+knitr::kable (head(output_multipliers_cz[,1:8]), digits=4)
 
 ## ----backward, results='asis'--------------------------------------------
 cz_bw <- backward_linkages(I_cz)
 sk_bw <- backward_linkages(I_sk)
 
-knitr::kable (head(cz_bw[,1:8]))
+knitr::kable (head(cz_bw[,1:8]), digits=4)
 
-## ----output_coeff, results='asis'----------------------------------------
+## ----output_coeff, results='asis', eval=FALSE----------------------------
+#  output_coeff_cz <- output_coefficient_matrix_create(
+#    io_table = cz_io, total = "tfu", digits = 4)
+#  
+#  output_coeff_sk <- output_coefficient_matrix_create(
+#    io_table = sk_io, total = "tfu")
+#  
+#  knitr::kable (head(output_coeff_cz[,1:8]))
 
-output_coeff_cz <- output_coefficient_matrix_create( 
-  io_table = cz_io, type = "final_demand", digits = 4)
-
-output_coeff_sk <- output_coefficient_matrix_create( 
-  io_table = sk_io, type = "final_demand")
-
-knitr::kable (head(output_coeff_cz[,1:8]))
-
-## ----forward, results='asis'---------------------------------------------
-cz_fw <- forward_linkages ( output_coeff_cz )
-sk_fw <- forward_linkages( output_coeff_sk )
-
-knitr::kable (head(cz_fw))
+## ----forward, results='asis', eval=FALSE---------------------------------
+#  cz_fw <- forward_linkages ( output_coeff_cz )
+#  sk_fw <- forward_linkages( output_coeff_sk )
+#  
+#  knitr::kable (head(cz_fw), digits=4)
 
 ## ----reproduction_data, eval=FALSE---------------------------------------
 #  require(xlsx)
@@ -201,14 +194,14 @@ knitr::kable (head(cz_fw))
 #  xlsx::write.xlsx ( multipliers_cz, file = cz_file_name,
 #                     sheetName = "multipliers_cz",
 #                     col.names=TRUE, row.names=TRUE, append=TRUE)
-#  xlsx::write.xlsx ( emp_cz, file = cz_file_name,
-#                     sheetName = "emp_cz_2015",
+#  xlsx::write.xlsx ( emp_effect_cz, file = cz_file_name,
+#                     sheetName = "emp_effect_cz_2015",
 #                     col.names=TRUE, row.names=TRUE, append=TRUE)
 #  xlsx::write.xlsx ( emp_indicator_cz, file = cz_file_name,
 #                     sheetName = "emp_indicator_cz",
 #                     col.names=TRUE, row.names=TRUE, append=TRUE)
-#  xlsx::write.xlsx ( employment_multipliers_cz, file = cz_file_name,
-#                     sheetName = "employment_multipliers_cz",
+#  xlsx::write.xlsx ( emp_multiplier_cz, file = cz_file_name,
+#                     sheetName = "emp_multiplier_cz",
 #                     col.names=TRUE, row.names=TRUE, append=TRUE)
 #  xlsx::write.xlsx ( cz_bw, file = cz_file_name,
 #                     sheetName = "cz_backward_linkages",
@@ -243,13 +236,13 @@ knitr::kable (head(cz_fw))
 #  xlsx::write.xlsx ( multipliers_sk, file = sk_file_name,
 #                     sheetName = "multipliers_sk",
 #                     col.names=TRUE, row.names=TRUE, append=TRUE)
-#  xlsx::write.xlsx ( emp_sk, file = sk_file_name,
-#                     sheetName = "emp_sk_2015",
+#  xlsx::write.xlsx ( emp_effect_sk, file = sk_file_name,
+#                     sheetName = "emp_effect_sk_2015",
 #                     col.names=TRUE, row.names=TRUE, append=TRUE)
 #  xlsx::write.xlsx ( emp_indicator_sk,file = sk_file_name,
 #                     sheetName = "emp_indicator_sk",
 #                     col.names=TRUE, row.names=TRUE, append=TRUE)
-#  xlsx::write.xlsx ( employment_multipliers_sk, file = sk_file_name,
+#  xlsx::write.xlsx ( emp_multiplier_sk, file = sk_file_name,
 #                     sheetName = "employment_multipliers_sk",
 #                     col.names=TRUE, row.names=TRUE, append=TRUE)
 #  xlsx::write.xlsx ( sk_bw, file = sk_file_name,

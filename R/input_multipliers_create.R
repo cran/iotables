@@ -1,88 +1,66 @@
-#' Create input multipliers
+#' Create input indicators
 #' 
-#' The function creates the input multipliers.  See Eurostat Manual p500-501..
-#' @param direct_effects A direct effects matrix created by 
-#' \code{\link{direct_effects_create}}
+#' The function creates the multipliers (direct + indirect effects).
+#' @param input_requirements A matrix or vector created by 
+#' \code{\link{input_indicator_create}}
 #' @param inverse A Leontieff-inverse created by \code{\link{leontieff_inverse_create}}.
-#' @param labelled Defaults to \code{TRUE}. If you use not labelled matrixes, i.e. 
-#' both inputed matrixes are numerical only without the first key row, select 
-#' \code{FALSE}.
 #' @param digits Rounding digits, defaults to \code{NULL}, in which case 
 #' no rounding takes place.  
-#' @importFrom dplyr select one_of
+#' @importFrom dplyr select one_of mutate_at
 #' @examples  
-#' de_use <- use_table_get()
-#' L_de  <- leontieff_matrix_create( de_use )
-#' I_de <- leontieff_inverse_create( L_de )
-#' 
-#' io_table <- iotable_get () 
-#' #Total column should not be missing
-#' io_table <- io_table [, 1:7] 
-#' io_table$total <- rowSums(io_table[, 2:7])
-#' 
-#' labelled_io_table <- io_table
-#' direct_effects_de <- direct_effects_create ( io_table ) 
-#' 
-#' multipliers <- input_multipliers_create(
-#'       direct_effects = direct_effects_de [, -8],
-#'       inverse = I_de, 
-#'       labelled = TRUE)
+#' nl <- netherlands_2006
+#'
+#' input_coeff_nl <- input_coefficient_matrix_create(
+#'  data_table  = netherlands_2006, 
+#'  households = FALSE) 
+#'
+#' compensation_indicator <- input_indicator_create(netherlands_2006, 'compensation_employees')
+#'
+#' I_nl <- leontieff_inverse_create( input_coeff_nl )
+#'
+#' input_multipliers_create(input_requirements = compensation_indicator, 
+#'                         inverse = I_nl)
 #' @export
 
-input_multipliers_create <- function ( direct_effects,
-                                       inverse, 
-                                       labelled = TRUE,
-                                       digits = NULL ) { 
+input_multipliers_create <- function ( input_requirements,
+                                    inverse,
+                                    digits = NULL) { 
+  . <- NULL
+  
+  names_direct <- names ( input_requirements )
+  new_key_column <- input_requirements %>%
+    dplyr::select (1:2) %>%
+    dplyr::mutate_at ( vars(1), funs(gsub(pattern ="_indicator",
+                                          replacement = "", 
+                                          x =. )) ) %>%
+    dplyr::mutate_at ( vars(1), funs(paste0(., "_multiplier")))
+  
+  
+  col_n <- ncol(input_requirements)
  
-  
-  names_direct <- names ( direct_effects )
-  
-  if ( all ( names (inverse) %in% names ( direct_effects ) ) ) {
-    direct_effects <- dplyr::select ( direct_effects, 
-                                      dplyr::one_of (names(inverse)))
-  }
-  
-  col_n <- ncol(direct_effects)
-  if ( col_n != ncol(inverse)) {
-    stop("The direct effects matrix and the Leontieff inverse must have the same number of columns.")
-  }
-  
-  #columns of the left matrix must be the same as the number of rows of the right matrix
+  #columns of the left matrix must be the same as the number of rows of 
+  #the right matrix
+  #Remove key column------
+  key_column                <- subset ( input_requirements, select = 1)
+  input_requirements_matrix <- input_requirements[,-1]
+  inverse                   <- inverse[, -1]
 
-  if ( labelled == TRUE) { 
-    first_column <- subset ( direct_effects, select = 1)
-    direct_effects <- direct_effects[,-1]
-    inverse <- inverse[, -1]
-  } 
+  inverse                   <- as.matrix ( inverse )
+  input_requirements_matrix <- as.matrix ( input_requirements_matrix )
   
-  inverse <- as.matrix ( inverse )
-  direct_effects <- as.matrix (direct_effects)
+
+  effects <- input_requirements_matrix %*% inverse 
+  multipliers <- effects
   
-  if (ncol ( direct_effects) != nrow ( inverse ) ) {
-    stop ( "The columns of 'direct_effects' must equal the rows of the 'inverse', 
-           they must be both labelled or not labelled.")
+  for ( i in 1:nrow(effects)) {
+    multipliers[i, ] <- effects[i, ] /  input_requirements_matrix[i,]
   }
   
-  multipliers <- direct_effects %*% inverse 
+  if ( !is.null(digits)) {
+    if ( digits>=0 ) 
+      multipliers <- round ( multipliers, digits )
+   }
   
- if ( labelled == TRUE ) { 
-    multipliers <-  cbind (first_column, as.data.frame(multipliers))
-    if ( !is.null(digits) ) {
-      if (! class(digits) %in% c("numeric", "integer")) {
-        stop("Digits must be a number.")
-      }
-      multipliers[, 2:ncol(multipliers)] <- round(
-        multipliers[, 2:ncol(multipliers)], digits)
-    }
-    } else {
-   if ( !is.null(digits) ) {
-     if (! class(digits) %in% c("numeric", "integer")) {
-       stop("Digits must be a number.")
-     }
-     multipliers[, 1:ncol(multipliers)] <- round(
-       multipliers[, 1:ncol(multipliers)], digits)
-     }
-  }
-  
-  as.data.frame ( multipliers )
+  cbind (new_key_column[,1], multipliers)
+ 
 }

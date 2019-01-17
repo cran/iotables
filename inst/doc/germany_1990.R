@@ -1,113 +1,93 @@
-## ----setup, include=FALSE------------------------------------------------
+## ----setup, include=TRUE-------------------------------------------------
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
 )
 library(iotables)
-require(dplyr)
+require(dplyr); require(tidyr)
 
 ## ----iotables------------------------------------------------------------
-de_use    <- use_table_get ( source = "germany_1990", geo = "DE",
-                       year = 1990, unit = "MIO_EUR", 
-                       households = FALSE, labelling = "iotables")
+data_table <- iotable_get( labelling = "iotables" )
+input_flow <- input_flow_get ( 
+                  data_table = data_table, 
+                  households = FALSE)
 
-de_output <- output_get ( source = "germany_1990", geo = "DE",
-                       year = 1990, unit = "MIO_EUR",
-                       households = FALSE, labelling = "iotables")
+de_output <- primary_input_get ( data_table, "output" )
 print (de_output[c(1:4)])
 
 ## ----inputcoeff, echo=FALSE----------------------------------------------
-de_input_coeff <- input_coefficient_matrix_create( de_use, de_output, digits = 4)
+de_input_coeff <- input_coefficient_matrix_create( 
+     data_table = data_table, 
+     digits = 4)
+
+##which is equivalent to 
+
+de_input_coeff <- coefficient_matrix_create( data_table, 
+                             total = "output", 
+                             return_part = "products", 
+                             households = FALSE,
+                             digits = 4)
 
 print ( de_input_coeff[1:3, 1:3])
 
 ## ----outputcoeff, echo=FALSE---------------------------------------------
-#Sample data table has not total column
-io_table <- iotable_get () 
-io_table <- io_table [1:which(tolower(io_table[,1]) =="total" ), ]
-
-output_bp <- dplyr::select ( io_table, output_bp )
-io_table <- io_table [, 1:7] 
-io_table$total <- rowSums(io_table[, 2:7])
-io_table <- cbind (io_table, output_bp)
-
-de_out <- output_coefficient_matrix_create ( io_table = io_table, 
-                                    type = 'final_demand',
+de_out <- output_coefficient_matrix_create ( 
+                                    io_table = data_table, 
+                                    total = 'tfu',
                                     digits = 4)
 
 #Rounding is slightly different in the manual
 print ( de_out[1:3, 1:3] )
 
 ## ----leontieff-----------------------------------------------------------
-L_de <- leontieff_matrix_create( technology_coefficients_matrix =
-                                de_input_coeff )
-I_de <- leontieff_inverse_create(L_de)
-print (I_de[,1:3])
+L_de <- leontieff_matrix_create ( technology_coefficients_matrix =
+                                 de_input_coeff )
+I_de <- leontieff_inverse_create(de_input_coeff)
+I_de_4 <- leontieff_inverse_create(de_input_coeff, digits = 4)
+print (I_de_4[,1:3])
 
 ## ----employment_indicator------------------------------------------------
-de_emp <- primary_input_get ( input = "employment_total",
-                              source = "germany_1990", geo = "DE",
-                              year = 1990,  
-                              households = FALSE, labelling = "iotables")
+de_emp <- primary_input_get ( data_table,
+                              primary_input = "employment_domestic_total" )
 
-de_emp_indicator <- input_indicator_create (de_emp, de_output)
-print ( de_emp_indicator[1:4])
+de_emp_indicator <- input_indicator_create ( 
+    data_table  = data_table,
+    input_vector = "employment_domestic_total")
 
+print ( tidyr::gather( de_emp_indicator, indicators, values, !!2:ncol(de_emp_indicator))[,-1] )
 
 ## ----gva_indicator-------------------------------------------------------
-de_gva <- gva_get ( source = "germany_1990" )
+de_gva <- primary_input_get ( data_table,
+                              primary_input = "gva") 
 
 de_gva_indicator  <- input_indicator_create( 
-    input_matrix = de_gva, 
-    output_vector = de_output)
+    data_table  = data_table,
+    input_vector = "gva")
 
-print( de_gva_indicator ) 
+print( tidyr::gather(de_gva_indicator, indicators, values,!!2:ncol(de_gva_indicator))[,-1]  ) 
 
 ## ----input_indicator-----------------------------------------------------
-io_table <- iotable_get () 
-#Total column should not be missing:
-io_table <- io_table [, 1:7] 
-io_table$total <- rowSums(io_table[, 2:7])
-
-labelled_io_table <- io_table
-
-direct_effects_de <- direct_effects_create ( labelled_io_table = io_table ) 
+direct_effects_de <- coefficient_matrix_create(data_table  = data_table, 
+                                               total       = 'output', 
+                                             return_part = 'primary_inputs')
 print ( direct_effects_de[1:6,1:4])
 
-## ----gva_multipliers-----------------------------------------------------
-
-de_gva_multiplier <- multiplier_create( 
-                            Im = I_de, 
-                            input_vector = de_gva_indicator, 
-                            multiplier_name = 'gva_multiplier' )
-print ( de_gva_multiplier )
-
 ## ----inputmultipliers----------------------------------------------------
-#Total column should not be missing
-io_table <- io_table [, 1:7] 
-io_table$total <- rowSums(io_table[, 2:7])
-
-labelled_io_table <- io_table
-
-direct_effects_de <- direct_effects_create ( labelled_io_table = io_table ) 
-
-#remove the total column from direct effects to conform with the inverse [,-8]
+input_reqr <- coefficient_matrix_create(
+    data_table  = iotable_get (), 
+    total       = 'output', 
+    return_part = 'primary_inputs') 
 
 multipliers <- input_multipliers_create(
-  direct_effects = direct_effects_de [, -8],
-  inverse = I_de, 
-  labelled = TRUE)
+  input_requirements = input_reqr,
+  inverse = I_de)
 
-print (multipliers[1:3, 1:3])
+knitr::kable(multipliers, digits= 4)
 
-## ----employment_multiplier, warning=FALSE--------------------------------
-
-de_emp <- primary_input_get ( input = "employment_total",
-                              source = "germany_1990", geo = "DE",
-                              year = 1990,  
-                              households = FALSE, labelling = "iotables")
-
-de_emp_indicator <- input_indicator_create (de_emp, de_output)
+## ----employment_multiplier-----------------------------------------------
+de_emp_indicator <- input_indicator_create (
+  data_table = data_table, 
+  input = 'employment_domestic_total') 
 
 employment_multipliers <- multiplier_create ( 
   input_vector    = de_emp_indicator,
@@ -115,68 +95,30 @@ employment_multipliers <- multiplier_create (
   multiplier_name = "employment_multiplier", 
   digits = 4 )
 
-print (employment_multipliers)
-
+print (tidyr::gather(employment_multipliers,
+              multipliers, values, !!2:ncol(employment_multipliers))[-1])
 
 ## ----outputmult----------------------------------------------------------
 de_input_coeff <- input_coefficient_matrix_create( 
-                           de_use, de_output, digits = 4)
+                         data_table = iotable_get(), 
+                         digits = 4)
                            
 output_multipliers <- output_multiplier_create ( 
                         input_coefficient_matrix = de_input_coeff )
 
-print (output_multipliers)
-
-## ----type2---------------------------------------------------------------
-de_use_2    <- use_table_get ( source = "germany_1990", geo = "DE",
-                       year = 1990, unit = "MIO_EUR", 
-                       households = TRUE, labelling = "iotables")
-
-de_output_2 <- output_get ( source = "germany_1990", geo = "DE",
-                       year = 1990, unit = "MIO_EUR",
-                       households = TRUE, labelling = "iotables")
-
-gva_de_2 <- gva_get (source = "germany_1990", geo = "DE",
-                       year = 1990, unit = "MIO_EUR",
-                       households = TRUE, labelling = "iotables")
-
-de_input_coeff_2 <- input_coefficient_matrix_create( de_use_2, de_output_2)
-
-gva_indicator_de_2  <- input_indicator_create( 
-    input_matrix = gva_de_2, 
-    output_vector = de_output_2)
-
-L_de_2 <- leontieff_matrix_create( technology_coefficients_matrix =
-                                de_input_coeff_2 )
-I_de_2 <- leontieff_inverse_create(L_de_2)
-
-gva_multiplier_2 <- multiplier_create( Im = I_de_2,
-                                       input_vector = gva_indicator_de_2)
-
-print ( gva_multiplier_2 )
+print (tidyr::gather(output_multipliers, multipliers, values)[-1,])
 
 ## ----backward------------------------------------------------------------
+de_coeff <- input_coefficient_matrix_create( iotable_get(), digits = 4)
+I_de <- leontieff_inverse_create ( de_coeff )
+
 de_bw <- backward_linkages(I_de)
-print (de_bw)
+print (tidyr::gather(de_bw, backward_linkages, values)[-1,])
 
 ## ----forward-------------------------------------------------------------
-#You need a table that has a total column and either the total 
-#intermediate use or final use
-#This is usually the case with Eurostat tables, but with the Germany data
-#file total must be added.
-
-io_table <- iotable_get () 
-io_table <- io_table [1:which(tolower(io_table[,1]) =="total" ), ]
-
-output_bp <- dplyr::select ( io_table, output_bp )
-io_table <- io_table [, 1:7] 
-io_table$total <- rowSums(io_table[, 2:7])
-io_table <- cbind (io_table, output_bp)
-
 de_out <- output_coefficient_matrix_create ( 
-  io_table, "final_demand", digits = 4
+  data_table, "final_demand", digits = 4
   )
                                     
 forward_linkages ( output_coefficient_matrix = de_out )
-#'
 

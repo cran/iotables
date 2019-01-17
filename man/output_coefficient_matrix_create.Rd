@@ -4,18 +4,18 @@
 \alias{output_coefficient_matrix_create}
 \title{Create an output coefficient matrix}
 \usage{
-output_coefficient_matrix_create(io_table, type = "product",
+output_coefficient_matrix_create(io_table, total = "tfu",
   digits = NULL)
 }
 \arguments{
-\item{io_table}{An input flow matrix created with the 
-\code{\link{use_table_get}} function which contains the 'total' column 
-is sufficient if type=\code{products} is used. 
-In case you use \code{type="final_demand"} you need to input a
+\item{io_table}{A symmetric input-output table or use table created with the
+\code{\link{iotable_get}} function which contains the 'total' column. 
+In case you use \code{type="tfu"} you need to input a
 full iotable, create by the \code{\link{iotable_get}}, because you will need
 the final demand column.}
 
-\item{type}{The type=\code{products} (default) returns the output coefficients
+\item{total}{The \code{output='total'} (or CPA_TOTAL, depending on the 
+names in your table, default) returns the output coefficients
 for products (intermediates) while the \code{final_demand} returns output 
 coefficients for final demand. See Eurostat Manual, p495 and p507.}
 
@@ -30,19 +30,9 @@ solved with zero elements. You either have faulty input data, or you have
 to use some sort of data modification to carry on your analysis.
 }
 \examples{
-#You need a table that has a total column and either the total 
-#intermediate use or final use
-#This is usually the case with Eurostat tables, but with the Germany data
-#file total must be added.
-
 io_table <- iotable_get () 
-io_table <- io_table [1:which(tolower(io_table[,1]) =="total" ), ]
-output_bp <- dplyr::select ( io_table, output_bp )
-io_table <- io_table [, 1:7] 
-io_table$total <- rowSums(io_table[, 2:7])
-io_table <- cbind (io_table, output_bp)
 
-output_coefficient_matrix_create ( io_table = io_table, 
-                                    type = 'final_demand',
-                                    digits = 4 )
+output_coefficient_matrix_create ( io_table  = io_table, 
+                                   total = 'tfu',
+                                   digits = 4 )
 }

@@ -12,14 +12,14 @@
 
 <meta name="author" content="Daniel Antal, based on the work of Jorg Beutel" />
 
-<meta name="date" content="2018-11-29" />
+<meta name="date" content="2019-01-17" />
 
 <title>Germany 1990</title>
 
 
 
 <style type="text/css">code{white-space: pre;}</style>
-<style type="text/css">
+<style type="text/css" data-origin="pandoc">
 div.sourceCode { overflow-x: auto; }
 table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
   margin: 0; padding: 0; vertical-align: baseline; border: none; }
@@ -55,7 +55,29 @@ code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
 code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
 code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
 code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+
 </style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    for (var j = 0; j < rules.length; j++) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' || rule.style.backgroundColor === '') continue;
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
 
 
 
@@ -70,25 +92,41 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 <h1 class="title toc-ignore">Germany 1990</h1>
 <h4 class="author"><em>Daniel Antal, based on the work of Jorg Beutel</em></h4>
-<h4 class="date"><em>2018-11-29</em></h4>
+<h4 class="date"><em>2019-01-17</em></h4>
 
 
 
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">knitr<span class="op">::</span>opts_chunk<span class="op">$</span><span class="kw">set</span>(
+  <span class="dt">collapse =</span> <span class="ot">TRUE</span>,
+  <span class="dt">comment =</span> <span class="st">&quot;#&gt;&quot;</span>
+)
+<span class="kw">library</span>(iotables)
+<span class="kw">require</span>(dplyr); <span class="kw">require</span>(tidyr)</code></pre></div>
+<pre><code>## Loading required package: dplyr</code></pre>
+<pre><code>## 
+## Attaching package: 'dplyr'</code></pre>
+<pre><code>## The following objects are masked from 'package:stats':
+## 
+##     filter, lag</code></pre>
+<pre><code>## The following objects are masked from 'package:base':
+## 
+##     intersect, setdiff, setequal, union</code></pre>
+<pre><code>## Loading required package: tidyr</code></pre>
 <div id="germany-sample-files" class="section level2">
 <h2>Germany sample files</h2>
 <p>The Germany example is used to test the code of the package. It follows the examples in <a href="http://ec.europa.eu/eurostat/documents/3859598/5902113/KS-RA-07-013-EN.PDF/b0b3d71e-3930-4442-94be-70b36cea9b39?version=1.0">Eurostat Manual of Supply, Use and Input-Output Tables</a>. by Jörg Beutel (Eurostat Manual).</p>
 <p>The <code>germany_1990</code> dataset is a simplified 6x6 sized SIOT taken from the Eurostat Manual (page 481). It is brought to a long form similar to the Eurostat bulk files. The testthat infrastructure of the iotables package is checking data processing functions and analytical calculations against these published results.</p>
-<p>The following data processing functions select and order the data from the Eurostat-type bulk file.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">de_use    &lt;-<span class="st"> </span><span class="kw">use_table_get</span> ( <span class="dt">source =</span> <span class="st">&quot;germany_1990&quot;</span>, <span class="dt">geo =</span> <span class="st">&quot;DE&quot;</span>,
-                       <span class="dt">year =</span> <span class="dv">1990</span>, <span class="dt">unit =</span> <span class="st">&quot;MIO_EUR&quot;</span>, 
-                       <span class="dt">households =</span> <span class="ot">FALSE</span>, <span class="dt">labelling =</span> <span class="st">&quot;iotables&quot;</span>)
+<p>The following data processing functions select and order the data from the Eurostat-type bulk file. Since the first version of this package, Eurostat moved all SIOT data products to the ESA2010 vocabulary, but the manual still follows the ESA95 vocabulary. The labels of the dataset were slightly changed to match the current metadata names. The changes are minor and self-evident, the comparison of the <code>germany_1990</code> dataset and the Manual should cause no misunderstandings.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">data_table &lt;-<span class="st"> </span><span class="kw">iotable_get</span>( <span class="dt">labelling =</span> <span class="st">&quot;iotables&quot;</span> )
+input_flow &lt;-<span class="st"> </span><span class="kw">input_flow_get</span> ( 
+                  <span class="dt">data_table =</span> data_table, 
+                  <span class="dt">households =</span> <span class="ot">FALSE</span>)
 
-de_output &lt;-<span class="st"> </span><span class="kw">output_get</span> ( <span class="dt">source =</span> <span class="st">&quot;germany_1990&quot;</span>, <span class="dt">geo =</span> <span class="st">&quot;DE&quot;</span>,
-                       <span class="dt">year =</span> <span class="dv">1990</span>, <span class="dt">unit =</span> <span class="st">&quot;MIO_EUR&quot;</span>,
-                       <span class="dt">households =</span> <span class="ot">FALSE</span>, <span class="dt">labelling =</span> <span class="st">&quot;iotables&quot;</span>)
+de_output &lt;-<span class="st"> </span><span class="kw">primary_input_get</span> ( data_table, <span class="st">&quot;output&quot;</span> )
 <span class="kw">print</span> (de_output[<span class="kw">c</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">4</span>)])
-<span class="co">#&gt;    iotables_row agriculture_group manufacturing_group construction_group</span>
-<span class="co">#&gt; 16    output_bp             43910             1079446             245606</span></code></pre></div>
+<span class="co">#&gt;    iotables_row agriculture_group industry_group construction</span>
+<span class="co">#&gt; 15       output             43910        1079446       245606</span></code></pre></div>
+<p>This vignette uses <code>library(tidyverse)</code>, more particularly <code>dplyr</code> and <code>tidyr</code>, just like all analytical functions of <code>iotables</code>. Even if you do not use <code>tidyverse</code>, this packages will be installed together with <code>iotables</code>. These functions are only used in the vignette to print the output, and they are not essential for the examples.</p>
 </div>
 <div id="direct-effects" class="section level2">
 <h2>Direct effects</h2>
@@ -102,32 +140,34 @@ de_output &lt;-<span class="st"> </span><span class="kw">output_get</span> ( <sp
 <li><span class="math inline">\(a_{ij}\)</span> = <span class="math inline">\(X_{ij}\)</span> / <span class="math inline">\(x_j\)</span> [recap: (43) is the same]</li>
 </ol>
 <p>It checks the correct ordering of columns, and furthermore it fills up 0 values with 0.000001 to avoid division with zero.</p>
-<pre><code>#&gt;          iotables_row agriculture_group manufacturing_group
-#&gt; 1   agriculture_group            0.0258              0.0236
-#&gt; 2 manufacturing_group            0.1806              0.2822
-#&gt; 3  construction_group            0.0097              0.0068</code></pre>
-<p>Similarly, the output coefficient matrix is</p>
-<pre><code>#&gt;          iotables_row agriculture_group manufacturing_group
-#&gt; 1   agriculture_group            0.0258              0.5803
-#&gt; 2 manufacturing_group            0.0073              0.2822
-#&gt; 3  construction_group            0.0017              0.0299</code></pre>
+<pre><code>#&gt;        iotables_row agriculture_group industry_group
+#&gt; 1 agriculture_group            0.0258         0.0236
+#&gt; 2    industry_group            0.1806         0.2822
+#&gt; 3      construction            0.0097         0.0068</code></pre>
+<p>Similarly, the output coefficient matrix is the following:</p>
+<pre><code>#&gt;        iotables_row agriculture_group industry_group
+#&gt; 1 agriculture_group            0.0258         0.5803
+#&gt; 2    industry_group            0.0073         0.2822
+#&gt; 3      construction            0.0017         0.0299</code></pre>
+<p>These results can be checked on page 468 in the Manual.</p>
 <p>The Leontieff matrix is derived from Leontieff equation system.</p>
 <ol start="19" style="list-style-type: decimal">
 <li>(I-A)x = y</li>
 </ol>
 <p>The Leontieff matrix is defined as (I-A) and it is created with the <code>leontieff_matrix_create()</code> function.</p>
 <p>The Leontieff inverse is (I-A)<sup>-1</sup> and it is created with the <code>leontieff_inverse_create()</code> function from the Leontieff-matrix.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">L_de &lt;-<span class="st"> </span><span class="kw">leontieff_matrix_create</span>( <span class="dt">technology_coefficients_matrix =</span>
-                                de_input_coeff )
-I_de &lt;-<span class="st"> </span><span class="kw">leontieff_inverse_create</span>(L_de)
-<span class="kw">print</span> (I_de[,<span class="dv">1</span><span class="op">:</span><span class="dv">3</span>])
-<span class="co">#&gt;              iotables_row agriculture_group manufacturing_group</span>
-<span class="co">#&gt; 1       agriculture_group        1.03390950          0.03501839</span>
-<span class="co">#&gt; 2     manufacturing_group        0.28968590          1.42923465</span>
-<span class="co">#&gt; 3      construction_group        0.02070433          0.01910180</span>
-<span class="co">#&gt; 4             trade_group        0.12698600          0.12146217</span>
-<span class="co">#&gt; 5 business_services_group        0.18418167          0.20706399</span>
-<span class="co">#&gt; 6    other_services_group        0.04945504          0.02953987</span></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">L_de &lt;-<span class="st"> </span><span class="kw">leontieff_matrix_create</span> ( <span class="dt">technology_coefficients_matrix =</span>
+                                 de_input_coeff )
+I_de &lt;-<span class="st"> </span><span class="kw">leontieff_inverse_create</span>(de_input_coeff)
+I_de_<span class="dv">4</span> &lt;-<span class="st"> </span><span class="kw">leontieff_inverse_create</span>(de_input_coeff, <span class="dt">digits =</span> <span class="dv">4</span>)
+<span class="kw">print</span> (I_de_<span class="dv">4</span>[,<span class="dv">1</span><span class="op">:</span><span class="dv">3</span>])
+<span class="co">#&gt;              iotables_row agriculture_group industry_group</span>
+<span class="co">#&gt; 1          industry_group            1.4155         0.5605</span>
+<span class="co">#&gt; 2            construction            0.0441         1.0462</span>
+<span class="co">#&gt; 3             trade_group            0.2180         0.2292</span>
+<span class="co">#&gt; 4 business_services_group            0.2892         0.3237</span>
+<span class="co">#&gt; 5    other_services_group            0.1089         0.1014</span>
+<span class="co">#&gt; 6                   total            1.1152         1.3025</span></code></pre></div>
 <blockquote>
 <p>You can check the Leontieff matrix against Table 15.9 on page 487 of the Euorstat manual, and the Leontieff inverse against Table 15.10 on page 488. The ordering of the industries is different in the manual.</p>
 </blockquote>
@@ -141,66 +181,59 @@ I_de &lt;-<span class="st"> </span><span class="kw">leontieff_inverse_create</sp
 <li><span class="math inline">\(a_{ij}\)</span> = <span class="math inline">\(z_{ij}\)</span> / <span class="math inline">\(x_j\)</span> [technical input coefficients]</li>
 </ol>
 <p>The helper function <code>primary_input_get()</code> selects a row from the SIOT and brings it to a conforming form. The <code>input_indicator_create()</code> creates the vector of technical input coefficients.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">de_emp &lt;-<span class="st"> </span><span class="kw">primary_input_get</span> ( <span class="dt">input =</span> <span class="st">&quot;employment_total&quot;</span>,
-                              <span class="dt">source =</span> <span class="st">&quot;germany_1990&quot;</span>, <span class="dt">geo =</span> <span class="st">&quot;DE&quot;</span>,
-                              <span class="dt">year =</span> <span class="dv">1990</span>,  
-                              <span class="dt">households =</span> <span class="ot">FALSE</span>, <span class="dt">labelling =</span> <span class="st">&quot;iotables&quot;</span>)
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">de_emp &lt;-<span class="st"> </span><span class="kw">primary_input_get</span> ( data_table,
+                              <span class="dt">primary_input =</span> <span class="st">&quot;employment_domestic_total&quot;</span> )
 
-de_emp_indicator &lt;-<span class="st"> </span><span class="kw">input_indicator_create</span> (de_emp, de_output)
-<span class="kw">print</span> ( de_emp_indicator[<span class="dv">1</span><span class="op">:</span><span class="dv">4</span>])
-<span class="co">#&gt;                  iotables_row agriculture_group manufacturing_group</span>
-<span class="co">#&gt; 19 employment_total_indicator        0.02496015         0.007764168</span>
-<span class="co">#&gt;    construction_group</span>
-<span class="co">#&gt; 19         0.01317557</span></code></pre></div>
+de_emp_indicator &lt;-<span class="st"> </span><span class="kw">input_indicator_create</span> ( 
+    <span class="dt">data_table  =</span> data_table,
+    <span class="dt">input_vector =</span> <span class="st">&quot;employment_domestic_total&quot;</span>)
+
+<span class="kw">print</span> ( tidyr<span class="op">::</span><span class="kw">gather</span>( de_emp_indicator, indicators, values, <span class="op">!!</span><span class="dv">2</span><span class="op">:</span><span class="kw">ncol</span>(de_emp_indicator))[,<span class="op">-</span><span class="dv">1</span>] )
+<span class="co">#&gt;                indicators      values</span>
+<span class="co">#&gt; 1       agriculture_group 0.024960146</span>
+<span class="co">#&gt; 2          industry_group 0.007764168</span>
+<span class="co">#&gt; 3            construction 0.013175574</span>
+<span class="co">#&gt; 4             trade_group 0.017129483</span>
+<span class="co">#&gt; 5 business_services_group 0.006148852</span>
+<span class="co">#&gt; 6    other_services_group 0.020054311</span></code></pre></div>
 <p>Often we want to analyze the effect of growing domestic demand on some natural units, such as employment or <span class="math inline">\(CO_2\)</span> emissions. The only difficulty is that we need data that is aggregated / disaggregated precisely with the same industry breakup as our SIOT table.</p>
-<p>European employment statistics have greated detail than our tables, so employment statistics must be aggregated to conform the 60 (61, 62) columns of the SIOT. There is a difference in the columns based on how national statistics offices treat imputed real estate income and household production, and trade margins. Czech SIOTs are smaller than most SIOTS because they do not have these columns and rows.</p>
+<p>European employment statistics have greater detail than our tables, so employment statistics must be aggregated to conform the 60 (61, 62) columns of the SIOT. There is a difference in the columns based on how national statistics offices treat imputed real estate income and household production, and trade margins. Czech SIOTs are smaller than most SIOTS because they do not have these columns and rows.</p>
 <p>In another vignette we will show examples on how to work with these real-life data. For the sake of following the calculations, we are continuing with the simplified 1990 German data.</p>
 </div>
 <div id="creating-income-indicators" class="section level3">
 <h3>Creating income indicators</h3>
-<p>The <code>gva_get()</code> helper function selects the gross value added row from a SIOT.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">de_gva &lt;-<span class="st"> </span><span class="kw">gva_get</span> ( <span class="dt">source =</span> <span class="st">&quot;germany_1990&quot;</span> )
+<p>The input coefficients for value added are created with <code>input_indicator_create()</code>.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">de_gva &lt;-<span class="st"> </span><span class="kw">primary_input_get</span> ( data_table,
+                              <span class="dt">primary_input =</span> <span class="st">&quot;gva&quot;</span>) 
 
 de_gva_indicator  &lt;-<span class="st"> </span><span class="kw">input_indicator_create</span>( 
-    <span class="dt">input_matrix =</span> de_gva, 
-    <span class="dt">output_vector =</span> de_output)
+    <span class="dt">data_table  =</span> data_table,
+    <span class="dt">input_vector =</span> <span class="st">&quot;gva&quot;</span>)
 
-<span class="kw">print</span>( de_gva_indicator ) 
-<span class="co">#&gt;        iotables_row agriculture_group manufacturing_group</span>
-<span class="co">#&gt; 15 gva_bp_indicator         0.4933728           0.3659488</span>
-<span class="co">#&gt;    construction_group trade_group business_services_group</span>
-<span class="co">#&gt; 15          0.4707703   0.5766124               0.5999044</span>
-<span class="co">#&gt;    other_services_group</span>
-<span class="co">#&gt; 15            0.7172413</span></code></pre></div>
-<p>The input coefficients for value added are created with <code>input_indicator_create</code>.</p>
-<p>This is equal to the equation on page 495 of the Eurostat Manual.</p>
+<span class="kw">print</span>( tidyr<span class="op">::</span><span class="kw">gather</span>(de_gva_indicator, indicators, values,<span class="op">!!</span><span class="dv">2</span><span class="op">:</span><span class="kw">ncol</span>(de_gva_indicator))[,<span class="op">-</span><span class="dv">1</span>]  ) 
+<span class="co">#&gt;                indicators    values</span>
+<span class="co">#&gt; 1       agriculture_group 0.4933728</span>
+<span class="co">#&gt; 2          industry_group 0.3659488</span>
+<span class="co">#&gt; 3            construction 0.4707703</span>
+<span class="co">#&gt; 4             trade_group 0.5766124</span>
+<span class="co">#&gt; 5 business_services_group 0.5999044</span>
+<span class="co">#&gt; 6    other_services_group 0.7172413</span></code></pre></div>
+<p>This is equal to the equation on page 495 of the Eurostat Manual. The results above can be checked on the bottom of page 498.</p>
 <ol start="44" style="list-style-type: decimal">
 <li><span class="math inline">\(w_{ij}\)</span> = <span class="math inline">\(W_{j}\)</span> / <span class="math inline">\(x_j\)</span> [input coefficients for value added]</li>
 </ol>
-<p>You can create a matrix of input indicators, or direct effects on (final) demand with <code>direct_effects_create()</code>. The function by default creates input requirements for final demand. With the code below it re-creates the Table 15.14 of the Eurostat manual.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">io_table &lt;-<span class="st"> </span><span class="kw">iotable_get</span> () 
-<span class="co">#Total column should not be missing:</span>
-io_table &lt;-<span class="st"> </span>io_table [, <span class="dv">1</span><span class="op">:</span><span class="dv">7</span>] 
-io_table<span class="op">$</span>total &lt;-<span class="st"> </span><span class="kw">rowSums</span>(io_table[, <span class="dv">2</span><span class="op">:</span><span class="dv">7</span>])
-
-labelled_io_table &lt;-<span class="st"> </span>io_table
-
-direct_effects_de &lt;-<span class="st"> </span><span class="kw">direct_effects_create</span> ( <span class="dt">labelled_io_table =</span> io_table ) 
+<p>You can create a matrix of input indicators, or direct effects on (final) demand with <code>direct_supply_effects_create()</code>. The function by default creates input requirements for final demand. With the code below it re-creates the Table 15.14 of the Eurostat manual.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">direct_effects_de &lt;-<span class="st"> </span><span class="kw">coefficient_matrix_create</span>(<span class="dt">data_table  =</span> data_table, 
+                                               <span class="dt">total       =</span> <span class="st">'output'</span>, 
+                                             <span class="dt">return_part =</span> <span class="st">'primary_inputs'</span>)
 <span class="kw">print</span> ( direct_effects_de[<span class="dv">1</span><span class="op">:</span><span class="dv">6</span>,<span class="dv">1</span><span class="op">:</span><span class="dv">4</span>])
-<span class="co">#&gt;                   iotables_row agriculture_group manufacturing_group</span>
-<span class="co">#&gt; 7                        total        0.41528126         0.482855094</span>
-<span class="co">#&gt; 8        import_goods_services        0.06665908         0.145169837</span>
-<span class="co">#&gt; 9           net_tax_production        0.02468686         0.006026239</span>
-<span class="co">#&gt; 10 intermediate_consumption_pp        0.50662719         0.634051171</span>
-<span class="co">#&gt; 11      compensation_employees        0.21366431         0.274644586</span>
-<span class="co">#&gt; 12    net_tax_production_other       -0.04582100         0.001349766</span>
-<span class="co">#&gt;    construction_group</span>
-<span class="co">#&gt; 7         0.468258104</span>
-<span class="co">#&gt; 8         0.054668860</span>
-<span class="co">#&gt; 9         0.006302778</span>
-<span class="co">#&gt; 10        0.529229742</span>
-<span class="co">#&gt; 11        0.320916427</span>
-<span class="co">#&gt; 12        0.003920914</span></code></pre></div>
+<span class="co">#&gt;                 iotables_row agriculture_group industry_group construction</span>
+<span class="co">#&gt; 7                      total        0.41528126    0.482855094  0.468258104</span>
+<span class="co">#&gt; 8                    imports        0.06665908    0.145169837  0.054668860</span>
+<span class="co">#&gt; 9   intermediate_consumption        0.50662719    0.634051171  0.529229742</span>
+<span class="co">#&gt; 10    compensation_employees        0.21366431    0.274644586  0.320916427</span>
+<span class="co">#&gt; 11        net_tax_production       -0.04582100    0.001349766  0.003920914</span>
+<span class="co">#&gt; 12 consumption_fixed_capital        0.17925302    0.059075674  0.023859352</span></code></pre></div>
 <blockquote>
 <p>The ‘total’ row above is labelled as Domestic goods and services in the Eurostat Manual. The table can be found on p498.</p>
 </blockquote>
@@ -224,45 +257,391 @@ direct_effects_de &lt;-<span class="st"> </span><span class="kw">direct_effects_
 </ol>
 <p>B = vector of input coefficients for wages or GVA or taxes.</p>
 <p>Z = direct and indirect requirements for wages (or other income)</p>
-<p>The <code>multiplier_create()</code> function performs the matrix multiplication, after handling many exceptions and problems with real-life data, such as different missing columns and rows in the national variations of the standard European table.</p>
-<p>Please send a bug report on <a href="https://github.com/rOpenGov/iotables/issues">Github</a> if you run into further real-life problems.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">
-de_gva_multiplier &lt;-<span class="st"> </span><span class="kw">multiplier_create</span>( 
-                            <span class="dt">Im =</span> I_de, 
-                            <span class="dt">input_vector =</span> de_gva_indicator, 
-                            <span class="dt">multiplier_name =</span> <span class="st">'gva_multiplier'</span> )
-<span class="kw">print</span> ( de_gva_multiplier )
-<span class="co">#&gt;     iotables_row agriculture_group manufacturing_group construction_group</span>
-<span class="co">#&gt; 1 gva_multiplier         0.8450443           0.7647388          0.8615076</span>
-<span class="co">#&gt;   trade_group business_services_group other_services_group</span>
-<span class="co">#&gt; 1    0.902019               0.9392779            0.9199705</span></code></pre></div>
-<p>The indicator shows that manufacturing has the lowest, and other services has the highest gross value added component. This is hardly suprising, because manufacturing needs a lot of materials and imported components. When the demand for manufacturing in the domestic economy is growing by 1 unit, the gross value added is 0.3659488.</p>
+<p>The indicator shows that manufacturing has the lowest, and other services has the highest gross value added component. This is hardly surprising, because manufacturing needs a lot of materials and imported components. When the demand for manufacturing in the domestic economy is growing by 1 unit, the gross value added is 0.3659488.</p>
 <blockquote>
 <p>You can check these values against the Table 15.16 of the Eurostat Manual on page 501 (row 10).</p>
 </blockquote>
-<p>You can recreate the whole matrix if possible income multipliers with <code>input_multipliers_create()</code>.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#Total column should not be missing</span>
-io_table &lt;-<span class="st"> </span>io_table [, <span class="dv">1</span><span class="op">:</span><span class="dv">7</span>] 
-io_table<span class="op">$</span>total &lt;-<span class="st"> </span><span class="kw">rowSums</span>(io_table[, <span class="dv">2</span><span class="op">:</span><span class="dv">7</span>])
-
-labelled_io_table &lt;-<span class="st"> </span>io_table
-
-direct_effects_de &lt;-<span class="st"> </span><span class="kw">direct_effects_create</span> ( <span class="dt">labelled_io_table =</span> io_table ) 
-
-<span class="co">#remove the total column from direct effects to conform with the inverse [,-8]</span>
+<p>You can recreate the whole matrix, when the data data permits, with <code>input_multipliers_create()</code> as shown here. Alternatively, you can create your own custom multipliers with <code>multiplier_create()</code> as shown in the following example.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">input_reqr &lt;-<span class="st"> </span><span class="kw">coefficient_matrix_create</span>(
+    <span class="dt">data_table  =</span> <span class="kw">iotable_get</span> (), 
+    <span class="dt">total       =</span> <span class="st">'output'</span>, 
+    <span class="dt">return_part =</span> <span class="st">'primary_inputs'</span>) 
 
 multipliers &lt;-<span class="st"> </span><span class="kw">input_multipliers_create</span>(
-  <span class="dt">direct_effects =</span> direct_effects_de [, <span class="op">-</span><span class="dv">8</span>],
-  <span class="dt">inverse =</span> I_de, 
-  <span class="dt">labelled =</span> <span class="ot">TRUE</span>)
+  <span class="dt">input_requirements =</span> input_reqr,
+  <span class="dt">inverse =</span> I_de)
 
-<span class="kw">print</span> (multipliers[<span class="dv">1</span><span class="op">:</span><span class="dv">3</span>, <span class="dv">1</span><span class="op">:</span><span class="dv">3</span>])
-<span class="co">#&gt;            iotables_row agriculture_group manufacturing_group</span>
-<span class="co">#&gt; 7                 total        0.70488246          0.84135154</span>
-<span class="co">#&gt; 8 import_goods_services        0.12215911          0.22059291</span>
-<span class="co">#&gt; 9    net_tax_production        0.03283655          0.01473759</span></code></pre></div>
+knitr<span class="op">::</span><span class="kw">kable</span>(multipliers, <span class="dt">digits=</span> <span class="dv">4</span>)</code></pre></div>
+<table>
+<thead>
+<tr>
+<th style="text-align:left;">
+</th>
+<th style="text-align:left;">
+</th>
+<th style="text-align:left;">
+agriculture_group
+</th>
+<th style="text-align:left;">
+industry_group
+</th>
+<th style="text-align:left;">
+construction
+</th>
+<th style="text-align:left;">
+trade_group
+</th>
+<th style="text-align:left;">
+business_services_group
+</th>
+<th style="text-align:left;">
+other_services_group
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+7
+</td>
+<td style="text-align:left;">
+total_multiplier
+</td>
+<td style="text-align:left;">
+2.68540535089593
+</td>
+<td style="text-align:left;">
+2.69747311050155
+</td>
+<td style="text-align:left;">
+2.74636047622115
+</td>
+<td style="text-align:left;">
+2.77371865536628
+</td>
+<td style="text-align:left;">
+2.68772796636426
+</td>
+<td style="text-align:left;">
+2.73334099836677
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+8
+</td>
+<td style="text-align:left;">
+imports_multiplier
+</td>
+<td style="text-align:left;">
+2.35081996257473
+</td>
+<td style="text-align:left;">
+1.73682349074383
+</td>
+<td style="text-align:left;">
+2.9606273455949
+</td>
+<td style="text-align:left;">
+3.0302277674519
+</td>
+<td style="text-align:left;">
+5.09751098391137
+</td>
+<td style="text-align:left;">
+2.89208896375524
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+9
+</td>
+<td style="text-align:left;">
+intermediate_consumption_multiplier
+</td>
+<td style="text-align:left;">
+2.64848127175063
+</td>
+<td style="text-align:left;">
+2.54644792085702
+</td>
+<td style="text-align:left;">
+2.84866699311511
+</td>
+<td style="text-align:left;">
+2.82882102073116
+</td>
+<td style="text-align:left;">
+2.85049778465738
+</td>
+<td style="text-align:left;">
+2.68656726640444
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+10
+</td>
+<td style="text-align:left;">
+compensation_employees_multiplier
+</td>
+<td style="text-align:left;">
+5.22850448128565
+</td>
+<td style="text-align:left;">
+4.82854808114035
+</td>
+<td style="text-align:left;">
+4.27486775886289
+</td>
+<td style="text-align:left;">
+3.13476810284758
+</td>
+<td style="text-align:left;">
+5.68434652746025
+</td>
+<td style="text-align:left;">
+1.96790238232353
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+11
+</td>
+<td style="text-align:left;">
+net_tax_production_multiplier
+</td>
+<td style="text-align:left;">
+1.75440922457173
+</td>
+<td style="text-align:left;">
+-31.7613134068736
+</td>
+<td style="text-align:left;">
+-9.91411023641964
+</td>
+<td style="text-align:left;">
+-4.38676650006166
+</td>
+<td style="text-align:left;">
+-1.6240518561975
+</td>
+<td style="text-align:left;">
+2.01445864325335
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+12
+</td>
+<td style="text-align:left;">
+consumption_fixed_capital_multiplier
+</td>
+<td style="text-align:left;">
+2.27053561307396
+</td>
+<td style="text-align:left;">
+5.6352096656793
+</td>
+<td style="text-align:left;">
+12.3233231138882
+</td>
+<td style="text-align:left;">
+3.58912866300644
+</td>
+<td style="text-align:left;">
+2.32532653122482
+</td>
+<td style="text-align:left;">
+2.31013210744462
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+13
+</td>
+<td style="text-align:left;">
+os_mixed_income_net_multiplier
+</td>
+<td style="text-align:left;">
+2.77095806176288
+</td>
+<td style="text-align:left;">
+10.7799950860823
+</td>
+<td style="text-align:left;">
+3.44055299146446
+</td>
+<td style="text-align:left;">
+3.38397950563377
+</td>
+<td style="text-align:left;">
+1.82021802278639
+</td>
+<td style="text-align:left;">
+2.47400125492644
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+14
+</td>
+<td style="text-align:left;">
+gva_multiplier
+</td>
+<td style="text-align:left;">
+3.74784006299814
+</td>
+<td style="text-align:left;">
+5.32599431442647
+</td>
+<td style="text-align:left;">
+4.34825682354541
+</td>
+<td style="text-align:left;">
+3.17086366371906
+</td>
+<td style="text-align:left;">
+3.05175143664354
+</td>
+<td style="text-align:left;">
+2.08423434432194
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+15
+</td>
+<td style="text-align:left;">
+output_multiplier
+</td>
+<td style="text-align:left;">
+3.19087500560593
+</td>
+<td style="text-align:left;">
+3.56361966958793
+</td>
+<td style="text-align:left;">
+3.55462928456431
+</td>
+<td style="text-align:left;">
+3.02604703570521
+</td>
+<td style="text-align:left;">
+2.97123073651063
+</td>
+<td style="text-align:left;">
+2.25454922770314
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+16
+</td>
+<td style="text-align:left;">
+net_tax_products_multiplier
+</td>
+<td style="text-align:left;">
+2.83108650121869
+</td>
+<td style="text-align:left;">
+9.9490354421885
+</td>
+<td style="text-align:left;">
+9.47830131848828
+</td>
+<td style="text-align:left;">
+3.60865781075941
+</td>
+<td style="text-align:left;">
+4.20737388852734
+</td>
+<td style="text-align:left;">
+2.02287459868216
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+17
+</td>
+<td style="text-align:left;">
+employment_wage_salary_multiplier
+</td>
+<td style="text-align:left;">
+4.0230603476267
+</td>
+<td style="text-align:left;">
+6.23914984017754
+</td>
+<td style="text-align:left;">
+4.2992398416755
+</td>
+<td style="text-align:left;">
+3.09627453198874
+</td>
+<td style="text-align:left;">
+6.79232294779834
+</td>
+<td style="text-align:left;">
+2.0068221758786
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+18
+</td>
+<td style="text-align:left;">
+employment_self_employed_multiplier
+</td>
+<td style="text-align:left;">
+1.59601249923798
+</td>
+<td style="text-align:left;">
+34.0196753138538
+</td>
+<td style="text-align:left;">
+8.51898255772015
+</td>
+<td style="text-align:left;">
+3.82271704696259
+</td>
+<td style="text-align:left;">
+7.41331274154061
+</td>
+<td style="text-align:left;">
+4.25079330153506
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+19
+</td>
+<td style="text-align:left;">
+employment_domestic_total_multiplier
+</td>
+<td style="text-align:left;">
+2.66559654191294
+</td>
+<td style="text-align:left;">
+7.39598117179823
+</td>
+<td style="text-align:left;">
+4.7425997067729
+</td>
+<td style="text-align:left;">
+3.19631644789801
+</td>
+<td style="text-align:left;">
+6.88055658453251
+</td>
+<td style="text-align:left;">
+2.14995613656862
+</td>
+</tr>
+</tbody>
+</table>
 <blockquote>
-<p>You can check these results against the Table 15.16 on p501 of the Eurostat manual. Again, the label ‘total’ refers to domestic intermediaries. The ordering of the rows is different from the Manual.</p>
+<p>You can check these results against the Table 15.16 on p501 of the Eurostat manual. the label ‘total’ refers to domestic intermediaries. The ordering of the rows is different from the Manual.</p>
 </blockquote>
 <p>These multipliers are Type-I multipliers. The type-I GVA multiplier shows the total effect in the domestic economy. The initial extra demand creates new orders in the backward linking industries, offers new product to build on in the forward-linking industry and creates new corporate and employee income that can be spent. Type-II multipliers will be introduced in a forthcoming vignette [not yet available.]</p>
 </div>
@@ -272,13 +651,11 @@ multipliers &lt;-<span class="st"> </span><span class="kw">input_multipliers_cre
 <ol start="64" style="list-style-type: decimal">
 <li>Z = E(I-A)<sup>-1</sup></li>
 </ol>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">
-de_emp &lt;-<span class="st"> </span><span class="kw">primary_input_get</span> ( <span class="dt">input =</span> <span class="st">&quot;employment_total&quot;</span>,
-                              <span class="dt">source =</span> <span class="st">&quot;germany_1990&quot;</span>, <span class="dt">geo =</span> <span class="st">&quot;DE&quot;</span>,
-                              <span class="dt">year =</span> <span class="dv">1990</span>,  
-                              <span class="dt">households =</span> <span class="ot">FALSE</span>, <span class="dt">labelling =</span> <span class="st">&quot;iotables&quot;</span>)
-
-de_emp_indicator &lt;-<span class="st"> </span><span class="kw">input_indicator_create</span> (de_emp, de_output)
+<p>The <code>multiplier_create()</code> function performs the matrix multiplication, after handling many exceptions and problems with real-life data, such as different missing columns and rows in the national variations of the standard European table.</p>
+<p>Please send a bug report on <a href="https://github.com/rOpenGov/iotables/issues">Github</a> if you run into further real-life problems.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">de_emp_indicator &lt;-<span class="st"> </span><span class="kw">input_indicator_create</span> (
+  <span class="dt">data_table =</span> data_table, 
+  <span class="dt">input =</span> <span class="st">'employment_domestic_total'</span>) 
 
 employment_multipliers &lt;-<span class="st"> </span><span class="kw">multiplier_create</span> ( 
   <span class="dt">input_vector    =</span> de_emp_indicator,
@@ -286,14 +663,16 @@ employment_multipliers &lt;-<span class="st"> </span><span class="kw">multiplier
   <span class="dt">multiplier_name =</span> <span class="st">&quot;employment_multiplier&quot;</span>, 
   <span class="dt">digits =</span> <span class="dv">4</span> )
 
-<span class="kw">print</span> (employment_multipliers)
-<span class="co">#&gt;            iotables_row agriculture_group manufacturing_group</span>
-<span class="co">#&gt; 1 employment_multiplier            0.0326              0.0162</span>
-<span class="co">#&gt;   construction_group trade_group business_services_group</span>
-<span class="co">#&gt; 1             0.0207      0.0237                  0.0112</span>
-<span class="co">#&gt;   other_services_group</span>
-<span class="co">#&gt; 1               0.0242</span></code></pre></div>
-<p>You can check against page 502 in the Eurostat manual that the highest employment multiplier is indeed <span class="math inline">\(z_i\)</span> = 0.0326, the employment multiplier of agriculture.</p>
+<span class="kw">print</span> (tidyr<span class="op">::</span><span class="kw">gather</span>(employment_multipliers,
+              multipliers, values, <span class="op">!!</span><span class="dv">2</span><span class="op">:</span><span class="kw">ncol</span>(employment_multipliers))[<span class="op">-</span><span class="dv">1</span>])
+<span class="co">#&gt;               multipliers values</span>
+<span class="co">#&gt; 1       agriculture_group 0.0665</span>
+<span class="co">#&gt; 2          industry_group 0.0574</span>
+<span class="co">#&gt; 3            construction 0.0625</span>
+<span class="co">#&gt; 4             trade_group 0.0548</span>
+<span class="co">#&gt; 5 business_services_group 0.0423</span>
+<span class="co">#&gt; 6    other_services_group 0.0431</span></code></pre></div>
+<p>You can check against page 501 that these values are correct and on page 501 that the highest employment multiplier is indeed <span class="math inline">\(z_i\)</span> = 0.0665, the employment multiplier of agriculture.</p>
 <p>For working with real-life, current employment data, there is a helper function to retrieve and process Eurostat employment statistics to a SIOT-conforming vector <code>employment_get()</code>. This function will be explained in a separate vignette.</p>
 </div>
 <div id="output-multipliers" class="section level3">
@@ -304,74 +683,45 @@ employment_multipliers &lt;-<span class="st"> </span><span class="kw">multiplier
 </ol>
 <p><span class="math inline">\(x_i\)</span>: output of sector i</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">de_input_coeff &lt;-<span class="st"> </span><span class="kw">input_coefficient_matrix_create</span>( 
-                           de_use, de_output, <span class="dt">digits =</span> <span class="dv">4</span>)
+                         <span class="dt">data_table =</span> <span class="kw">iotable_get</span>(), 
+                         <span class="dt">digits =</span> <span class="dv">4</span>)
                            
 output_multipliers &lt;-<span class="st"> </span><span class="kw">output_multiplier_create</span> ( 
                         <span class="dt">input_coefficient_matrix =</span> de_input_coeff )
 
-<span class="kw">print</span> (output_multipliers)
-<span class="co">#&gt;         iotables_row agriculture_group manufacturing_group</span>
-<span class="co">#&gt; 1 output_multipliers          1.704922            1.841421</span>
-<span class="co">#&gt;   construction_group trade_group business_services_group</span>
-<span class="co">#&gt; 1           1.813747    1.603712                1.594974</span>
-<span class="co">#&gt;   other_services_group</span>
-<span class="co">#&gt; 1             1.378375</span></code></pre></div>
+<span class="kw">print</span> (tidyr<span class="op">::</span><span class="kw">gather</span>(output_multipliers, multipliers, values)[<span class="op">-</span><span class="dv">1</span>,])
+<span class="co">#&gt;               multipliers           values</span>
+<span class="co">#&gt; 2       agriculture_group 1.70492243301356</span>
+<span class="co">#&gt; 3          industry_group  1.8414208680286</span>
+<span class="co">#&gt; 4            construction 1.81374666684297</span>
+<span class="co">#&gt; 5             trade_group 1.60371174683177</span>
+<span class="co">#&gt; 6 business_services_group 1.59497385374824</span>
+<span class="co">#&gt; 7    other_services_group 1.37837464728208</span></code></pre></div>
 <p>These multipliers can be checked against the Table 15.15 on p500 of the Eurostat Manual.</p>
 </div>
-</div>
-<div id="working-with-type-ii-multipliers-or-induced-effects" class="section level2">
-<h2>Working with Type-II multipliers or induced effects</h2>
-<p>When working with the type-II multipliers we need to include the household consumption column and the household earnings row in the tables. The dimensions of the table are growing by 1, so all matrixes and vectors need to be re-created. Not applicable cells, such as gross value added for households is filled up with zero values.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">de_use_<span class="dv">2</span>    &lt;-<span class="st"> </span><span class="kw">use_table_get</span> ( <span class="dt">source =</span> <span class="st">&quot;germany_1990&quot;</span>, <span class="dt">geo =</span> <span class="st">&quot;DE&quot;</span>,
-                       <span class="dt">year =</span> <span class="dv">1990</span>, <span class="dt">unit =</span> <span class="st">&quot;MIO_EUR&quot;</span>, 
-                       <span class="dt">households =</span> <span class="ot">TRUE</span>, <span class="dt">labelling =</span> <span class="st">&quot;iotables&quot;</span>)
-
-de_output_<span class="dv">2</span> &lt;-<span class="st"> </span><span class="kw">output_get</span> ( <span class="dt">source =</span> <span class="st">&quot;germany_1990&quot;</span>, <span class="dt">geo =</span> <span class="st">&quot;DE&quot;</span>,
-                       <span class="dt">year =</span> <span class="dv">1990</span>, <span class="dt">unit =</span> <span class="st">&quot;MIO_EUR&quot;</span>,
-                       <span class="dt">households =</span> <span class="ot">TRUE</span>, <span class="dt">labelling =</span> <span class="st">&quot;iotables&quot;</span>)
-
-gva_de_<span class="dv">2</span> &lt;-<span class="st"> </span><span class="kw">gva_get</span> (<span class="dt">source =</span> <span class="st">&quot;germany_1990&quot;</span>, <span class="dt">geo =</span> <span class="st">&quot;DE&quot;</span>,
-                       <span class="dt">year =</span> <span class="dv">1990</span>, <span class="dt">unit =</span> <span class="st">&quot;MIO_EUR&quot;</span>,
-                       <span class="dt">households =</span> <span class="ot">TRUE</span>, <span class="dt">labelling =</span> <span class="st">&quot;iotables&quot;</span>)
-
-de_input_coeff_<span class="dv">2</span> &lt;-<span class="st"> </span><span class="kw">input_coefficient_matrix_create</span>( de_use_<span class="dv">2</span>, de_output_<span class="dv">2</span>)
-
-gva_indicator_de_<span class="dv">2</span>  &lt;-<span class="st"> </span><span class="kw">input_indicator_create</span>( 
-    <span class="dt">input_matrix =</span> gva_de_<span class="dv">2</span>, 
-    <span class="dt">output_vector =</span> de_output_<span class="dv">2</span>)
-
-L_de_<span class="dv">2</span> &lt;-<span class="st"> </span><span class="kw">leontieff_matrix_create</span>( <span class="dt">technology_coefficients_matrix =</span>
-                                de_input_coeff_<span class="dv">2</span> )
-I_de_<span class="dv">2</span> &lt;-<span class="st"> </span><span class="kw">leontieff_inverse_create</span>(L_de_<span class="dv">2</span>)
-
-gva_multiplier_<span class="dv">2</span> &lt;-<span class="st"> </span><span class="kw">multiplier_create</span>( <span class="dt">Im =</span> I_de_<span class="dv">2</span>,
-                                       <span class="dt">input_vector =</span> gva_indicator_de_<span class="dv">2</span>)
-
-<span class="kw">print</span> ( gva_multiplier_<span class="dv">2</span> )
-<span class="co">#&gt;   iotables_row agriculture_group manufacturing_group construction_group</span>
-<span class="co">#&gt; 1   multiplier          1.347891             1.37633            1.51253</span>
-<span class="co">#&gt;   trade_group business_services_group other_services_group</span>
-<span class="co">#&gt; 1    1.592361                  1.3252              1.70378</span>
-<span class="co">#&gt;   consumption_expenditure_household</span>
-<span class="co">#&gt; 1                          1.205241</span></code></pre></div>
-<p>With the induced effects, the type-II multipliers are much larger. The Eurostat Manual does not cover type II multipliers, and this will be covered in a later vignette.</p>
 </div>
 <div id="interindustrial-linkage-analysis" class="section level2">
 <h2>Interindustrial linkage analysis</h2>
 <p>The backward linkages, i.e. demand side linkages, show how much incremental demand is created via suppliers when an industry is facing increased demand and produces more.</p>
 <p>Forward linkages on the other hand show the effect of increased production, which gives either more or cheaper supplies for other industries that rely on the output of the given industry.</p>
-<p>For example, when a new concert is put on stage, orders are filled for real estate, security services, catering, etc, which show in the backward linkages. The concert attracts visitors that creates new opportunities for the hotelling industry in forward linkages.</p>
-<p>Currently <code>iotables</code> only caclulates backward linkages, but the creation of forward linkages on the basis of output coefficients is simple. Both output coefficients and forward linkages will be added to the package soon.</p>
+<p>For example, when a new concert is put on stage, orders are filled for real estate, security services, catering, etc, which show in the backward linkages. The concert attracts visitors that creates new opportunities for the hotel industry in forward linkages.</p>
+<p>Currently <code>iotables</code> only calculates backward linkages, but the creation of forward linkages on the basis of output coefficients is simple. Both output coefficients and forward linkages will be added to the package soon.</p>
 <div id="backward-linkages" class="section level3">
 <h3>Backward linkages</h3>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">de_bw &lt;-<span class="st"> </span><span class="kw">backward_linkages</span>(I_de)
-<span class="kw">print</span> (de_bw)
-<span class="co">#&gt;        iotables_row agriculture_group manufacturing_group</span>
-<span class="co">#&gt; 1 backward linkages          1.704922            1.841421</span>
-<span class="co">#&gt;   construction_group trade_group business_services_group</span>
-<span class="co">#&gt; 1           1.813747    1.603712                1.594974</span>
-<span class="co">#&gt;   other_services_group</span>
-<span class="co">#&gt; 1             1.378375</span></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">de_coeff &lt;-<span class="st"> </span><span class="kw">input_coefficient_matrix_create</span>( <span class="kw">iotable_get</span>(), <span class="dt">digits =</span> <span class="dv">4</span>)
+I_de &lt;-<span class="st"> </span><span class="kw">leontieff_inverse_create</span> ( de_coeff )
+
+de_bw &lt;-<span class="st"> </span><span class="kw">backward_linkages</span>(I_de)
+<span class="kw">print</span> (tidyr<span class="op">::</span><span class="kw">gather</span>(de_bw, backward_linkages, values)[<span class="op">-</span><span class="dv">1</span>,])
+<span class="co">#&gt; Warning: attributes are not identical across measure variables;</span>
+<span class="co">#&gt; they will be dropped</span>
+<span class="co">#&gt;         backward_linkages           values</span>
+<span class="co">#&gt; 2       agriculture_group 1.70492243301356</span>
+<span class="co">#&gt; 3          industry_group  1.8414208680286</span>
+<span class="co">#&gt; 4            construction 1.81374666684297</span>
+<span class="co">#&gt; 5             trade_group 1.60371174683177</span>
+<span class="co">#&gt; 6 business_services_group 1.59497385374824</span>
+<span class="co">#&gt; 7    other_services_group 1.37837464728208</span></code></pre></div>
 <blockquote>
 <p>You can check the results against Table 15.19 on page 506 of the Eurostat Manual.</p>
 </blockquote>
@@ -380,32 +730,18 @@ gva_multiplier_<span class="dv">2</span> &lt;-<span class="st"> </span><span cla
 <div id="forward-linkages" class="section level3">
 <h3>Forward linkages</h3>
 <p>Forward linkages show the strength of the new business opportunities when industry i starts to increase its production. Whereas backward linkages show the increased demand of the suppliers in industry i, forward linkages show the increased availability of inputs for other industries that rely on industry i as a supplier.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#You need a table that has a total column and either the total </span>
-<span class="co">#intermediate use or final use</span>
-<span class="co">#This is usually the case with Eurostat tables, but with the Germany data</span>
-<span class="co">#file total must be added.</span>
-
-io_table &lt;-<span class="st"> </span><span class="kw">iotable_get</span> () 
-io_table &lt;-<span class="st"> </span>io_table [<span class="dv">1</span><span class="op">:</span><span class="kw">which</span>(<span class="kw">tolower</span>(io_table[,<span class="dv">1</span>]) <span class="op">==</span><span class="st">&quot;total&quot;</span> ), ]
-
-output_bp &lt;-<span class="st"> </span>dplyr<span class="op">::</span><span class="kw">select</span> ( io_table, output_bp )
-io_table &lt;-<span class="st"> </span>io_table [, <span class="dv">1</span><span class="op">:</span><span class="dv">7</span>] 
-io_table<span class="op">$</span>total &lt;-<span class="st"> </span><span class="kw">rowSums</span>(io_table[, <span class="dv">2</span><span class="op">:</span><span class="dv">7</span>])
-io_table &lt;-<span class="st"> </span><span class="kw">cbind</span> (io_table, output_bp)
-
-de_out &lt;-<span class="st"> </span><span class="kw">output_coefficient_matrix_create</span> ( 
-  io_table, <span class="st">&quot;final_demand&quot;</span>, <span class="dt">digits =</span> <span class="dv">4</span>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">de_out &lt;-<span class="st"> </span><span class="kw">output_coefficient_matrix_create</span> ( 
+  data_table, <span class="st">&quot;final_demand&quot;</span>, <span class="dt">digits =</span> <span class="dv">4</span>
   )
                                     
 <span class="kw">forward_linkages</span> ( <span class="dt">output_coefficient_matrix =</span> de_out )
 <span class="co">#&gt;              iotables_row forward_linkages</span>
 <span class="co">#&gt; 1       agriculture_group         2.112754</span>
-<span class="co">#&gt; 2     manufacturing_group         1.690891</span>
-<span class="co">#&gt; 3      construction_group         1.355896</span>
+<span class="co">#&gt; 2          industry_group         1.690891</span>
+<span class="co">#&gt; 3            construction         1.355896</span>
 <span class="co">#&gt; 4             trade_group         1.584989</span>
 <span class="co">#&gt; 5 business_services_group         2.104036</span>
-<span class="co">#&gt; 6    other_services_group         1.210504</span>
-<span class="co">#'</span></code></pre></div>
+<span class="co">#&gt; 6    other_services_group         1.210504</span></code></pre></div>
 <blockquote>
 <p>You can check forward linkages against the Table 15.20 of Eurostat Manual on page 507.</p>
 </blockquote>

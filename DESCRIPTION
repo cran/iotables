@@ -1,25 +1,26 @@
 Package: iotables
 Type: Package
 Title: Importing and Manipulating Symmetric Input-Output Tables
-Version: 0.3.5
-Authors@R: person("Daniel", "Antal", role = c("aut", "cre"), email = "daniel.antal@ceemid.eu")
+Version: 0.4.1
+Authors@R: person("Daniel", "Antal", role = c("aut", "cre"), email = "daniel.antal@ceemid.eu", comment = c(ORCID = "0000-0001-7513-6760"))
 Maintainer: Daniel Antal <daniel.antal@ceemid.eu>
-Description: Pre-processing tasks related to working with Eurostat's symmetric input-output
+Description: Pre-processing and basic analytical tasks related to working with Eurostat's symmetric input-output
     tables and provide basic input-output economics calculations. The package is 
     a part of rOpenGov <http://ropengov.github.io/> to open source open government initiatives.
-URL: https://github.com/rOpenGov/iotables
+URL: http://iotables.ceemid.eu/
 BugReports: https://github.com/rOpenGov/iotables/issues
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 6.1.1
 Imports: dplyr, eurostat, magrittr, tidyr, stats, forcats, utils, plyr,
-        lubridate
-Suggests: testthat, knitr, rmarkdown
+        lubridate, knitr, kableExtra, tibble, readxl, purrr
+Suggests: testthat, rmarkdown, spelling
 Depends: R(>= 2.10.0)
 VignetteBuilder: knitr
+Language: en-US
 NeedsCompilation: no
-Packaged: 2018-11-29 18:03:28 UTC; Daniel Antal
-Author: Daniel Antal [aut, cre]
+Packaged: 2019-01-17 17:31:05 UTC; Daniel Antal
+Author: Daniel Antal [aut, cre] (<https://orcid.org/0000-0001-7513-6760>)
 Repository: CRAN
-Date/Publication: 2018-11-29 18:20:03 UTC
+Date/Publication: 2019-01-17 17:50:04 UTC

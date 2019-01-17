@@ -18,7 +18,6 @@
 #' data file here with labelling. 
 #' @param force_download Defaults to \code{TRUE}. If \code{FALSE} it will use the existing downloaded file
 #' in the \code{data_directory} or the temporary directory, if it exists.
-#' @importFrom magrittr %>%
 #' @importFrom dplyr filter select mutate left_join rename ungroup summarize
 #' @importFrom tidyr spread
 #' @importFrom eurostat get_eurostat
@@ -32,7 +31,8 @@
 #'                sex = "Total", 
 #'                age = "Y_GE15",
 #'                data_directory = NULL,
-#'                force_download = TRUE)
+#'                force_download = TRUE
+#'                )
 #'  }
 #' @export
 
@@ -163,13 +163,13 @@ employment_get <- function ( geo = "CZ",
   
   ##Data processing for employment variables-------------------------------- 
   employment <- emp %>%
-    dplyr::mutate ( nace_r2 = as.character(nace_r2) ) %>%
+    dplyr::mutate (   nace_r2 = as.character(nace_r2) ) %>%
     dplyr::group_by ( nace_r2, year ) %>%
     dplyr::summarize ( values = mean(values)) %>%
     dplyr::rename ( emp_code = nace_r2 ) %>%
     dplyr::ungroup ( ) %>%
     dplyr::left_join ( employment_metadata, by = "emp_code") %>%  # iotables:::employment_metadata
-    dplyr::group_by ( code, variable, iotables_label ) %>%
+    dplyr::group_by (  code, variable, iotables_label ) %>%
     dplyr::summarize ( values = sum(values)) %>%
     dplyr::mutate ( geo = geo_input ) %>%
     dplyr::mutate ( year = year_input ) %>%

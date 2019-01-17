@@ -12,14 +12,14 @@
 
 <meta name="author" content="Daniel Antal, CFA" />
 
-<meta name="date" content="2018-11-29" />
+<meta name="date" content="2019-01-17" />
 
 <title>Working With Eurostat Data</title>
 
 
 
 <style type="text/css">code{white-space: pre;}</style>
-<style type="text/css">
+<style type="text/css" data-origin="pandoc">
 div.sourceCode { overflow-x: auto; }
 table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
   margin: 0; padding: 0; vertical-align: baseline; border: none; }
@@ -55,7 +55,29 @@ code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
 code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
 code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
 code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+
 </style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    for (var j = 0; j < rules.length; j++) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' || rule.style.backgroundColor === '') continue;
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
 
 
 
@@ -70,18 +92,19 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 <h1 class="title toc-ignore">Working With Eurostat Data</h1>
 <h4 class="author"><em>Daniel Antal, CFA</em></h4>
-<h4 class="date"><em>2018-11-29</em></h4>
+<h4 class="date"><em>2019-01-17</em></h4>
 
 
 
 <p>Symmetric input-output tables and their auxiliary tables are the most complex, structured statistical products that exit, because they contain relationships among 60x60 industry, the supply and the use of the GDP / GNP, and the income disturbing, trade and transport margins and tax receipts from these industries.</p>
 <p>The Eurostat website contains the symmetric input-output data in long form. Working with this data requires a knowledge of the Eurostat SNA vocabulary to arrange the long data in the correct ordering of rows and columns. This is what the preprocessing functions of iotables handle.</p>
-<p>Apart from handing a vast and not always well-documented vocabulary, the user is often confronted with ‘real-life’ data issues, such as missing rows and columns in certain members states or spelling errors in the vocabulary. Many hours of testing and exception handling went into the current form of the processing functions, but there are further problems may show up. Most of the testing was done on product x product type SIOTs, because most member states use them. The functions work with industry x industry SIOTs, but further vocabulary exception may show up in their use. Please report these issues on github or in an email.</p>
-<p>You are most likely to work with the product x product tables. For the availability of outher data see <code>?iotables_download</code>.</p>
-<p>The analytical functions are presented at greater detail in the <em>Germany 1990</em> vignette. The numbering of the equations refers to the <a href="http://ec.europa.eu/eurostat/documents/3859598/5902113/KS-RA-07-013-EN.PDF/b0b3d71e-3930-4442-94be-70b36cea9b39?version=1.0">Eurostat Manual of Supply, Use and Input-Output Tables</a> (Eurostat Manual, Chapter 15.)</p>
+<p>Apart from handing a vast and not always well-documented vocabulary, the user is often confronted with “real-life” data issues, such as missing rows and columns in certain members states or spelling errors in the vocabulary. Many hours of testing and exception handling went into the current form of the processing functions, but there are further problems may show up. Most of the testing was done on product x product type SIOTs, because most member states use them. The functions work with industry x industry SIOTs, but further vocabulary exception may show up in their use. Please report these issues on github or in an email.</p>
+<p>You are most likely to work with the product x product tables. For the availability of other data see <code>?iotables_download</code>.</p>
+<p>The analytical functions are presented at greater detail in the <em>Germany 1990</em> vignette. The numbering of the equations refers to the <a href="http://ec.europa.eu/eurostat/documents/3859598/5902113/KS-RA-07-013-EN.PDF/b0b3d71e-3930-4442-94be-70b36cea9b39?version=1.0">Eurostat Manual of Supply, Use and Input-Output Tables</a> (Eurostat Manual, Chapter 15.) The manual was prepared in 2008 under the ESA 95 standards. Currently Eurostat uses the ESA 2010 definitions, and some indicators in the manual are no longer available. In most uses this will not cause a problem.</p>
+<p>Another very useful source of information on how to work with the tables <a href="https://webarchive.nationalarchives.gov.uk/20160114044923/http://www.ons.gov.uk/ons/rel/input-output/input-output-analytical-tables/2010/index.html">Input-output analytical tables: methods and application to UK National Accounts</a>. Since the United Kingdom at the time of writing the article was a member of the European Union, her national accounts follow the EU ESA standards.</p>
 <div id="getting-and-processing-eurostat-data" class="section level2">
 <h2>Getting and processing Eurostat data</h2>
-<p>The following code, if specifically run (it will not run on default), will download the lastest relevant data from the Eurostat data warehouse, and save it to a directory named <em>../not_included</em> . The iotables package uses the other rOpenGov package <a href="https://github.com/rOpenGov/eurostat">Eurostat</a> with additional processing of the rather complex SIOT bulk files.</p>
+<p>The following code, if specifically run (it will not run on default), will download the latest relevant data from the Eurostat data warehouse, and save it to a directory named <em>../not_included</em> . The iotables package uses the other rOpenGov package <a href="https://github.com/rOpenGov/eurostat">Eurostat</a> with additional processing of the rather complex SIOT bulk files.</p>
 <p>The contents of the <a href="https://github.com/rOpenGov/iotables/tree/master/not_included">not_included</a> directory can be found on GitHub, but they are not released and distributed with the package.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#Not run</span>
 not_included_directory &lt;-<span class="st"> </span><span class="kw">file.path</span>(<span class="st">'..'</span>, <span class="st">'not_included'</span>)
@@ -115,14 +138,12 @@ emp_sk &lt;-<span class="st"> </span><span class="kw">employment_get</span>(<spa
 <span class="kw">save</span> (naio_10_cp1700, emp_sk, emp_cz, 
       <span class="dt">file =</span> <span class="kw">file.path</span>(<span class="st">'..'</span>, <span class="st">'inst'</span>, <span class="st">'extdata'</span>,
                        <span class="st">'naio_10_product_x_product.rda'</span>))</code></pre></div>
-<p>For a quickier building of the vignette, the data is retrieved from the <em>not_included</em> directory. The chunk above can reproduce this data file.</p>
+<p>For a quicker building of the vignette, the data is retrieved from the <em>not_included</em> directory. The chunk above can reproduce this data file.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#load from pre-saved file to increase running speed</span>
 
 <span class="kw">load</span> (<span class="kw">system.file</span>(<span class="st">'extdata'</span>, <span class="st">'naio_10_product_x_product.rda'</span>, <span class="dt">package =</span> <span class="st">'iotables'</span>) )</code></pre></div>
 <p>In this vignette example the Czech (2015) national currency unit and the Slovak (2010) euro tables are created. Since the Slovak national currency is the euro, there is no difference between the Slovak national currency unit and euro tables.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">message</span> ( <span class="st">&quot;IO tables&quot;</span>)
-<span class="co">#&gt; IO tables</span>
-cz_io &lt;-<span class="st">  </span><span class="kw">iotable_get</span> ( <span class="dt">labelled_io_data =</span> naio_10_cp1700, 
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">cz_io &lt;-<span class="st">  </span><span class="kw">iotable_get</span> ( <span class="dt">labelled_io_data =</span> naio_10_cp1700, 
                          <span class="dt">source =</span> <span class="st">&quot;naio_10_cp1700&quot;</span>, <span class="dt">geo =</span> <span class="st">&quot;CZ&quot;</span>, 
                          <span class="dt">year =</span> <span class="dv">2015</span>, <span class="dt">unit =</span> <span class="st">&quot;MIO_NAC&quot;</span>, 
                          <span class="dt">stk_flow =</span> <span class="st">&quot;TOTAL&quot;</span>,
@@ -134,28 +155,12 @@ sk_io &lt;-<span class="st">  </span><span class="kw">iotable_get</span> ( <span
                         <span class="dt">stk_flow =</span> <span class="st">&quot;TOTAL&quot;</span>,
                         <span class="dt">labelling =</span> <span class="st">&quot;short&quot;</span> )
 
-<span class="kw">message</span> ( <span class="st">&quot;Use tables&quot;</span>)
-<span class="co">#&gt; Use tables</span>
-cz_use &lt;-<span class="st"> </span><span class="kw">use_table_get</span>( <span class="dt">labelled_io_table =</span> cz_io, 
-                         <span class="dt">source =</span> <span class="st">&quot;naio_10_cp1700&quot;</span>, <span class="dt">geo =</span> <span class="st">&quot;CZ&quot;</span>, 
-                         <span class="dt">year =</span> <span class="dv">2015</span>, <span class="dt">unit =</span> <span class="st">&quot;MIO_NAC&quot;</span>, 
-                         <span class="dt">stk_flow =</span> <span class="st">&quot;TOTAL&quot;</span>,
-                         <span class="dt">labelling =</span> <span class="st">&quot;short&quot;</span>)
-<span class="co">#&gt; Total row and column removed from the matrix.</span>
+cz_input_flow &lt;-<span class="st"> </span><span class="kw">input_flow_get</span>( <span class="dt">data_table =</span> cz_io )
 
-sk_use &lt;-<span class="st"> </span><span class="kw">use_table_get</span>( <span class="dt">labelled_io_table =</span> sk_io, 
-                         <span class="dt">source =</span> <span class="st">&quot;naio_10_cp1700&quot;</span>, <span class="dt">geo =</span> <span class="st">&quot;SK&quot;</span>, 
-                         <span class="dt">year =</span> <span class="dv">2010</span>, <span class="dt">unit =</span> <span class="st">&quot;MIO_EUR&quot;</span>, 
-                         <span class="dt">stk_flow =</span> <span class="st">&quot;TOTAL&quot;</span>,
-                         <span class="dt">labelling =</span> <span class="st">&quot;short&quot;</span>)
-<span class="co">#&gt; Total row and column removed from the matrix.</span>
+sk_input_flow &lt;-<span class="st"> </span><span class="kw">input_flow_get</span>( <span class="dt">data_table =</span> sk_io)
 
-<span class="kw">message</span> ( <span class="st">&quot;Output vectors&quot;</span>)
-<span class="co">#&gt; Output vectors</span>
-cz_output &lt;-<span class="st"> </span><span class="kw">output_get</span>( <span class="dt">labelled_io_table =</span> cz_io)
-<span class="co">#&gt; Total column was not found or removed from the matrix.</span>
-sk_output &lt;-<span class="st"> </span><span class="kw">output_get</span>( <span class="dt">labelled_io_table =</span> sk_io)
-<span class="co">#&gt; Total column was not found or removed from the matrix.</span></code></pre></div>
+cz_output &lt;-<span class="st"> </span><span class="kw">output_get</span>( <span class="dt">data_table =</span> cz_io)
+sk_output &lt;-<span class="st"> </span><span class="kw">output_get</span>( <span class="dt">data_table =</span> sk_io)</code></pre></div>
 <p>By default, total rows and columns are removed when creating use tables.</p>
 </div>
 <div id="analytical-functions" class="section level2">
@@ -168,96 +173,201 @@ sk_output &lt;-<span class="st"> </span><span class="kw">output_get</span>( <spa
 <li><span class="math inline">\(a_{ij}\)</span> = <span class="math inline">\(X_{ij}\)</span> / <span class="math inline">\(x_j\)</span> [recap: (43) is the same]</li>
 </ol>
 <p>It checks the correct ordering of columns, and furthermore it fills up 0 values with 0.000001 to avoid division with zero.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">message</span> (<span class="st">&quot;Czech Republic&quot;</span>)
-<span class="co">#&gt; Czech Republic</span>
-input_coeff_matrix_cz &lt;-<span class="st"> </span><span class="kw">input_coefficient_matrix_create</span>(
-  cz_use, 
-  cz_output
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">input_coeff_matrix_cz &lt;-<span class="st"> </span><span class="kw">input_coefficient_matrix_create</span>(
+  <span class="dt">data_table =</span> cz_io
 )
 
-<span class="kw">message</span> (<span class="st">&quot;Slovak Republic&quot;</span>)
-<span class="co">#&gt; Slovak Republic</span>
 input_coeff_matrix_sk &lt;-<span class="st"> </span><span class="kw">input_coefficient_matrix_create</span>(
-  sk_use, 
-  sk_output
+  <span class="dt">data_table =</span> sk_io
 )
-<span class="co">#&gt; Warning in input_coefficient_matrix_create(sk_use, sk_output): Columns and</span>
-<span class="co">#&gt; rows of CPA_L68A, CPA_T, CPA_U are all zeros and will be removed.</span>
+<span class="co">#&gt; Columns and rows of NA, NA, NA, NA, NA are all zeros and will be removed.</span>
 
 knitr<span class="op">::</span><span class="kw">kable</span>(<span class="kw">head</span>(input_coeff_matrix_cz[,<span class="dv">1</span><span class="op">:</span><span class="dv">8</span>]))</code></pre></div>
 <table>
 <thead>
-<tr class="header">
-<th align="left">prod_na</th>
-<th align="right">CPA_A01</th>
-<th align="right">CPA_A02</th>
-<th align="right">CPA_A03</th>
-<th align="right">CPA_B</th>
-<th align="right">CPA_C10-12</th>
-<th align="right">CPA_C13-15</th>
-<th align="right">CPA_C16</th>
+<tr>
+<th style="text-align:left;">
+prod_na
+</th>
+<th style="text-align:right;">
+CPA_A01
+</th>
+<th style="text-align:right;">
+CPA_A02
+</th>
+<th style="text-align:right;">
+CPA_A03
+</th>
+<th style="text-align:right;">
+CPA_B
+</th>
+<th style="text-align:right;">
+CPA_C10-12
+</th>
+<th style="text-align:right;">
+CPA_C13-15
+</th>
+<th style="text-align:right;">
+CPA_C16
+</th>
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
-<td align="left">CPA_A01</td>
-<td align="right">0.1247278</td>
-<td align="right">0.0060946</td>
-<td align="right">0.0220441</td>
-<td align="right">0.0004689</td>
-<td align="right">0.3049289</td>
-<td align="right">0.0433435</td>
-<td align="right">0.0031216</td>
+<tr>
+<td style="text-align:left;">
+CPA_A01
+</td>
+<td style="text-align:right;">
+0.1247278
+</td>
+<td style="text-align:right;">
+0.0060946
+</td>
+<td style="text-align:right;">
+0.0220441
+</td>
+<td style="text-align:right;">
+0.0004689
+</td>
+<td style="text-align:right;">
+0.3049289
+</td>
+<td style="text-align:right;">
+0.0433435
+</td>
+<td style="text-align:right;">
+0.0031216
+</td>
 </tr>
-<tr class="even">
-<td align="left">CPA_A02</td>
-<td align="right">0.0027975</td>
-<td align="right">0.1304276</td>
-<td align="right">0.0066800</td>
-<td align="right">0.0023120</td>
-<td align="right">0.0002613</td>
-<td align="right">0.0003007</td>
-<td align="right">0.2438908</td>
+<tr>
+<td style="text-align:left;">
+CPA_A02
+</td>
+<td style="text-align:right;">
+0.0027975
+</td>
+<td style="text-align:right;">
+0.1304276
+</td>
+<td style="text-align:right;">
+0.0066800
+</td>
+<td style="text-align:right;">
+0.0023120
+</td>
+<td style="text-align:right;">
+0.0002613
+</td>
+<td style="text-align:right;">
+0.0003007
+</td>
+<td style="text-align:right;">
+0.2438908
+</td>
 </tr>
-<tr class="odd">
-<td align="left">CPA_A03</td>
-<td align="right">0.0000000</td>
-<td align="right">0.0000000</td>
-<td align="right">0.0000000</td>
-<td align="right">0.0000000</td>
-<td align="right">0.0007234</td>
-<td align="right">0.0000000</td>
-<td align="right">0.0000000</td>
+<tr>
+<td style="text-align:left;">
+CPA_A03
+</td>
+<td style="text-align:right;">
+0.0000000
+</td>
+<td style="text-align:right;">
+0.0000000
+</td>
+<td style="text-align:right;">
+0.0000000
+</td>
+<td style="text-align:right;">
+0.0000000
+</td>
+<td style="text-align:right;">
+0.0007234
+</td>
+<td style="text-align:right;">
+0.0000000
+</td>
+<td style="text-align:right;">
+0.0000000
+</td>
 </tr>
-<tr class="even">
-<td align="left">CPA_B</td>
-<td align="right">0.0007114</td>
-<td align="right">0.0027908</td>
-<td align="right">0.1843687</td>
-<td align="right">0.0464026</td>
-<td align="right">0.0005672</td>
-<td align="right">0.0010852</td>
-<td align="right">0.0002330</td>
+<tr>
+<td style="text-align:left;">
+CPA_B
+</td>
+<td style="text-align:right;">
+0.0007114
+</td>
+<td style="text-align:right;">
+0.0027908
+</td>
+<td style="text-align:right;">
+0.1843687
+</td>
+<td style="text-align:right;">
+0.0464026
+</td>
+<td style="text-align:right;">
+0.0005672
+</td>
+<td style="text-align:right;">
+0.0010852
+</td>
+<td style="text-align:right;">
+0.0002330
+</td>
 </tr>
-<tr class="odd">
-<td align="left">CPA_C10-12</td>
-<td align="right">0.1481747</td>
-<td align="right">0.0003899</td>
-<td align="right">0.0494322</td>
-<td align="right">0.0001455</td>
-<td align="right">0.1537184</td>
-<td align="right">0.0004053</td>
-<td align="right">0.0002446</td>
+<tr>
+<td style="text-align:left;">
+CPA_C10-12
+</td>
+<td style="text-align:right;">
+0.1481747
+</td>
+<td style="text-align:right;">
+0.0003899
+</td>
+<td style="text-align:right;">
+0.0494322
+</td>
+<td style="text-align:right;">
+0.0001455
+</td>
+<td style="text-align:right;">
+0.1537184
+</td>
+<td style="text-align:right;">
+0.0004053
+</td>
+<td style="text-align:right;">
+0.0002446
+</td>
 </tr>
-<tr class="even">
-<td align="left">CPA_C13-15</td>
-<td align="right">0.0048691</td>
-<td align="right">0.0174423</td>
-<td align="right">0.0060120</td>
-<td align="right">0.0077445</td>
-<td align="right">0.0014149</td>
-<td align="right">0.2881724</td>
-<td align="right">0.0013162</td>
+<tr>
+<td style="text-align:left;">
+CPA_C13-15
+</td>
+<td style="text-align:right;">
+0.0048691
+</td>
+<td style="text-align:right;">
+0.0174423
+</td>
+<td style="text-align:right;">
+0.0060120
+</td>
+<td style="text-align:right;">
+0.0077445
+</td>
+<td style="text-align:right;">
+0.0014149
+</td>
+<td style="text-align:right;">
+0.2881724
+</td>
+<td style="text-align:right;">
+0.0013162
+</td>
 </tr>
 </tbody>
 </table>
@@ -274,85 +384,197 @@ knitr<span class="op">::</span><span class="kw">kable</span>(<span class="kw">he
 <p>The Leontieff inverse is (I-A)<sup>-1</sup> and it is created with the <code>leontieff_inverse_create()</code> function from the Leontieff-matrix.</p>
 <p>The code chunk below prints a small part of the Czech Leontieff-inverse.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">L_cz &lt;-<span class="st"> </span><span class="kw">leontieff_matrix_create</span>( input_coeff_matrix_cz  )
-I_cz &lt;-<span class="st"> </span><span class="kw">leontieff_inverse_create</span>( L_cz )
+I_cz &lt;-<span class="st"> </span><span class="kw">leontieff_inverse_create</span>( input_coeff_matrix_cz )
 
 L_sk &lt;-<span class="st"> </span><span class="kw">leontieff_matrix_create</span>( input_coeff_matrix_sk  )
-I_sk &lt;-<span class="st"> </span><span class="kw">leontieff_inverse_create</span>( L_sk )
+I_sk &lt;-<span class="st"> </span><span class="kw">leontieff_inverse_create</span>( input_coeff_matrix_sk )
 
 knitr<span class="op">::</span><span class="kw">kable</span>(<span class="kw">head</span>(I_cz[,<span class="dv">1</span><span class="op">:</span><span class="dv">8</span>]))</code></pre></div>
 <table>
 <thead>
-<tr class="header">
-<th align="left">prod_na</th>
-<th align="right">CPA_A01</th>
-<th align="right">CPA_A02</th>
-<th align="right">CPA_A03</th>
-<th align="right">CPA_B</th>
-<th align="right">CPA_C10-12</th>
-<th align="right">CPA_C13-15</th>
-<th align="right">CPA_C16</th>
+<tr>
+<th style="text-align:left;">
+prod_na
+</th>
+<th style="text-align:right;">
+CPA_A01
+</th>
+<th style="text-align:right;">
+CPA_A02
+</th>
+<th style="text-align:right;">
+CPA_A03
+</th>
+<th style="text-align:right;">
+CPA_B
+</th>
+<th style="text-align:right;">
+CPA_C10-12
+</th>
+<th style="text-align:right;">
+CPA_C13-15
+</th>
+<th style="text-align:right;">
+CPA_C16
+</th>
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
-<td align="left">CPA_A01</td>
-<td align="right">1.2259342</td>
-<td align="right">0.0145906</td>
-<td align="right">0.0556468</td>
-<td align="right">0.0077698</td>
-<td align="right">0.4477719</td>
-<td align="right">0.0841593</td>
-<td align="right">0.0160654</td>
+<tr>
+<td style="text-align:left;">
+CPA_A01
+</td>
+<td style="text-align:right;">
+1.2259342
+</td>
+<td style="text-align:right;">
+0.0145906
+</td>
+<td style="text-align:right;">
+0.0556468
+</td>
+<td style="text-align:right;">
+0.0077698
+</td>
+<td style="text-align:right;">
+0.4477719
+</td>
+<td style="text-align:right;">
+0.0841593
+</td>
+<td style="text-align:right;">
+0.0160654
+</td>
 </tr>
-<tr class="even">
-<td align="left">CPA_A02</td>
-<td align="right">0.0074116</td>
-<td align="right">1.1584704</td>
-<td align="right">0.0123554</td>
-<td align="right">0.0064437</td>
-<td align="right">0.0062990</td>
-<td align="right">0.0045882</td>
-<td align="right">0.3595795</td>
+<tr>
+<td style="text-align:left;">
+CPA_A02
+</td>
+<td style="text-align:right;">
+0.0074116
+</td>
+<td style="text-align:right;">
+1.1584704
+</td>
+<td style="text-align:right;">
+0.0123554
+</td>
+<td style="text-align:right;">
+0.0064437
+</td>
+<td style="text-align:right;">
+0.0062990
+</td>
+<td style="text-align:right;">
+0.0045882
+</td>
+<td style="text-align:right;">
+0.3595795
+</td>
 </tr>
-<tr class="odd">
-<td align="left">CPA_A03</td>
-<td align="right">0.0001602</td>
-<td align="right">0.0000050</td>
-<td align="right">1.0000532</td>
-<td align="right">0.0000047</td>
-<td align="right">0.0009176</td>
-<td align="right">0.0000166</td>
-<td align="right">0.0000071</td>
+<tr>
+<td style="text-align:left;">
+CPA_A03
+</td>
+<td style="text-align:right;">
+0.0001602
+</td>
+<td style="text-align:right;">
+0.0000050
+</td>
+<td style="text-align:right;">
+1.0000531
+</td>
+<td style="text-align:right;">
+0.0000047
+</td>
+<td style="text-align:right;">
+0.0009176
+</td>
+<td style="text-align:right;">
+0.0000166
+</td>
+<td style="text-align:right;">
+0.0000071
+</td>
 </tr>
-<tr class="even">
-<td align="left">CPA_B</td>
-<td align="right">0.0613068</td>
-<td align="right">0.0268029</td>
-<td align="right">0.2513917</td>
-<td align="right">1.1010207</td>
-<td align="right">0.0515437</td>
-<td align="right">0.0512433</td>
-<td align="right">0.0487318</td>
+<tr>
+<td style="text-align:left;">
+CPA_B
+</td>
+<td style="text-align:right;">
+0.0613068
+</td>
+<td style="text-align:right;">
+0.0268029
+</td>
+<td style="text-align:right;">
+0.2513917
+</td>
+<td style="text-align:right;">
+1.1010207
+</td>
+<td style="text-align:right;">
+0.0515437
+</td>
+<td style="text-align:right;">
+0.0512433
+</td>
+<td style="text-align:right;">
+0.0487318
+</td>
 </tr>
-<tr class="odd">
-<td align="left">CPA_C10-12</td>
-<td align="right">0.2183097</td>
-<td align="right">0.0053221</td>
-<td align="right">0.0711943</td>
-<td align="right">0.0043237</td>
-<td align="right">1.2639393</td>
-<td align="right">0.0191994</td>
-<td align="right">0.0066710</td>
+<tr>
+<td style="text-align:left;">
+CPA_C10-12
+</td>
+<td style="text-align:right;">
+0.2183097
+</td>
+<td style="text-align:right;">
+0.0053221
+</td>
+<td style="text-align:right;">
+0.0711943
+</td>
+<td style="text-align:right;">
+0.0043237
+</td>
+<td style="text-align:right;">
+1.2639393
+</td>
+<td style="text-align:right;">
+0.0191994
+</td>
+<td style="text-align:right;">
+0.0066710
+</td>
 </tr>
-<tr class="even">
-<td align="left">CPA_C13-15</td>
-<td align="right">0.0164678</td>
-<td align="right">0.0339691</td>
-<td align="right">0.0192012</td>
-<td align="right">0.0192664</td>
-<td align="right">0.0143365</td>
-<td align="right">1.4139195</td>
-<td align="right">0.0184852</td>
+<tr>
+<td style="text-align:left;">
+CPA_C13-15
+</td>
+<td style="text-align:right;">
+0.0164678
+</td>
+<td style="text-align:right;">
+0.0339691
+</td>
+<td style="text-align:right;">
+0.0192012
+</td>
+<td style="text-align:right;">
+0.0192664
+</td>
+<td style="text-align:right;">
+0.0143365
+</td>
+<td style="text-align:right;">
+1.4139195
+</td>
+<td style="text-align:right;">
+0.0184852
+</td>
 </tr>
 </tbody>
 </table>
@@ -369,96 +591,209 @@ knitr<span class="op">::</span><span class="kw">kable</span>(<span class="kw">he
 <li><span class="math inline">\(a_{ij}\)</span> = <span class="math inline">\(z_{ij}\)</span> / <span class="math inline">\(x_j\)</span> [recap: (43) is the same]</li>
 </ol>
 <p><span class="math inline">\(a_{ij}\)</span> = input coefficient <span class="math inline">\(z_{ij}\)</span> = input of type i in sector j (i.e. products or capital or labor) <span class="math inline">\(x_j\)</span> = output of sector j</p>
-<p>By default, <code>direct_effects_create()</code> will compare inputs to total final demand / supply. You can make comparisons to total product or total output, too. The code below prints a part of the Czech direct effects rounded to 4 digits.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">message</span> ( <span class="st">&quot;Czech Republic:&quot;</span>)
-<span class="co">#&gt; Czech Republic:</span>
-direct_cz &lt;-<span class="st"> </span><span class="kw">direct_effects_create</span>( <span class="dt">labelled_io_table =</span> cz_io, 
-                                    <span class="dt">digits =</span> <span class="dv">4</span>)
+<p>By default, <code>direct_supply_effects_create()</code> will compare inputs to total final demand / supply. You can make comparisons to total product or total output, too. The code below prints a part of the Czech direct effects rounded to 4 digits.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">primary_inputs_cz &lt;-<span class="st"> </span><span class="kw">coefficient_matrix_create</span>(<span class="dt">data_table =</span> cz_io, 
+                                              <span class="dt">total =</span> <span class="st">'output'</span>, 
+                                              <span class="dt">return =</span> <span class="st">'primary_inputs'</span>) 
 
-<span class="kw">message</span> ( <span class="st">&quot;Slovak Republic:&quot;</span>)
-<span class="co">#&gt; Slovak Republic:</span>
-direct_sk &lt;-<span class="st"> </span><span class="kw">direct_effects_create</span>( <span class="dt">labelled_io_table =</span> sk_io )
-<span class="co">#&gt; Warning in direct_effects_create(labelled_io_table = sk_io): Columns</span>
-<span class="co">#&gt; CPA_L68A, CPA_T, CPA_U, P6_U2, P6_U3 are all zeros and will be removed.</span>
+primary_inputs_sk &lt;-<span class="st"> </span><span class="kw">coefficient_matrix_create</span>(<span class="dt">data_table =</span> sk_io, 
+                                              <span class="dt">total =</span> <span class="st">'output'</span>, 
+                                              <span class="dt">return =</span> <span class="st">'primary_inputs'</span>)
+<span class="co">#&gt; Columns and rows of NA, NA, NA, NA, NA are all zeros and will be removed.</span>
 
-knitr<span class="op">::</span><span class="kw">kable</span> (<span class="kw">head</span>(direct_cz[,<span class="dv">1</span><span class="op">:</span><span class="dv">8</span>]))</code></pre></div>
+direct_cz &lt;-<span class="st"> </span><span class="kw">direct_effects_create</span>( primary_inputs_cz, I_cz )  
+direcz_sk &lt;-<span class="st"> </span><span class="kw">direct_effects_create</span>( primary_inputs_sk, I_sk )  
+
+knitr<span class="op">::</span><span class="kw">kable</span> (<span class="kw">head</span>(direct_cz[,<span class="dv">1</span><span class="op">:</span><span class="dv">8</span>]), <span class="dt">digits =</span> <span class="dv">4</span>)</code></pre></div>
 <table>
 <thead>
-<tr class="header">
-<th align="left">prod_na</th>
-<th align="right">CPA_A01</th>
-<th align="right">CPA_A02</th>
-<th align="right">CPA_A03</th>
-<th align="right">CPA_B</th>
-<th align="right">CPA_C10-12</th>
-<th align="right">CPA_C13-15</th>
-<th align="right">CPA_C16</th>
+<tr>
+<th style="text-align:left;">
+prod_na
+</th>
+<th style="text-align:right;">
+CPA_A01
+</th>
+<th style="text-align:right;">
+CPA_A02
+</th>
+<th style="text-align:right;">
+CPA_A03
+</th>
+<th style="text-align:right;">
+CPA_B
+</th>
+<th style="text-align:right;">
+CPA_C10-12
+</th>
+<th style="text-align:right;">
+CPA_C13-15
+</th>
+<th style="text-align:right;">
+CPA_C16
+</th>
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
-<td align="left">TOTAL</td>
-<td align="right">0.4875</td>
-<td align="right">0.4010</td>
-<td align="right">0.2996</td>
-<td align="right">0.1256</td>
-<td align="right">0.4721</td>
-<td align="right">0.2629</td>
-<td align="right">0.5977</td>
+<tr>
+<td style="text-align:left;">
+TOTAL_effect
+</td>
+<td style="text-align:right;">
+1.6834
+</td>
+<td style="text-align:right;">
+1.0952
+</td>
+<td style="text-align:right;">
+1.6870
+</td>
+<td style="text-align:right;">
+1.3066
+</td>
+<td style="text-align:right;">
+2.0105
+</td>
+<td style="text-align:right;">
+1.7403
+</td>
+<td style="text-align:right;">
+1.8346
+</td>
 </tr>
-<tr class="even">
-<td align="left">P7</td>
-<td align="right">0.2080</td>
-<td align="right">0.0914</td>
-<td align="right">0.5279</td>
-<td align="right">0.7425</td>
-<td align="right">0.3718</td>
-<td align="right">0.5964</td>
-<td align="right">0.1800</td>
+<tr>
+<td style="text-align:left;">
+P7_effect
+</td>
+<td style="text-align:right;">
+1.1504
+</td>
+<td style="text-align:right;">
+0.5339
+</td>
+<td style="text-align:right;">
+2.6106
+</td>
+<td style="text-align:right;">
+3.7138
+</td>
+<td style="text-align:right;">
+1.4740
+</td>
+<td style="text-align:right;">
+2.7952
+</td>
+<td style="text-align:right;">
+0.9758
+</td>
 </tr>
-<tr class="odd">
-<td align="left">D1</td>
-<td align="right">0.1308</td>
-<td align="right">0.0869</td>
-<td align="right">0.1277</td>
-<td align="right">0.0785</td>
-<td align="right">0.0709</td>
-<td align="right">0.0753</td>
-<td align="right">0.0907</td>
+<tr>
+<td style="text-align:left;">
+D1_effect
+</td>
+<td style="text-align:right;">
+0.4264
+</td>
+<td style="text-align:right;">
+0.2608
+</td>
+<td style="text-align:right;">
+0.5582
+</td>
+<td style="text-align:right;">
+0.5140
+</td>
+<td style="text-align:right;">
+0.4317
+</td>
+<td style="text-align:right;">
+0.4720
+</td>
+<td style="text-align:right;">
+0.3670
+</td>
 </tr>
-<tr class="even">
-<td align="left">D11</td>
-<td align="right">0.1009</td>
-<td align="right">0.0672</td>
-<td align="right">0.0971</td>
-<td align="right">0.0564</td>
-<td align="right">0.0536</td>
-<td align="right">0.0564</td>
-<td align="right">0.0690</td>
+<tr>
+<td style="text-align:left;">
+D11_effect
+</td>
+<td style="text-align:right;">
+0.3257
+</td>
+<td style="text-align:right;">
+0.1997
+</td>
+<td style="text-align:right;">
+0.4212
+</td>
+<td style="text-align:right;">
+0.3770
+</td>
+<td style="text-align:right;">
+0.3281
+</td>
+<td style="text-align:right;">
+0.3557
+</td>
+<td style="text-align:right;">
+0.2792
+</td>
 </tr>
-<tr class="odd">
-<td align="left">D29X39</td>
-<td align="right">-0.1057</td>
-<td align="right">-0.0052</td>
-<td align="right">-0.0861</td>
-<td align="right">-0.0026</td>
-<td align="right">0.0000</td>
-<td align="right">-0.0007</td>
-<td align="right">0.0004</td>
+<tr>
+<td style="text-align:left;">
+D29X39_effect
+</td>
+<td style="text-align:right;">
+-0.1631
+</td>
+<td style="text-align:right;">
+-0.0083
+</td>
+<td style="text-align:right;">
+-0.1921
+</td>
+<td style="text-align:right;">
+-0.0118
+</td>
+<td style="text-align:right;">
+-0.0594
+</td>
+<td style="text-align:right;">
+-0.0132
+</td>
+<td style="text-align:right;">
+-0.0033
+</td>
 </tr>
-<tr class="even">
-<td align="left">P51C</td>
-<td align="right">0.0744</td>
-<td align="right">0.0549</td>
-<td align="right">0.0580</td>
-<td align="right">0.0371</td>
-<td align="right">0.0281</td>
-<td align="right">0.0286</td>
-<td align="right">0.0388</td>
+<tr>
+<td style="text-align:left;">
+P51C_effect
+</td>
+<td style="text-align:right;">
+0.2271
+</td>
+<td style="text-align:right;">
+0.1470
+</td>
+<td style="text-align:right;">
+0.2732
+</td>
+<td style="text-align:right;">
+0.2627
+</td>
+<td style="text-align:right;">
+0.2105
+</td>
+<td style="text-align:right;">
+0.2105
+</td>
+<td style="text-align:right;">
+0.1824
+</td>
 </tr>
 </tbody>
 </table>
-<p>Direct effects measure the intial, direct impact of the change in demand and supply for a product. When production goes up, it will create demand in all supply industries (backward linkages) and create opportunities in the industries that use the product themselves (forward linkages.)</p>
+<p>Direct effects measure the initial, direct impact of the change in demand and supply for a product. When production goes up, it will create demand in all supply industries (backward linkages) and create opportunities in the industries that use the product themselves (forward linkages.)</p>
 <p>This is not the total effect, because some of the increased production will translate into income, which in turn will be used to create further demand in all parts of the domestic economy. The total effect is characterized by multipliers.</p>
 </div>
 <div id="total-effects" class="section level2">
@@ -475,179 +810,354 @@ knitr<span class="op">::</span><span class="kw">kable</span> (<span class="kw">h
 <p>The calculation follows the Eurostat Manual p 499-502.</p>
 </blockquote>
 <p>The code chunk below prints a part of the Czech multipliers, rounded to 4 digits.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">message</span> ( <span class="st">&quot;Czech Republic:&quot;</span>)
-<span class="co">#&gt; Czech Republic:</span>
-multipliers_cz &lt;-<span class="st"> </span><span class="kw">input_multipliers_create</span>( direct_cz[, <span class="dv">1</span><span class="op">:</span><span class="dv">62</span>], I_cz)
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">primary_inputs_cz &lt;-<span class="st"> </span><span class="kw">coefficient_matrix_create</span>(<span class="dt">data_table =</span> cz_io, 
+                                              <span class="dt">total =</span> <span class="st">'output'</span>, 
+                                              <span class="dt">return =</span> <span class="st">'primary_inputs'</span>) 
 
-<span class="kw">message</span> ( <span class="st">&quot;No messages.&quot;</span>)
-<span class="co">#&gt; No messages.</span>
-<span class="kw">message</span> ( <span class="st">&quot;Slovak Republic:&quot;</span>)
-<span class="co">#&gt; Slovak Republic:</span>
-multipliers_sk &lt;-<span class="st"> </span><span class="kw">input_multipliers_create</span>( direct_sk, I_sk, <span class="dt">digits =</span> <span class="dv">4</span>)
+primary_inputs_sk &lt;-<span class="st"> </span><span class="kw">coefficient_matrix_create</span>(<span class="dt">data_table =</span> sk_io, 
+                                              <span class="dt">total =</span> <span class="st">'output'</span>, 
+                                              <span class="dt">return =</span> <span class="st">'primary_inputs'</span>)
+<span class="co">#&gt; Columns and rows of NA, NA, NA, NA, NA are all zeros and will be removed.</span>
 
-knitr<span class="op">::</span><span class="kw">kable</span> (<span class="kw">head</span>(multipliers_cz[,<span class="dv">1</span><span class="op">:</span><span class="dv">8</span>]))</code></pre></div>
+multipliers_cz &lt;-<span class="st"> </span><span class="kw">input_multipliers_create</span>( primary_inputs_cz, I_cz )  
+multipliers_sk &lt;-<span class="st"> </span><span class="kw">input_multipliers_create</span>( primary_inputs_sk, I_sk ) 
+
+knitr<span class="op">::</span><span class="kw">kable</span> (<span class="kw">head</span>(multipliers_cz[,<span class="dv">1</span><span class="op">:</span><span class="dv">8</span>]), <span class="dt">digits =</span> <span class="dv">4</span>)</code></pre></div>
 <table>
 <thead>
-<tr class="header">
-<th align="left">prod_na</th>
-<th align="right">CPA_A01</th>
-<th align="right">CPA_A02</th>
-<th align="right">CPA_A03</th>
-<th align="right">CPA_B</th>
-<th align="right">CPA_C10-12</th>
-<th align="right">CPA_C13-15</th>
-<th align="right">CPA_C16</th>
+<tr>
+<th style="text-align:left;">
+prod_na
+</th>
+<th style="text-align:right;">
+CPA_A01
+</th>
+<th style="text-align:right;">
+CPA_A02
+</th>
+<th style="text-align:right;">
+CPA_A03
+</th>
+<th style="text-align:right;">
+CPA_B
+</th>
+<th style="text-align:right;">
+CPA_C10-12
+</th>
+<th style="text-align:right;">
+CPA_C13-15
+</th>
+<th style="text-align:right;">
+CPA_C16
+</th>
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
-<td align="left">TOTAL</td>
-<td align="right">1.2561017</td>
-<td align="right">0.9095971</td>
-<td align="right">0.9757319</td>
-<td align="right">0.7068679</td>
-<td align="right">1.4120468</td>
-<td align="right">0.9686957</td>
-<td align="right">1.4455340</td>
+<tr>
+<td style="text-align:left;">
+TOTAL_multiplier
+</td>
+<td style="text-align:right;">
+2.7349
+</td>
+<td style="text-align:right;">
+2.4817
+</td>
+<td style="text-align:right;">
+2.6584
+</td>
+<td style="text-align:right;">
+2.6774
+</td>
+<td style="text-align:right;">
+2.6756
+</td>
+<td style="text-align:right;">
+2.6720
+</td>
+<td style="text-align:right;">
+2.5171
+</td>
 </tr>
-<tr class="even">
-<td align="left">P7</td>
-<td align="right">0.6449092</td>
-<td align="right">0.3110603</td>
-<td align="right">1.1123654</td>
-<td align="right">1.1035569</td>
-<td align="right">0.8440651</td>
-<td align="right">1.1711540</td>
-<td align="right">0.5676242</td>
+<tr>
+<td style="text-align:left;">
+P7_multiplier
+</td>
+<td style="text-align:right;">
+4.3810
+</td>
+<td style="text-align:right;">
+5.3101
+</td>
+<td style="text-align:right;">
+2.3346
+</td>
+<td style="text-align:right;">
+1.2878
+</td>
+<td style="text-align:right;">
+2.4907
+</td>
+<td style="text-align:right;">
+1.8916
+</td>
+<td style="text-align:right;">
+4.4461
+</td>
 </tr>
-<tr class="odd">
-<td align="left">D1</td>
-<td align="right">0.3302783</td>
-<td align="right">0.2198322</td>
-<td align="right">0.3064094</td>
-<td align="right">0.2282996</td>
-<td align="right">0.3217079</td>
-<td align="right">0.2688365</td>
-<td align="right">0.2943414</td>
+<tr>
+<td style="text-align:left;">
+D1_multiplier
+</td>
+<td style="text-align:right;">
+2.5807
+</td>
+<td style="text-align:right;">
+2.7261
+</td>
+<td style="text-align:right;">
+2.0634
+</td>
+<td style="text-align:right;">
+1.6869
+</td>
+<td style="text-align:right;">
+3.8260
+</td>
+<td style="text-align:right;">
+2.5307
+</td>
+<td style="text-align:right;">
+3.3160
+</td>
 </tr>
-<tr class="even">
-<td align="left">D11</td>
-<td align="right">0.2529743</td>
-<td align="right">0.1687371</td>
-<td align="right">0.2323133</td>
-<td align="right">0.1703819</td>
-<td align="right">0.2452468</td>
-<td align="right">0.2035211</td>
-<td align="right">0.2245277</td>
+<tr>
+<td style="text-align:left;">
+D11_multiplier
+</td>
+<td style="text-align:right;">
+2.5562
+</td>
+<td style="text-align:right;">
+2.6990
+</td>
+<td style="text-align:right;">
+2.0474
+</td>
+<td style="text-align:right;">
+1.7224
+</td>
+<td style="text-align:right;">
+3.8490
+</td>
+<td style="text-align:right;">
+2.5445
+</td>
+<td style="text-align:right;">
+3.3161
+</td>
 </tr>
-<tr class="odd">
-<td align="left">D29X39</td>
-<td align="right">-0.1285149</td>
-<td align="right">-0.0070038</td>
-<td align="right">-0.0920556</td>
-<td align="right">-0.0030945</td>
-<td align="right">-0.0464235</td>
-<td align="right">-0.0088375</td>
-<td align="right">-0.0022413</td>
+<tr>
+<td style="text-align:left;">
+D29X39_multiplier
+</td>
+<td style="text-align:right;">
+1.2222
+</td>
+<td style="text-align:right;">
+1.4523
+</td>
+<td style="text-align:right;">
+1.0535
+</td>
+<td style="text-align:right;">
+1.1609
+</td>
+<td style="text-align:right;">
+1695.1985
+</td>
+<td style="text-align:right;">
+7.1750
+</td>
+<td style="text-align:right;">
+-6.9818
+</td>
 </tr>
-<tr class="even">
-<td align="left">P51C</td>
-<td align="right">0.1772010</td>
-<td align="right">0.1256865</td>
-<td align="right">0.1568444</td>
-<td align="right">0.1258090</td>
-<td align="right">0.1588809</td>
-<td align="right">0.1273670</td>
-<td align="right">0.1470882</td>
+<tr>
+<td style="text-align:left;">
+P51C_multiplier
+</td>
+<td style="text-align:right;">
+2.4184
+</td>
+<td style="text-align:right;">
+2.4343
+</td>
+<td style="text-align:right;">
+2.2227
+</td>
+<td style="text-align:right;">
+1.8254
+</td>
+<td style="text-align:right;">
+4.7038
+</td>
+<td style="text-align:right;">
+2.9675
+</td>
+<td style="text-align:right;">
+3.8517
+</td>
 </tr>
 </tbody>
 </table>
 </div>
 <div id="employment-indicators-and-multipliers" class="section level3">
 <h3>Employment indicators and multipliers</h3>
-<p>The creation of the employment indicator is fascilitated with the data processing function <code>employment_get</code>. The employment data as input data is not part of the Eurostat SIOT files, and the Eurostat employment data uses a more disaggregated structure. This function downloads and brings the employment data to conforming aggregate vector.</p>
+<p>The creation of the employment indicator is facilitated with the data processing function <code>employment_get</code>. The employment data as input data is not part of the Eurostat SIOT files, and the Eurostat employment data uses a more disaggregated structure. This function downloads and brings the employment data to conforming aggregate vector.</p>
 <p>Other inputs, for example, CO2 emissions may be used, but they are likely to be need a manual aggregation. The helper function <code>conforming_vector_create</code> will create an empty vector that you can save as a .csv or Excel file and fill up manually with customary input data.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">message</span>(<span class="st">&quot;Slovak Republic&quot;</span>)
-<span class="co">#&gt; Slovak Republic</span>
-emp_indicator_sk  &lt;-<span class="st"> </span><span class="kw">input_indicator_create</span>( 
-  <span class="dt">input_matrix =</span> emp_sk, 
-  <span class="dt">output_vector =</span> sk_output)
-<span class="co">#&gt; Warning in input_indicator_create(input_matrix = emp_sk, output_vector =</span>
-<span class="co">#&gt; sk_output): Warning: Zero output in CPA_L68A is changed to 0.000001.</span>
-<span class="co">#&gt; Warning in input_indicator_create(input_matrix = emp_sk, output_vector =</span>
-<span class="co">#&gt; sk_output): Warning: Zero output in CPA_T is changed to 0.000001.</span>
-<span class="co">#&gt; Warning in input_indicator_create(input_matrix = emp_sk, output_vector =</span>
-<span class="co">#&gt; sk_output): Warning: Zero output in CPA_U is changed to 0.000001.</span>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#New function is needed to add employment vector to SIOT</span>
+<span class="kw">names</span> ( emp_sk )[<span class="dv">1</span>] &lt;-<span class="st"> 'prod_na'</span>
+<span class="kw">names</span> ( emp_cz )[<span class="dv">1</span>] &lt;-<span class="st"> 'prod_na'</span>
 
-<span class="kw">message</span>(<span class="st">&quot;</span><span class="ch">\n</span><span class="st">Czech Republic&quot;</span>)
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Czech Republic</span>
-emp_indicator_cz  &lt;-<span class="st"> </span><span class="kw">input_indicator_create</span>( 
-  <span class="dt">input_matrix =</span> emp_cz, 
-  <span class="dt">output_vector =</span> cz_output)
+emp_indicator_sk &lt;-<span class="st"> </span><span class="kw">rbind</span> ( 
+  sk_io[, <span class="dv">1</span><span class="op">:</span><span class="dv">66</span>], 
+  emp_sk) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">coefficient_matrix_create</span>(., 
+       <span class="dt">return_part =</span> <span class="st">'primary_inputs'</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">filter</span> ( prod_na <span class="op">==</span><span class="st"> &quot;employment_total&quot;</span> )
 
-<span class="kw">message</span>(<span class="st">&quot;</span><span class="ch">\n</span><span class="st">Slovak Republic&quot;</span>)
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Slovak Republic</span>
-employment_multipliers_sk &lt;-<span class="st"> </span><span class="kw">multiplier_create</span> ( 
-  <span class="dt">input_vector    =</span> emp_indicator_sk,
-  <span class="dt">Im              =</span> I_sk,
-  <span class="dt">multiplier_name =</span> <span class="st">&quot;employment_multiplier&quot;</span>, 
-  <span class="dt">digits =</span> <span class="dv">4</span> ) <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span>tidyr<span class="op">::</span><span class="kw">gather</span> (industry, values, <span class="op">!!</span><span class="dv">2</span><span class="op">:</span><span class="kw">ncol</span>(.))
-<span class="co">#&gt; Warning in equation_solve(LHS = input_vector, Im = Im): CPA_L68A,CPA_T,CPA_U from the input vector is removed. These are likely zero values, </span>
-<span class="co">#&gt; and cannot be found in the Leontieff-inverse.</span>
+emp_indicator_cz &lt;-<span class="st"> </span><span class="kw">full_join</span> ( 
+  cz_io, 
+  emp_cz) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">coefficient_matrix_create</span>(., 
+       <span class="dt">return_part =</span> <span class="st">'primary_inputs'</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">filter</span> ( prod_na <span class="op">==</span><span class="st"> &quot;employment_total&quot;</span> )
+<span class="co">#&gt; Warning: Column `prod_na` joining factors with different levels, coercing</span>
+<span class="co">#&gt; to character vector</span>
 
-<span class="kw">message</span>(<span class="st">&quot;</span><span class="ch">\n</span><span class="st">Czech Republic&quot;</span>)
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Czech Republic</span>
-employment_multipliers_cz &lt;-<span class="st"> </span><span class="kw">multiplier_create</span> ( 
-  <span class="dt">input_vector    =</span> emp_indicator_cz,
-  <span class="dt">Im              =</span> I_cz,
-  <span class="dt">multiplier_name =</span> <span class="st">&quot;employment_multiplier&quot;</span>, 
-  <span class="dt">digits =</span> <span class="dv">4</span> ) <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span>tidyr<span class="op">::</span><span class="kw">gather</span> (industry, values, <span class="op">!!</span><span class="dv">2</span><span class="op">:</span><span class="kw">ncol</span>(.)) <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span>dplyr<span class="op">::</span><span class="kw">mutate</span> ( <span class="dt">values =</span> values <span class="op">*</span><span class="st"> </span><span class="dv">1000</span> )
 
-knitr<span class="op">::</span><span class="kw">kable</span> (<span class="kw">head</span>(employment_multipliers_cz))</code></pre></div>
+emp_effect_sk &lt;-<span class="st"> </span><span class="kw">direct_effects_create</span>( emp_indicator_sk, I_sk )  
+emp_effect_cz &lt;-<span class="st"> </span><span class="kw">direct_effects_create</span>( emp_indicator_cz, I_cz )  
+
+knitr<span class="op">::</span><span class="kw">kable</span> (emp_effect_cz[<span class="dv">1</span><span class="op">:</span><span class="dv">8</span>], <span class="dt">digits =</span> <span class="dv">5</span>)</code></pre></div>
 <table>
 <thead>
-<tr class="header">
-<th align="left">prod_na</th>
-<th align="left">industry</th>
-<th align="right">values</th>
+<tr>
+<th style="text-align:left;">
+prod_na
+</th>
+<th style="text-align:right;">
+CPA_A01
+</th>
+<th style="text-align:right;">
+CPA_A02
+</th>
+<th style="text-align:right;">
+CPA_A03
+</th>
+<th style="text-align:right;">
+CPA_B
+</th>
+<th style="text-align:right;">
+CPA_C10-12
+</th>
+<th style="text-align:right;">
+CPA_C13-15
+</th>
+<th style="text-align:right;">
+CPA_C16
+</th>
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
-<td align="left">employment_multiplier</td>
-<td align="left">CPA_A01</td>
-<td align="right">1.2</td>
+<tr>
+<td style="text-align:left;">
+employment_total_effect
+</td>
+<td style="text-align:right;">
+0.00121
+</td>
+<td style="text-align:right;">
+0.00111
+</td>
+<td style="text-align:right;">
+0.0024
+</td>
+<td style="text-align:right;">
+0.0011
+</td>
+<td style="text-align:right;">
+0.00119
+</td>
+<td style="text-align:right;">
+0.00155
+</td>
+<td style="text-align:right;">
+0.00137
+</td>
 </tr>
-<tr class="even">
-<td align="left">employment_multiplier</td>
-<td align="left">CPA_A02</td>
-<td align="right">1.1</td>
+</tbody>
+</table>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#New function is needed to add employment vector to SIOT</span>
+
+emp_multiplier_sk &lt;-<span class="st"> </span><span class="kw">input_multipliers_create</span>( emp_indicator_sk, I_sk )  
+emp_multiplier_cz &lt;-<span class="st"> </span><span class="kw">input_multipliers_create</span>( emp_indicator_cz, I_cz )  
+
+knitr<span class="op">::</span><span class="kw">kable</span> (emp_multiplier_cz[<span class="dv">1</span><span class="op">:</span><span class="dv">8</span>], <span class="dt">digits=</span><span class="dv">5</span>)</code></pre></div>
+<table>
+<thead>
+<tr>
+<th style="text-align:left;">
+prod_na
+</th>
+<th style="text-align:right;">
+CPA_A01
+</th>
+<th style="text-align:right;">
+CPA_A02
+</th>
+<th style="text-align:right;">
+CPA_A03
+</th>
+<th style="text-align:right;">
+CPA_B
+</th>
+<th style="text-align:right;">
+CPA_C10-12
+</th>
+<th style="text-align:right;">
+CPA_C13-15
+</th>
+<th style="text-align:right;">
+CPA_C16
+</th>
 </tr>
-<tr class="odd">
-<td align="left">employment_multiplier</td>
-<td align="left">CPA_A03</td>
-<td align="right">2.4</td>
-</tr>
-<tr class="even">
-<td align="left">employment_multiplier</td>
-<td align="left">CPA_B</td>
-<td align="right">1.1</td>
-</tr>
-<tr class="odd">
-<td align="left">employment_multiplier</td>
-<td align="left">CPA_C10-12</td>
-<td align="right">1.2</td>
-</tr>
-<tr class="even">
-<td align="left">employment_multiplier</td>
-<td align="left">CPA_C13-15</td>
-<td align="right">1.5</td>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+employment_total_multiplier
+</td>
+<td style="text-align:right;">
+2.19587
+</td>
+<td style="text-align:right;">
+1.75467
+</td>
+<td style="text-align:right;">
+1.3926
+</td>
+<td style="text-align:right;">
+1.81069
+</td>
+<td style="text-align:right;">
+3.10277
+</td>
+<td style="text-align:right;">
+2.03429
+</td>
+<td style="text-align:right;">
+2.49164
+</td>
 </tr>
 </tbody>
 </table>
@@ -658,30 +1168,62 @@ knitr<span class="op">::</span><span class="kw">kable</span> (<span class="kw">h
 output_multipliers_cz &lt;-<span class="st"> </span><span class="kw">output_multiplier_create</span> (input_coeff_matrix_cz)
 output_multipliers_sk &lt;-<span class="st"> </span><span class="kw">output_multiplier_create</span> (input_coeff_matrix_sk)
 
-knitr<span class="op">::</span><span class="kw">kable</span> (<span class="kw">head</span>(output_multipliers_cz[,<span class="dv">1</span><span class="op">:</span><span class="dv">8</span>]))</code></pre></div>
+knitr<span class="op">::</span><span class="kw">kable</span> (<span class="kw">head</span>(output_multipliers_cz[,<span class="dv">1</span><span class="op">:</span><span class="dv">8</span>]), <span class="dt">digits=</span><span class="dv">4</span>)</code></pre></div>
 <table>
 <thead>
-<tr class="header">
-<th align="left">prod_na</th>
-<th align="right">CPA_A01</th>
-<th align="right">CPA_A02</th>
-<th align="right">CPA_A03</th>
-<th align="right">CPA_B</th>
-<th align="right">CPA_C10-12</th>
-<th align="right">CPA_C13-15</th>
-<th align="right">CPA_C16</th>
+<tr>
+<th style="text-align:left;">
+prod_na
+</th>
+<th style="text-align:right;">
+CPA_A01
+</th>
+<th style="text-align:right;">
+CPA_A02
+</th>
+<th style="text-align:right;">
+CPA_A03
+</th>
+<th style="text-align:right;">
+CPA_B
+</th>
+<th style="text-align:right;">
+CPA_C10-12
+</th>
+<th style="text-align:right;">
+CPA_C13-15
+</th>
+<th style="text-align:right;">
+CPA_C16
+</th>
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
-<td align="left">output_multipliers</td>
-<td align="right">2.683423</td>
-<td align="right">2.095209</td>
-<td align="right">2.687039</td>
-<td align="right">2.306556</td>
-<td align="right">3.010506</td>
-<td align="right">2.740315</td>
-<td align="right">2.834624</td>
+<tr>
+<td style="text-align:left;">
+output_multipliers
+</td>
+<td style="text-align:right;">
+2.6834
+</td>
+<td style="text-align:right;">
+2.0952
+</td>
+<td style="text-align:right;">
+2.687
+</td>
+<td style="text-align:right;">
+2.3066
+</td>
+<td style="text-align:right;">
+3.0105
+</td>
+<td style="text-align:right;">
+2.7403
+</td>
+<td style="text-align:right;">
+2.8346
+</td>
 </tr>
 </tbody>
 </table>
@@ -696,30 +1238,62 @@ knitr<span class="op">::</span><span class="kw">kable</span> (<span class="kw">h
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">cz_bw &lt;-<span class="st"> </span><span class="kw">backward_linkages</span>(I_cz)
 sk_bw &lt;-<span class="st"> </span><span class="kw">backward_linkages</span>(I_sk)
 
-knitr<span class="op">::</span><span class="kw">kable</span> (<span class="kw">head</span>(cz_bw[,<span class="dv">1</span><span class="op">:</span><span class="dv">8</span>]))</code></pre></div>
+knitr<span class="op">::</span><span class="kw">kable</span> (<span class="kw">head</span>(cz_bw[,<span class="dv">1</span><span class="op">:</span><span class="dv">8</span>]), <span class="dt">digits=</span><span class="dv">4</span>)</code></pre></div>
 <table>
 <thead>
-<tr class="header">
-<th align="left">prod_na</th>
-<th align="right">CPA_A01</th>
-<th align="right">CPA_A02</th>
-<th align="right">CPA_A03</th>
-<th align="right">CPA_B</th>
-<th align="right">CPA_C10-12</th>
-<th align="right">CPA_C13-15</th>
-<th align="right">CPA_C16</th>
+<tr>
+<th style="text-align:left;">
+prod_na
+</th>
+<th style="text-align:right;">
+CPA_A01
+</th>
+<th style="text-align:right;">
+CPA_A02
+</th>
+<th style="text-align:right;">
+CPA_A03
+</th>
+<th style="text-align:right;">
+CPA_B
+</th>
+<th style="text-align:right;">
+CPA_C10-12
+</th>
+<th style="text-align:right;">
+CPA_C13-15
+</th>
+<th style="text-align:right;">
+CPA_C16
+</th>
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
-<td align="left">backward linkages</td>
-<td align="right">2.683423</td>
-<td align="right">2.095209</td>
-<td align="right">2.687039</td>
-<td align="right">2.306556</td>
-<td align="right">3.010506</td>
-<td align="right">2.740315</td>
-<td align="right">2.834624</td>
+<tr>
+<td style="text-align:left;">
+backward linkages
+</td>
+<td style="text-align:right;">
+2.6834
+</td>
+<td style="text-align:right;">
+2.0952
+</td>
+<td style="text-align:right;">
+2.687
+</td>
+<td style="text-align:right;">
+2.3066
+</td>
+<td style="text-align:right;">
+3.0105
+</td>
+<td style="text-align:right;">
+2.7403
+</td>
+<td style="text-align:right;">
+2.8346
+</td>
 </tr>
 </tbody>
 </table>
@@ -727,129 +1301,18 @@ knitr<span class="op">::</span><span class="kw">kable</span> (<span class="kw">h
 <div id="forward-linkages" class="section level2">
 <h2>Forward linkages</h2>
 <p>Forward linkages show the effects on other industries that use the product (industry output) at question as an input. Forward linkages can be derived from the ouput coefficient table.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">
-output_coeff_cz &lt;-<span class="st"> </span><span class="kw">output_coefficient_matrix_create</span>( 
-  <span class="dt">io_table =</span> cz_io, <span class="dt">type =</span> <span class="st">&quot;final_demand&quot;</span>, <span class="dt">digits =</span> <span class="dv">4</span>)
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">output_coeff_cz &lt;-<span class="st"> </span><span class="kw">output_coefficient_matrix_create</span>( 
+  <span class="dt">io_table =</span> cz_io, <span class="dt">total =</span> <span class="st">&quot;tfu&quot;</span>, <span class="dt">digits =</span> <span class="dv">4</span>)
 
 output_coeff_sk &lt;-<span class="st"> </span><span class="kw">output_coefficient_matrix_create</span>( 
-  <span class="dt">io_table =</span> sk_io, <span class="dt">type =</span> <span class="st">&quot;final_demand&quot;</span>)
+  <span class="dt">io_table =</span> sk_io, <span class="dt">total =</span> <span class="st">&quot;tfu&quot;</span>)
 
 knitr<span class="op">::</span><span class="kw">kable</span> (<span class="kw">head</span>(output_coeff_cz[,<span class="dv">1</span><span class="op">:</span><span class="dv">8</span>]))</code></pre></div>
-<table>
-<thead>
-<tr class="header">
-<th align="left">prod_na</th>
-<th align="right">CPA_A01</th>
-<th align="right">CPA_A02</th>
-<th align="right">CPA_A03</th>
-<th align="right">CPA_B</th>
-<th align="right">CPA_C10-12</th>
-<th align="right">CPA_C13-15</th>
-<th align="right">CPA_C16</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td align="left">CPA_A01</td>
-<td align="right">0.2408</td>
-<td align="right">0.0028</td>
-<td align="right">0.0003</td>
-<td align="right">0.0003</td>
-<td align="right">0.8878</td>
-<td align="right">0.0308</td>
-<td align="right">0.0025</td>
-</tr>
-<tr class="even">
-<td align="left">CPA_A02</td>
-<td align="right">0.0280</td>
-<td align="right">0.3063</td>
-<td align="right">0.0005</td>
-<td align="right">0.0069</td>
-<td align="right">0.0040</td>
-<td align="right">0.0011</td>
-<td align="right">1.0091</td>
-</tr>
-<tr class="odd">
-<td align="left">CPA_A03</td>
-<td align="right">0.0000</td>
-<td align="right">0.0000</td>
-<td align="right">0.0000</td>
-<td align="right">0.0000</td>
-<td align="right">0.0777</td>
-<td align="right">0.0000</td>
-<td align="right">0.0000</td>
-</tr>
-<tr class="even">
-<td align="left">CPA_B</td>
-<td align="right">0.0028</td>
-<td align="right">0.0025</td>
-<td align="right">0.0051</td>
-<td align="right">0.0534</td>
-<td align="right">0.0033</td>
-<td align="right">0.0015</td>
-<td align="right">0.0004</td>
-</tr>
-<tr class="odd">
-<td align="left">CPA_C10-12</td>
-<td align="right">0.0818</td>
-<td align="right">0.0001</td>
-<td align="right">0.0002</td>
-<td align="right">0.0000</td>
-<td align="right">0.1279</td>
-<td align="right">0.0001</td>
-<td align="right">0.0001</td>
-</tr>
-<tr class="even">
-<td align="left">CPA_C13-15</td>
-<td align="right">0.0097</td>
-<td align="right">0.0082</td>
-<td align="right">0.0001</td>
-<td align="right">0.0046</td>
-<td align="right">0.0043</td>
-<td align="right">0.2117</td>
-<td align="right">0.0011</td>
-</tr>
-</tbody>
-</table>
 <p>From the output coefficient matrix we can create the Leontieff-matrix for outputs, its inverse, and summarize for forward linkages. These steps are taking place in the <code>forward_linkages</code> function.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">cz_fw &lt;-<span class="st"> </span><span class="kw">forward_linkages</span> ( output_coeff_cz )
 sk_fw &lt;-<span class="st"> </span><span class="kw">forward_linkages</span>( output_coeff_sk )
 
-knitr<span class="op">::</span><span class="kw">kable</span> (<span class="kw">head</span>(cz_fw))</code></pre></div>
-<table>
-<thead>
-<tr class="header">
-<th align="left">prod_na</th>
-<th align="right">forward_linkages</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td align="left">CPA_A01</td>
-<td align="right">5.158032</td>
-</tr>
-<tr class="even">
-<td align="left">CPA_A02</td>
-<td align="right">13.966916</td>
-</tr>
-<tr class="odd">
-<td align="left">CPA_A03</td>
-<td align="right">1.178119</td>
-</tr>
-<tr class="even">
-<td align="left">CPA_B</td>
-<td align="right">29.420766</td>
-</tr>
-<tr class="odd">
-<td align="left">CPA_C10-12</td>
-<td align="right">1.915754</td>
-</tr>
-<tr class="even">
-<td align="left">CPA_C13-15</td>
-<td align="right">4.940485</td>
-</tr>
-</tbody>
-</table>
+knitr<span class="op">::</span><span class="kw">kable</span> (<span class="kw">head</span>(cz_fw), <span class="dt">digits=</span><span class="dv">4</span>)</code></pre></div>
 </div>
 <div id="write-results-into-excel-files" class="section level2">
 <h2>Write results into Excel files</h2>
@@ -875,14 +1338,14 @@ xlsx<span class="op">::</span><span class="kw">write.xlsx</span> ( direct_cz, <s
 xlsx<span class="op">::</span><span class="kw">write.xlsx</span> ( multipliers_cz, <span class="dt">file =</span> cz_file_name, 
                    <span class="dt">sheetName =</span> <span class="st">&quot;multipliers_cz&quot;</span>,
                    <span class="dt">col.names=</span><span class="ot">TRUE</span>, <span class="dt">row.names=</span><span class="ot">TRUE</span>, <span class="dt">append=</span><span class="ot">TRUE</span>)
-xlsx<span class="op">::</span><span class="kw">write.xlsx</span> ( emp_cz, <span class="dt">file =</span> cz_file_name, 
-                   <span class="dt">sheetName =</span> <span class="st">&quot;emp_cz_2015&quot;</span>,
+xlsx<span class="op">::</span><span class="kw">write.xlsx</span> ( emp_effect_cz, <span class="dt">file =</span> cz_file_name, 
+                   <span class="dt">sheetName =</span> <span class="st">&quot;emp_effect_cz_2015&quot;</span>,
                    <span class="dt">col.names=</span><span class="ot">TRUE</span>, <span class="dt">row.names=</span><span class="ot">TRUE</span>, <span class="dt">append=</span><span class="ot">TRUE</span>)
 xlsx<span class="op">::</span><span class="kw">write.xlsx</span> ( emp_indicator_cz, <span class="dt">file =</span> cz_file_name, 
                    <span class="dt">sheetName =</span> <span class="st">&quot;emp_indicator_cz&quot;</span>,
                    <span class="dt">col.names=</span><span class="ot">TRUE</span>, <span class="dt">row.names=</span><span class="ot">TRUE</span>, <span class="dt">append=</span><span class="ot">TRUE</span>)
-xlsx<span class="op">::</span><span class="kw">write.xlsx</span> ( employment_multipliers_cz, <span class="dt">file =</span> cz_file_name, 
-                   <span class="dt">sheetName =</span> <span class="st">&quot;employment_multipliers_cz&quot;</span>,
+xlsx<span class="op">::</span><span class="kw">write.xlsx</span> ( emp_multiplier_cz, <span class="dt">file =</span> cz_file_name, 
+                   <span class="dt">sheetName =</span> <span class="st">&quot;emp_multiplier_cz&quot;</span>,
                    <span class="dt">col.names=</span><span class="ot">TRUE</span>, <span class="dt">row.names=</span><span class="ot">TRUE</span>, <span class="dt">append=</span><span class="ot">TRUE</span>)
 xlsx<span class="op">::</span><span class="kw">write.xlsx</span> ( cz_bw, <span class="dt">file =</span> cz_file_name, 
                    <span class="dt">sheetName =</span> <span class="st">&quot;cz_backward_linkages&quot;</span>,
@@ -917,13 +1380,13 @@ xlsx<span class="op">::</span><span class="kw">write.xlsx</span> ( direct_sk, <s
 xlsx<span class="op">::</span><span class="kw">write.xlsx</span> ( multipliers_sk, <span class="dt">file =</span> sk_file_name, 
                    <span class="dt">sheetName =</span> <span class="st">&quot;multipliers_sk&quot;</span>,
                    <span class="dt">col.names=</span><span class="ot">TRUE</span>, <span class="dt">row.names=</span><span class="ot">TRUE</span>, <span class="dt">append=</span><span class="ot">TRUE</span>)
-xlsx<span class="op">::</span><span class="kw">write.xlsx</span> ( emp_sk, <span class="dt">file =</span> sk_file_name, 
-                   <span class="dt">sheetName =</span> <span class="st">&quot;emp_sk_2015&quot;</span>,
+xlsx<span class="op">::</span><span class="kw">write.xlsx</span> ( emp_effect_sk, <span class="dt">file =</span> sk_file_name, 
+                   <span class="dt">sheetName =</span> <span class="st">&quot;emp_effect_sk_2015&quot;</span>,
                    <span class="dt">col.names=</span><span class="ot">TRUE</span>, <span class="dt">row.names=</span><span class="ot">TRUE</span>, <span class="dt">append=</span><span class="ot">TRUE</span>)
 xlsx<span class="op">::</span><span class="kw">write.xlsx</span> ( emp_indicator_sk,<span class="dt">file =</span> sk_file_name, 
                    <span class="dt">sheetName =</span> <span class="st">&quot;emp_indicator_sk&quot;</span>,
                    <span class="dt">col.names=</span><span class="ot">TRUE</span>, <span class="dt">row.names=</span><span class="ot">TRUE</span>, <span class="dt">append=</span><span class="ot">TRUE</span>)
-xlsx<span class="op">::</span><span class="kw">write.xlsx</span> ( employment_multipliers_sk, <span class="dt">file =</span> sk_file_name, 
+xlsx<span class="op">::</span><span class="kw">write.xlsx</span> ( emp_multiplier_sk, <span class="dt">file =</span> sk_file_name, 
                    <span class="dt">sheetName =</span> <span class="st">&quot;employment_multipliers_sk&quot;</span>,
                    <span class="dt">col.names=</span><span class="ot">TRUE</span>, <span class="dt">row.names=</span><span class="ot">TRUE</span>, <span class="dt">append=</span><span class="ot">TRUE</span>)
 xlsx<span class="op">::</span><span class="kw">write.xlsx</span> ( sk_bw, <span class="dt">file =</span> sk_file_name, 

@@ -10,26 +10,13 @@ context ("Creating an IO Table")
 #              unit = "MIO_NAC", data_directory = 'data-raw')
 
 
-
-test_that("get_iotable errors ", {
-  expect_error(iotable_get(source = 'germany_1990', 
-                              geo = 'DE', year = 1990, unit = "MIO_NAC")) #currency not found
-  expect_error(iotable_get(source = 'germany_1990', 
-                              geo = 'DE', year = 1787, unit = "MIO_EUR")) #no data for this year
-  expect_error(iotable_get(source = 'germany_1990', 
-                              geo = 'BE', year = 1990, unit = "MIO_EUR")) # no data for geographical unit
-  expect_error(iotable_get(source = 'germany_1990', 
-                           geo  = 'DE', year = 1990, 
-                           unit = "MIO_EUR", labelling = "biotables")) # no such labelling
-})
-
 test_that("correct data is returned", {
   expect_equal(iotable_get(source = 'germany_1990', 
                            geo = 'DE', year = 1990, 
                            unit = "MIO_EUR", labelling = "iotables")[1,2], 1131)
   expect_equal(as.character(iotable_get(source = 'germany_1990', 
                            geo = 'DE', year = 1990, 
-                           unit = "MIO_EUR", labelling = 'short')[4,1]), "cpa_g_i")
+                           unit = "MIO_EUR", labelling = 'short')[4,1]), "CPA_G-I")
   expect_equal(as.numeric(iotable_get ( source = "croatia_2010_1800", geo = "HR",
                                         year = 2010, unit = "T_NAC")[1,3]), 
                expected = 164159,  tolerance = 0.6)
@@ -57,7 +44,7 @@ germany_table <- iotable_get(source = 'germany_1990',
             geo = 'DE', year = 1990, 
             unit = "MIO_EUR", labelling = "iotables")
 
-hh <- germany_table$consumption_expenditure_household[which( germany_table$iotables_row == "output_bp")]
+hh <- germany_table$final_consumption_households[which( germany_table$iotables_row == "output")]
 
 test_that("correct data is returned for private consumption", {
   expect_equal(hh, 1001060)

@@ -4,17 +4,25 @@
 \alias{input_coefficient_matrix_create}
 \title{Create an input coefficient matrix}
 \usage{
-input_coefficient_matrix_create(input_flow, output, digits = NULL)
+input_coefficient_matrix_create(data_table, households = FALSE,
+  digits = NULL)
 }
 \arguments{
-\item{input_flow}{An input flow matrix created with the 
-\code{\link{use_table_get}} function.}
+\item{data_table}{A symmetric input-output table, a use table, 
+a margins or tax table retrieved by the \code{\link{iotable_get}}
+ function.}
 
-\item{output}{An output vector with a key column, created by
-\code{\link{output_get}}.}
+\item{households}{Defaults to \code{NULL}. Household column can be added 
+with \code{TRUE}.}
 
 \item{digits}{An integer showing the precision of the technology matrix in 
 digits. Default is \code{NULL} when no rounding is applied.}
+}
+\value{
+A data frame that contains the matrix of first quadrant of the use table as
+\code{input_flow} divided by \code{output} supported by a key column of 
+product or industries, with a key column. 
+Optionally the results are rounded to given \code{digits}.
 }
 \description{
 Create an input coefficient matrix from the input flow matrix and the
@@ -23,22 +31,23 @@ the same column names must be  found in the use table (input flow) and the
 output vector.
 }
 \details{
-If there are zero values in the output vector, they will be changed to 
-0.000001 and you will get a warning. Some analytical equations cannot be 
-solved with zero elements. You either have faulty input data, or you have 
-to use some sort of data modification to carry on your analysis.
+The terminology follows the 
+\href{http://ec.europa.eu/eurostat/documents/3859598/5902113/KS-RA-07-013-EN.PDF/b0b3d71e-3930-4442-94be-70b36cea9b39?version=1.0}{Eurostat Manual of Supply, Use and Input-Output Tables}.
+Input-Output Multipliers Specification Sheet and Supporting Material, Spicosa Project Report, 
+which cannot be linked due to a malformatted url, but can be found with a search engine.
+this matrix is called 'technological coefficients'. The results of the function are 
+tested on both sources.
 
-An alternative that is not implemented here, because it requires analytical
-judgment, is the aggregation of elements into larger ones that are no longer
-equal to zero, i.e. merging an industry or product class that has a positive 
-value with another industry or product class that is zero.
+This is a wrapper function around  \code{\link{coefficient_matrix_create}}.
 }
 \examples{
-de_use <- use_table_get ( source = "germany_1990", geo = "DE",
-                          year = 1990, unit = "MIO_EUR", 
-                          households = FALSE, labelling = "iotables")
+input_coefficient_matrix_create ( 
+                           iotable_get(), 
+                           digits = 4 )
+                           
+#This is a wrapper function and equivalent to                           
 
-de_output <- output_get ( source = "germany_1990", geo = "DE",
-                          year = 1990, unit = "MIO_EUR", 
-                          households = FALSE, labelling = "iotables")
+coefficient_matrix_create( iotable_get(), 
+                           total = "total", 
+                           return = "products")
 }
