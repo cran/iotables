@@ -7,10 +7,15 @@
 forward_linkages(output_coefficient_matrix, digits = NULL)
 }
 \arguments{
-\item{output_coefficient_matrix}{An output coefficient matrix created with the 
-\code{\link{output_coefficient_matrix_create}} function.}
+\item{output_coefficient_matrix}{An output coefficient matrix created 
+with the \code{\link{output_coefficient_matrix_create}} function.}
 
 \item{digits}{Number of decimals for rounding, defaults to \code{NULL}.}
+}
+\value{
+The vector of industry (product) forward linkages in a 
+long-form data.frame, containing the metadata column of the the row
+names from the \code{output_coefficient_matrix}.
 }
 \description{
 Forward linkages as defined by the Eurostat Manual of Supply, Use and
@@ -26,3 +31,8 @@ de_out <- output_coefficient_matrix_create (
 forward_linkages ( output_coefficient_matrix = de_out, 
                    digits = 4 )
 }
+\seealso{
+Other interindustrial linkage functions: 
+\code{\link{backward_linkages}()}
+}
+\concept{interindustrial linkage functions}

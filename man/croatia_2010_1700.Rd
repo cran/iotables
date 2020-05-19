@@ -4,7 +4,8 @@
 \name{croatia_2010_1700}
 \alias{croatia_2010_1700}
 \title{Input-output table for Croatia, 2010.}
-\format{A data frame with 13 variables. 
+\format{
+A data frame with 13 variables. 
 \describe{
   \item{t_rows2}{Technology codes in row names, following the Eurostat convention.}
   \item{t_rows2_lab}{Longer labels for t_rows2}
@@ -19,7 +20,8 @@
   \item{geo_lab}{ISO / Eurostat country name, Croatia.}
   \item{time}{Date of the SIOT}                    
   \item{values}{The actual values of the table in thousand kunas}  
-}}
+}
+}
 \source{
 \href{https://www.dzs.hr/Hrv_Eng/publication/2015/12-01-04_01_2015.xlsx}{Eurostat Manual of Supply, Use and Input-Output Tables} Updated 17 December 2015.
 }
@@ -30,8 +32,13 @@ data(croatia_2010_1700)
 1700 - Symmetric input-output table at basic prices (product x product)
 In thousand kunas (T_NAC)
 }
-\keyword{Croatia}
-\keyword{data,}
-\keyword{datasets,}
-\keyword{input-output}
-\keyword{table,}
+\seealso{
+Other Croatia 2010 datasets: 
+\code{\link{croatia_2010_1800}},
+\code{\link{croatia_2010_1900}},
+\code{\link{croatia_employment_2013}},
+\code{\link{croatia_employment_aggregation}},
+\code{\link{primary_inputs}}
+}
+\concept{Croatia 2010 datasets}
+\keyword{datasets}

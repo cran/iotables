@@ -10,6 +10,10 @@ conforming_vector_create(data_table)
 \item{data_table}{A use table, Leontieff-matrix, Leontieff-inverse,
 a coefficient matrix or other named matrix / vector.}
 }
+\value{
+A wide-format conforming vector of data frame class, 
+with column names matching the metadata of the \code{data_table}.
+}
 \description{
 This helper function creates you a named vector that conforms your
 analytical objects, such as the use table, the Leontieff-matrix, 
@@ -22,3 +26,10 @@ de_input_flow <- input_flow_get ( data_table = iotable_get())
 
 conforming_vector_create ( data_table = de_input_flow )
 }
+\seealso{
+Other iotables processing functions: 
+\code{\link{household_column_get}()},
+\code{\link{output_get}()},
+\code{\link{primary_input_get}()}
+}
+\concept{iotables processing functions}

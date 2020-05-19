@@ -4,9 +4,13 @@
 \alias{input_indicator_create}
 \title{Create input indicator(s)}
 \usage{
-input_indicator_create(data_table, input_vector = c("gva_bp",
-  "net_tax_production"), digits = NULL, households = FALSE,
-  indicator_names = NULL)
+input_indicator_create(
+  data_table,
+  input_vector = c("gva_bp", "net_tax_production"),
+  digits = NULL,
+  households = FALSE,
+  indicator_names = NULL
+)
 }
 \arguments{
 \item{data_table}{A symmetric input-output table, a use table, 
@@ -30,7 +34,8 @@ A tibble (data frame) containing  \code{input_matrix} devided by the \code{outpu
 with a key column for products or industries.
 }
 \description{
-The function creates the input indicators from the inputs and the outputs.
+The function creates the input indicators from the inputs and
+the outputs.
 }
 \examples{
  
@@ -39,3 +44,9 @@ input_indicator_create( data_table = iotable_get(),
                         digits = 4, 
                         indicator_names = c("GVA indicator", "Income indicator"))
 }
+\seealso{
+Other indicator functions: 
+\code{\link{coefficient_matrix_create}()},
+\code{\link{direct_effects_create}()}
+}
+\concept{indicator functions}

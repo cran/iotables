@@ -10,10 +10,15 @@ direct_effects_create(input_requirements, inverse, digits = NULL)
 \item{input_requirements}{A matrix or vector created by 
 \code{\link{input_indicator_create}}}
 
-\item{inverse}{A Leontieff-inverse created by \code{\link{leontieff_inverse_create}}.}
+\item{inverse}{A Leontieff-inverse created by 
+\code{\link{leontieff_inverse_create}}.}
 
 \item{digits}{Rounding digits, defaults to \code{NULL}, in which case 
 no rounding takes place.}
+}
+\value{
+A data.frame containing the direct effects and the necessary
+metadata to sort them or join them with other matrixes.
 }
 \description{
 The function creates the effects.
@@ -33,3 +38,9 @@ I_nl <- leontieff_inverse_create( input_coeff_nl )
 direct_effects_create(input_requirements = compensation_indicator, 
                            inverse = I_nl)
 }
+\seealso{
+Other indicator functions: 
+\code{\link{coefficient_matrix_create}()},
+\code{\link{input_indicator_create}()}
+}
+\concept{indicator functions}

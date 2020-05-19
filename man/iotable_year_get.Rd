@@ -2,11 +2,18 @@
 % Please edit documentation in R/iotable_year_get.R
 \name{iotable_year_get}
 \alias{iotable_year_get}
-\title{Get the available years for the input-output tables.}
+\title{Get Available Years For Input-Output Tables}
 \usage{
-iotable_year_get(labelled_io_data = NULL, source = "germany_1990",
-  geo = "DE", unit = "MIO_EUR", time_unit = "year",
-  stk_flow = "TOTAL", data_directory = NULL, force_download = TRUE)
+iotable_year_get(
+  labelled_io_data = NULL,
+  source = "germany_1990",
+  geo = "DE",
+  unit = "MIO_EUR",
+  time_unit = "year",
+  stk_flow = "TOTAL",
+  data_directory = NULL,
+  force_download = TRUE
+)
 }
 \arguments{
 \item{labelled_io_data}{If you have downloaded a bulk data file with 
@@ -24,7 +31,7 @@ at previous' years prices (naio_10_pyp1620)
 Table of taxes less subsidies on products at basic prices (naio_10_cp1630)    and
 at previous' years prices (naio_10_pyp1630)
 For further information consult the 
-\href{http://ec.europa.eu/eurostat/web/esa-supply-use-input-tables/methodology/symmetric-input-output-tables}{Eurostat Symmetric Input-Output Tables} page.}
+\href{https://ec.europa.eu/eurostat/web/esa-supply-use-input-tables/overview}{Eurostat Symmetric Input-Output Tables} page.}
 
 \item{geo}{A country code or a country name.  For example, \code{SK} or as \code{Slovakia}.}
 
@@ -45,6 +52,9 @@ parameter with \code{\link{iotable_get}} or \code{\link{iotables_download}}.}
 \item{force_download}{Defaults to \code{TRUE}. If \code{FALSE} it will use the existing 
 downloaded file in the \code{data_directory} or the temporary directory, 
 if it exists. Will force download only in a new session.}
+}
+\value{
+A vector with the years that have available input-output tables.
 }
 \description{
 The function selects the available tables by year or time as a date 

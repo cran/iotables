@@ -1,4 +1,4 @@
-#' Get the available years for the input-output tables.
+#' Get Available Years For Input-Output Tables
 #' 
 #' The function selects the available tables by year or time as a date 
 #' for a specific country and currency unit in the Eurostat bulk file.
@@ -14,7 +14,7 @@
 #' Table of taxes less subsidies on products at basic prices (naio_10_cp1630)	and
 #' at previous' years prices (naio_10_pyp1630)
 #' For further information consult the 
-#' \href{http://ec.europa.eu/eurostat/web/esa-supply-use-input-tables/methodology/symmetric-input-output-tables}{Eurostat Symmetric Input-Output Tables} page.
+#' \href{https://ec.europa.eu/eurostat/web/esa-supply-use-input-tables/overview}{Eurostat Symmetric Input-Output Tables} page.
 #' @param labelled_io_data If you have downloaded a bulk data file with 
 #' \code{\link{iotables_download}}, it is faster to work with the data
 #' in the memory. Defaults to \code{NULL} when  the data will be retrieved from
@@ -33,6 +33,7 @@
 #' @param force_download Defaults to \code{TRUE}. If \code{FALSE} it will use the existing 
 #' downloaded file in the \code{data_directory} or the temporary directory, 
 #' if it exists. Will force download only in a new session.
+#' @return A vector with the years that have available input-output tables.
 #' @importFrom magrittr %>%
 #' @importFrom dplyr filter select mutate rename left_join arrange mutate_if
 #' @importFrom tidyr spread
@@ -179,7 +180,7 @@ iotable_year_get <- function ( labelled_io_data = NULL,
   }
 
 
-###converting factors to characters------  
+ ## Converting factors to characters ------  
 
  selected_tables <- which (   ##get the number of table to be selected
       as.character(labelled_io_data$geo) == geo &
@@ -196,7 +197,8 @@ iotable_year_get <- function ( labelled_io_data = NULL,
    message ( "The following years are available for ", geo, " in ", unit , " currency units:\n", 
              paste(return_values, collapse = '; ' ), ".")
  } else { 
-   warning ( "No tables are available for ", geo, " in ", unit , " currency units.")
+   warning ( "No tables are available for ", 
+             geo, " in ", unit , " currency units.")
    }
   
  return_values

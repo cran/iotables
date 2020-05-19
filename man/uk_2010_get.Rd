@@ -14,8 +14,8 @@ uk_2010_get(path = NULL)
 \code{file.path()} function.}
 }
 \description{
-This function will retrieve any primary input from the input-output table.
-United Kingdom Input-Output Analytical Tables, 2010												
+This function will retrieve any primary input from the input-output 
+table: United Kingdom Input-Output Analytical Tables, 2010												
 (consistent with UK National Accounts Blue Book 2013 &
  UK Balance of Payments Pink Book 2013)							
 by Richard Wild.
@@ -25,3 +25,4 @@ by Richard Wild.
 uk2010 <- uk_2010_get()
 }
 }
+\keyword{internal}

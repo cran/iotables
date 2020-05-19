@@ -4,7 +4,8 @@
 \name{germany_1990}
 \alias{germany_1990}
 \title{Simple input-output table for Germany, 1990.}
-\format{A data frame with 228 observations and 10 variables.
+\format{
+A data frame with 228 observations and 10 variables.
 \describe{
   \item{prod_na}{Technology codes in row names, following the Eurostat convention.}
   \item{prod_na_lab}{Longer labels for t_rows2}
@@ -17,7 +18,8 @@
   \item{geo}{ISO / Eurostat country code for Germany, i.e. DE}
   \item{geo_lab}{ISO / Eurostat country name, Germany}
   \item{time}{Date of the SIOT}     
-}}
+}
+}
 \source{
 \href{http://ec.europa.eu/eurostat/documents/3859598/5902113/KS-RA-07-013-EN.PDF/b0b3d71e-3930-4442-94be-70b36cea9b39?version=1.0}{Eurostat Manual of Supply, Use and Input-Output Tables} p 492
 }
@@ -32,8 +34,11 @@ stores the highly structured SIOTs in long-form tidy datasets.
 The labels were slightly alterred to reflect the transition from the vocabulary
 of ESA95 to ESA2010 since the publication of the Manual.
 }
-\keyword{Germany}
-\keyword{data,}
-\keyword{datasets,}
-\keyword{input-output}
-\keyword{table,}
+\seealso{
+Other Validation datasets: 
+\code{\link{netherlands_2006}},
+\code{\link{uk_2010_data}},
+\code{\link{uk_test_results}}
+}
+\concept{Validation datasets}
+\keyword{datasets}

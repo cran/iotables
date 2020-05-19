@@ -4,8 +4,7 @@
 \alias{input_coefficient_matrix_create}
 \title{Create an input coefficient matrix}
 \usage{
-input_coefficient_matrix_create(data_table, households = FALSE,
-  digits = NULL)
+input_coefficient_matrix_create(data_table, households = FALSE, digits = NULL)
 }
 \arguments{
 \item{data_table}{A symmetric input-output table, a use table, 
@@ -23,6 +22,10 @@ A data frame that contains the matrix of first quadrant of the use table as
 \code{input_flow} divided by \code{output} supported by a key column of 
 product or industries, with a key column. 
 Optionally the results are rounded to given \code{digits}.
+
+An input coefficient matrix of data.frame class. 
+The column names are ordered, and the row names are in the 
+first, auxiliary metadata column.
 }
 \description{
 Create an input coefficient matrix from the input flow matrix and the

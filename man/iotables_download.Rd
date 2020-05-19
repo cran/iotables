@@ -4,8 +4,11 @@
 \alias{iotables_download}
 \title{Download input-output tables}
 \usage{
-iotables_download(source = "naio_10_cp1700", data_directory = NULL,
-  force_download = TRUE)
+iotables_download(
+  source = "naio_10_cp1700",
+  data_directory = NULL,
+  force_download = TRUE
+)
 }
 \arguments{
 \item{source}{See the available list of sources above in the Description.}
@@ -16,14 +19,25 @@ try to save the pre-processed data file here with labelling.}
 \item{force_download}{Defaults to \code{TRUE}. If \code{FALSE} it will use the existing downloaded file
 in the \code{data_directory} or the temporary directory, if it exists.}
 }
+\value{
+A nested data frame. Each input-output table is in a separate 
+row of the nested output, where all the metadata are in columns, and the
+actual, tidy, ordered input-output table is in the data \code{data} column.
+The data is saved into the actual \code{tempdir()}, too.
+}
 \description{
 This function downloads standard input-output table files. Currently only Eurostat files are supported.
-You are not likely to use this function, because \code{\link{iotable_get}} will
-call this function if necessary and properly filter out an input-output table.
-The only parameter is the Eurostat code of the table.
+You are not likely to use this function, because 
+\code{\link{iotable_get}} will
+call this function if necessary and properly filter out an 
+input-output table.
+}
+\details{
 The data is downloaded in the \code{tempdir()}under the name the statistical product as an
 rds file. (For example: \code{naio_10_cp1750.rds})
+
 The temporary directory is emptied at every normal R session exit.
+
 To save the file for further use (which is necessary in analytical work because
 download times are long) set the  \code{download_directory} [see parameters]. 
 The function will make a copy of the rds file in this directory.
@@ -40,7 +54,7 @@ The function will make a copy of the rds file in this directory.
  \item{\code{naio_10_pyp1620}}{ Table of trade and transport margins at previous years' prices}
  \item{\code{naio_10_cp1630}}{ Table of taxes less subsidies on products at basic prices}
  \item{\code{naio_10_pyp1630}}{Table of taxes less subsidies on products at previous years' prices}
- \item{\code{uk_2010_siot}}{United Kingdom Input-Output Analytcal Tables data}
+ \item{\code{uk_2010_siot}}{United Kingdom Input-Output Analytical Tables data}
 }
 }
 \examples{
@@ -48,3 +62,11 @@ The function will make a copy of the rds file in this directory.
  io_tables <- iotables_download ( source = "naio_10_cp1700" )
  }
 }
+\seealso{
+Other iotables import functions: 
+\code{\link{employment_get}()},
+\code{\link{iotable_get}()},
+\code{\link{iotables_metadata_get}()},
+\code{\link{iotables_read_tempdir}()}
+}
+\concept{iotables import functions}

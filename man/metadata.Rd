@@ -4,7 +4,8 @@
 \name{metadata}
 \alias{metadata}
 \title{Metadata}
-\format{A data frame with 8 variables.
+\format{
+A data frame with 8 variables.
 \describe{
   \item{variable}{Eurostat vocabulary source, i.e. t_rows, t_cols, prod_na, induse}
   \item{group}{ Informal labelling for macroeconomic groups }
@@ -14,7 +15,8 @@
   \item{account_group}{Different from Eurostat tables, in thousand national currency units.}
   \item{numeric_label}{ ordering from quadrant, account_group, digit_1, digit_2}     
   \item{iotables_label}{Custom, machine_readable snake format variable names}                     
-}}
+}
+}
 \usage{
 data(metadata)
 }
@@ -22,9 +24,10 @@ data(metadata)
 An arrangement of the Eurostat national accounts vocabulary, used to correctly
 order wide format rows and columns from bulk long-form tables.
 }
-\keyword{data,}
-\keyword{datasets,}
-\keyword{input-output}
-\keyword{metadata,}
-\keyword{table,}
-\keyword{vocabulary}
+\seealso{
+Other Metadata datasets: 
+\code{\link{employment_metadata}},
+\code{\link{metadata_uk_2010}}
+}
+\concept{Metadata datasets}
+\keyword{datasets}

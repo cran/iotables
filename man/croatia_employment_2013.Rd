@@ -4,12 +4,14 @@
 \name{croatia_employment_2013}
 \alias{croatia_employment_2013}
 \title{Croatian employment data for the year 2013}
-\format{A data frame with 107 observations in 2 variables:
+\format{
+A data frame with 107 observations in 2 variables:
 \describe{
   \item{code}{Short labels}
   \item{iotables_row}{iotables style labels}
   \item{employment}{Employment in the sector in Croatia, not in thousands!}
-}}
+}
+}
 \usage{
 data(croatia_employment_2013)
 }
@@ -17,7 +19,13 @@ data(croatia_employment_2013)
 Aggregate Croatian detailed employment statistics into the Croatian (EU standard)
 Symmetric input-output table format.
 }
-\keyword{Croatia,}
-\keyword{data,}
-\keyword{datasets,}
-\keyword{employmnet}
+\seealso{
+Other Croatia 2010 datasets: 
+\code{\link{croatia_2010_1700}},
+\code{\link{croatia_2010_1800}},
+\code{\link{croatia_2010_1900}},
+\code{\link{croatia_employment_aggregation}},
+\code{\link{primary_inputs}}
+}
+\concept{Croatia 2010 datasets}
+\keyword{datasets}

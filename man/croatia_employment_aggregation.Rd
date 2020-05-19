@@ -4,11 +4,13 @@
 \name{croatia_employment_aggregation}
 \alias{croatia_employment_aggregation}
 \title{Aggregation table for Croatian employment statistics}
-\format{A data frame with 105 rows (including empty ones) and 2 variables.
+\format{
+A data frame with 105 rows (including empty ones) and 2 variables.
 \describe{
   \item{employment_label}{Labelling in DZS English language export}
   \item{t_cols2}{Labelling of EU/DZS SIOTs.}
-}}
+}
+}
 \usage{
 data(croatia_employment_aggregation)
 }
@@ -16,10 +18,13 @@ data(croatia_employment_aggregation)
 Aggregate Croatian detailed employment statistics into the Croatian (EU standard)
 Symmetric input-output table format.
 }
-\keyword{Croatia,}
-\keyword{data,}
-\keyword{datasets,}
-\keyword{employmnet}
-\keyword{input-output}
-\keyword{metadata,}
-\keyword{table,}
+\seealso{
+Other Croatia 2010 datasets: 
+\code{\link{croatia_2010_1700}},
+\code{\link{croatia_2010_1800}},
+\code{\link{croatia_2010_1900}},
+\code{\link{croatia_employment_2013}},
+\code{\link{primary_inputs}}
+}
+\concept{Croatia 2010 datasets}
+\keyword{datasets}

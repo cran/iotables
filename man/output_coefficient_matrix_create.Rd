@@ -4,8 +4,7 @@
 \alias{output_coefficient_matrix_create}
 \title{Create an output coefficient matrix}
 \usage{
-output_coefficient_matrix_create(io_table, total = "tfu",
-  digits = NULL)
+output_coefficient_matrix_create(io_table, total = "tfu", digits = NULL)
 }
 \arguments{
 \item{io_table}{A symmetric input-output table or use table created with the
@@ -21,6 +20,11 @@ coefficients for final demand. See Eurostat Manual, p495 and p507.}
 
 \item{digits}{An integer showing the precision of the technology matrix in 
 digits. Default is \code{NULL} when no rounding is applied.}
+}
+\value{
+An output coefficient matrix of data.frame class. 
+The column names are ordered, and the row names are in the 
+first, auxiliary metadata column.
 }
 \description{
 Create an output coefficient matrix from the input flow matrix or a symmetric

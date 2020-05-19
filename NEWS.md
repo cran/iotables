@@ -2,7 +2,7 @@
 
 * Added a `NEWS.md` file to track changes to the package.
 * Added Contributor Code of Conduct in `CONDUCT.md`
-* Some functions have paralel versions, and will be brought to [rOpenSci](https://github.com/ropensci/onboarding) naming conventions (`object_verb()`)
+* Some functions have parallel versions, and will be brought to [rOpenSci](https://github.com/ropensci/onboarding) naming conventions (`object_verb()`)
 * Asked to join [rOpenGov](http://ropengov.github.io/) - excited but inexperienced in this!
 
 # iotables 0.1.4
@@ -120,7 +120,7 @@ is seldom used, as the analytical function will call it as needed.
 
 # iotables 0.4
 
-New vignette *United Kingdom Input-Output Analyitcal Tables* to compare analytical function results with published results from the UK National Office for Statistics.
+New vignette *United Kingdom Input-Output Analytical Tables* to compare analytical function results with published results from the UK National Office for Statistics.
 
 # iotables 0.4.1
 A small formatting error in the documentation of `netherlands_2006` threw up a note on CRAN.
@@ -128,3 +128,9 @@ A small formatting error in the documentation of `netherlands_2006` threw up a n
 # iotables 0.4.2
 On CRAN 0.4.1 passed early tests, but on deployment it 
 turned out that a dependency is not available for  i386-pc-solaris2.10 (32-bit). This dependency is `magick`, which was supposed to help printing vignettes in Word (a very rare case) for `kableExtra` is not available on Solaris.  I removed this dependency. 
+
+# iotables 0.4.3
+* Generally improved documentation. Improving source code readabilty and vignette readability.
+* Better handling of temporary files in `tempdir()` for improved performance with very large source files, including the new exported function `iotables_read_tempdir()` and `iotables_metadata_get()`.
+* Following changes in dependencies `dplyr` and `tidyr`.
+* [Contributor Code of Conduct](https://contributor-covenant.org/version/2/0/CODE_OF_CONDUCT.html) is added to the github repo.

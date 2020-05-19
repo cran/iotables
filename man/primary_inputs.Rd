@@ -4,23 +4,28 @@
 \name{primary_inputs}
 \alias{primary_inputs}
 \title{Primary input abbreviations}
-\format{A data frame with 105 rows (including empty ones) and 2 variables.
+\format{
+A data frame with 105 rows (including empty ones) and 2 variables.
 \describe{
   \item{t_rows2}{Eurostat code of the input.}
   \item{t_rows2_lab}{Labelling of the input by Eurostat.}
   \item{source}{Eurostat / DZS }
   \item{indicator}{Human readable abbreviation}
-}}
+}
+}
 \usage{
 data("croatia_employment_aggregation")
 }
 \description{
 Only currently used primary inputs. Abbreviations for filtering.
 }
-\keyword{Eurostat,}
-\keyword{data,}
-\keyword{datasets,}
-\keyword{input-output}
-\keyword{inputs}
-\keyword{metadata,}
-\keyword{table,}
+\seealso{
+Other Croatia 2010 datasets: 
+\code{\link{croatia_2010_1700}},
+\code{\link{croatia_2010_1800}},
+\code{\link{croatia_2010_1900}},
+\code{\link{croatia_employment_2013}},
+\code{\link{croatia_employment_aggregation}}
+}
+\concept{Croatia 2010 datasets}
+\keyword{datasets}

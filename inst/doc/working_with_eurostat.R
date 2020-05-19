@@ -1,4 +1,4 @@
-## ----setup, include = FALSE----------------------------------------------
+## ----setup, include = FALSE---------------------------------------------------
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
@@ -6,18 +6,20 @@ knitr::opts_chunk$set(
 library(iotables)
 require(dplyr)
 
-## ----download, eval=FALSE------------------------------------------------
+## ----download, eval=FALSE-----------------------------------------------------
 #  #Not run
 #  not_included_directory <- file.path('..', 'not_included')
 #  if ( ! dir.exists(not_included_directory) ) dir.create (not_included_directory)
 #  #The contents of the 'not_included' directory can be found on GitHub,
 #  #but they are not released and distributed with the package.
 #  
-#  naio_10_cp1700 <- iotables_download("naio_10_cp1700", #SIOT
-#                                      data_directory = not_included_directory )
+#  naio_10_cp1700 <- iotables_download(
+#    "naio_10_cp1700", #SIOT
+#    data_directory = not_included_directory)
 #  
-#  #For inclusion in the package, the files must be smaller. Reducing the size of
-#  #the bulk files will not affect the demonstration
+#  # For inclusion in the package, the files must be smaller.
+#  # Reducing the size of the bulk files will not affect
+#  # the demonstration.
 #  
 #  naio_10_cp1700 <- naio_10_cp1700 %>%
 #    dplyr::filter ( geo %in% c("CZ", "SK")) %>%
@@ -40,13 +42,15 @@ require(dplyr)
 #        file = file.path('..', 'inst', 'extdata',
 #                         'naio_10_product_x_product.rda'))
 
-## ----load----------------------------------------------------------------
+## ----load---------------------------------------------------------------------
 #load from pre-saved file to increase running speed
 
-load (system.file('extdata', 'naio_10_product_x_product.rda', package = 'iotables') )
+load (system.file('extdata', 
+                  'naio_10_product_x_product.rda', 
+                  package = 'iotables') )
 
 
-## ----preprocess----------------------------------------------------------
+## ----preprocess---------------------------------------------------------------
 cz_io <-  iotable_get ( labelled_io_data = naio_10_cp1700, 
                          source = "naio_10_cp1700", geo = "CZ", 
                          year = 2015, unit = "MIO_NAC", 
@@ -66,7 +70,7 @@ sk_input_flow <- input_flow_get( data_table = sk_io)
 cz_output <- output_get( data_table = cz_io)
 sk_output <- output_get( data_table = sk_io)
 
-## ----inputcoeff, results='asis'------------------------------------------
+## ----inputcoeff, results='asis'-----------------------------------------------
 input_coeff_matrix_cz <- input_coefficient_matrix_create(
   data_table = cz_io
 )
@@ -77,7 +81,7 @@ input_coeff_matrix_sk <- input_coefficient_matrix_create(
 
 knitr::kable(head(input_coeff_matrix_cz[,1:8]))
 
-## ----leontieff, results='asis'-------------------------------------------
+## ----leontieff, results='asis'------------------------------------------------
 L_cz <- leontieff_matrix_create( input_coeff_matrix_cz  )
 I_cz <- leontieff_inverse_create( input_coeff_matrix_cz )
 
@@ -86,7 +90,7 @@ I_sk <- leontieff_inverse_create( input_coeff_matrix_sk )
 
 knitr::kable(head(I_cz[,1:8]))
 
-## ----direct, results='asis'----------------------------------------------
+## ----direct, results='asis'---------------------------------------------------
 primary_inputs_cz <- coefficient_matrix_create(data_table = cz_io, 
                                               total = 'output', 
                                               return = 'primary_inputs') 
@@ -100,7 +104,7 @@ direcz_sk <- direct_effects_create( primary_inputs_sk, I_sk )
 
 knitr::kable (head(direct_cz[,1:8]), digits = 4)
 
-## ----total, results='asis'-----------------------------------------------
+## ----total, results='asis'----------------------------------------------------
 primary_inputs_cz <- coefficient_matrix_create(data_table = cz_io, 
                                               total = 'output', 
                                               return = 'primary_inputs') 
@@ -114,7 +118,7 @@ multipliers_sk <- input_multipliers_create( primary_inputs_sk, I_sk )
 
 knitr::kable (head(multipliers_cz[,1:8]), digits = 4)
 
-## ----employmenteffect, results='asis', message=FALSE---------------------
+## ----employmenteffect, results='asis', message=FALSE--------------------------
 #New function is needed to add employment vector to SIOT
 names ( emp_sk )[1] <- 'prod_na'
 names ( emp_cz )[1] <- 'prod_na'
@@ -137,7 +141,7 @@ emp_effect_cz <- direct_effects_create( emp_indicator_cz, I_cz )
 
 knitr::kable (emp_effect_cz[1:8], digits = 5)
 
-## ----employmentindicator, results='asis'---------------------------------
+## ----employmentindicator, results='asis'--------------------------------------
 #New function is needed to add employment vector to SIOT
 
 emp_multiplier_sk <- input_multipliers_create( emp_indicator_sk, I_sk )  
@@ -145,20 +149,20 @@ emp_multiplier_cz <- input_multipliers_create( emp_indicator_cz, I_cz )
 
 knitr::kable (emp_multiplier_cz[1:8], digits=5)
 
-## ----output_multipliers, results='asis'----------------------------------
+## ----output_multipliers, results='asis'---------------------------------------
 
 output_multipliers_cz <- output_multiplier_create (input_coeff_matrix_cz)
 output_multipliers_sk <- output_multiplier_create (input_coeff_matrix_sk)
 
 knitr::kable (head(output_multipliers_cz[,1:8]), digits=4)
 
-## ----backward, results='asis'--------------------------------------------
+## ----backward, results='asis'-------------------------------------------------
 cz_bw <- backward_linkages(I_cz)
 sk_bw <- backward_linkages(I_sk)
 
 knitr::kable (head(cz_bw[,1:8]), digits=4)
 
-## ----output_coeff, results='asis', eval=FALSE----------------------------
+## ----output_coeff, results='asis', eval=FALSE---------------------------------
 #  output_coeff_cz <- output_coefficient_matrix_create(
 #    io_table = cz_io, total = "tfu", digits = 4)
 #  
@@ -167,13 +171,13 @@ knitr::kable (head(cz_bw[,1:8]), digits=4)
 #  
 #  knitr::kable (head(output_coeff_cz[,1:8]))
 
-## ----forward, results='asis', eval=FALSE---------------------------------
+## ----forward, results='asis', eval=FALSE--------------------------------------
 #  cz_fw <- forward_linkages ( output_coeff_cz )
 #  sk_fw <- forward_linkages( output_coeff_sk )
 #  
 #  knitr::kable (head(cz_fw), digits=4)
 
-## ----reproduction_data, eval=FALSE---------------------------------------
+## ----reproduction_data, eval=FALSE--------------------------------------------
 #  require(xlsx)
 #  cz_file_name <- file.path("..", "not_included", "CzechRep_test.xlsx")
 #  #Czech Republic data

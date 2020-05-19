@@ -9,6 +9,5 @@
 #'   \item{indicator}{Human readable abbreviation}
 #' }
 #' @usage data("croatia_employment_aggregation")
-#' @keywords data, datasets, input-output table, Eurostat, metadata, inputs
-
+#' @family Croatia 2010 datasets
 "primary_inputs"

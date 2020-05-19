@@ -5,7 +5,8 @@
 \alias{uk_test_results}
 \title{Multipliers and effects (product) for testing
 from the United Kingdom Input-Output Analytical Tables, 2010}
-\format{A data frame with 12 variables.
+\format{
+A data frame with 12 variables.
 \describe{
   \item{uk_row_label}{The UK row label} 
   \item{Output multiplier}{The imported Output multipliers}
@@ -19,17 +20,19 @@ from the United Kingdom Input-Output Analytical Tables, 2010}
   \item{gva_multiplier_rank}{The imported ranking GVA multipliers.}
   \item{GVA multiplier}{The imported GVA multipliers.}
   \item{indicator}{Indicator names.}
-}}
+}
+}
 \usage{
 data(uk_test_results)
 }
 \description{
 The Excel-imported UK data.
 }
-\keyword{UK}
-\keyword{data,}
-\keyword{datasets,}
-\keyword{effects,}
-\keyword{input-output}
-\keyword{multipliers,}
-\keyword{table,}
+\seealso{
+Other Validation datasets: 
+\code{\link{germany_1990}},
+\code{\link{netherlands_2006}},
+\code{\link{uk_2010_data}}
+}
+\concept{Validation datasets}
+\keyword{datasets}
