@@ -1,28 +1,41 @@
 Package: iotables
 Type: Package
 Title: Importing and Manipulating Symmetric Input-Output Tables
-Version: 0.4.3
-Authors@R: person("Daniel", "Antal", role = c("aut", "cre"),
-    email = "daniel.antal@ceemid.eu", 
-    comment = c(ORCID = "0000-0001-7513-6760"))
-Maintainer: Daniel Antal <daniel.antal@ceemid.eu>
-Description: Pre-processing and basic analytical tasks related to working with Eurostat's symmetric input-output
-    tables and provide basic input-output economics calculations. The package is 
-    a part of rOpenGov <http://ropengov.github.io/> to open source open government initiatives.
-URL: http://iotables.ceemid.eu/
+Date: 2021-06-01
+Version: 0.4.4
+Authors@R: 
+    c(person("Daniel", "Antal", role = c("aut", "cre"),
+             email = "daniel.antal@dataobservatory.eu", 
+             comment = c(ORCID = "0000-0001-7513-6760")),
+      person(given = "Kasia",
+             family = "Kulma",
+             role = "ctb", 
+             comment = c(ORCID = "0000-0002-2952-9720")),
+      person(given = "Pyry",
+             family = "Kantanen", 
+             role = "ctb"))
+Maintainer: Daniel Antal <daniel.antal@dataobservatory.eu>
+Description: Pre-processing and basic analytical tasks related to working
+    with Eurostat's symmetric input-output tables and provide basic
+    input-output economics calculations. The package is part of rOpenGov
+    <http://ropengov.github.io/> to open source open government initiatives.
+URL: https://iotables.dataobservatory.eu/
 BugReports: https://github.com/rOpenGov/iotables/issues
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 7.1.0
+RoxygenNote: 7.1.1
 Imports: dplyr, eurostat, magrittr, tidyr, stats, forcats, utils, plyr,
-        lubridate, knitr, kableExtra, tibble, readxl, purrr, tidyselect
+        lubridate, knitr, kableExtra, tibble, readxl, purrr,
+        tidyselect, rlang
 Suggests: testthat, rmarkdown, spelling, covr
-Depends: R(>= 2.10.0)
+Depends: R(>= 3.5.0)
 VignetteBuilder: knitr
 Language: en-US
 NeedsCompilation: no
-Packaged: 2020-05-18 21:42:11 UTC; Daniel Antal
-Author: Daniel Antal [aut, cre] (<https://orcid.org/0000-0001-7513-6760>)
+Packaged: 2021-06-02 06:54:08 UTC; Daniel Antal
+Author: Daniel Antal [aut, cre] (<https://orcid.org/0000-0001-7513-6760>),
+  Kasia Kulma [ctb] (<https://orcid.org/0000-0002-2952-9720>),
+  Pyry Kantanen [ctb]
 Repository: CRAN
-Date/Publication: 2020-05-19 05:10:02 UTC
+Date/Publication: 2021-06-03 11:10:09 UTC

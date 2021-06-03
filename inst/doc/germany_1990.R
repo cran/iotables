@@ -1,4 +1,4 @@
-## ----setup, include=TRUE------------------------------------------------------
+## ----setup, include=TRUE, message=FALSE---------------------------------------
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
@@ -15,7 +15,7 @@ input_flow <- input_flow_get (
 de_output <- primary_input_get ( data_table, "output" )
 print (de_output[c(1:4)])
 
-## ----inputcoeff, echo=FALSE---------------------------------------------------
+## ----inputcoeff, echo=TRUE----------------------------------------------------
 de_input_coeff <- input_coefficient_matrix_create( 
      data_table = data_table, 
      digits = 4)
