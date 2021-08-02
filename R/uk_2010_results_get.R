@@ -48,7 +48,7 @@ uk_2010_results_get <- function ( path = NULL )  {
                                       col_names = FALSE, 
                                       n_max = 2) %>%
     dplyr::select ( 1 ) %>%
-    dplyr::rename ( values = X__1 ) %>%
+    purrr::set_names( "values" ) %>%
     cbind ( tibble::tibble ( vars = c("indicator", "unit"))) %>%
     tidyr::spread ( vars, values )
   
@@ -61,11 +61,11 @@ uk_2010_results_get <- function ( path = NULL )  {
                                           col_names = TRUE) %>%
     dplyr::select ( - 1 ) %>% 
     dplyr::rename ( uk_row_label = Product, 
-                    output_multiplier_rank = Rank, 
-                    employment_cost_multiplier = Rank__1, 
-                    gva_multiplier_rank = Rank__2, 
-                    employment_cost_effects_rank = Rank__3,
-                    gva_effects_rank = Rank__4 ) %>%
+                    output_multiplier_rank = .data$Rank...4, 
+                    employment_cost_multiplier = .data$Rank...6, 
+                    gva_multiplier_rank = .data$Rank...8, 
+                    employment_cost_effects_rank = .data$Rank...10,
+                    gva_effects_rank = .data$Rank...12 ) %>%
     dplyr::mutate ( indicator = uk_metadata$indicator[1]) %>%
     dplyr::mutate_if ( is.factor, as.character ) 
   

@@ -14,7 +14,7 @@ A data frame with 12 variables.
   \item{Employment cost multiplier}{The imported Employment cost multipliers.}
   \item{employment_cost_multiplier}{The imported ranking of Employment cost multipliers.}
   \item{Employment cost effects}{The imported Employment cost multipliers.}
-  \item{employment_cost_effects}{The imported ranking of employment cost multipliers.}
+  \item{employment_cost_effects_rank}{The imported ranking of employment cost multipliers.}
   \item{GVA effects}{The imported GVA effects.}
   \item{gva_effects_rank}{The imported ranking GVA effects.}
   \item{gva_multiplier_rank}{The imported ranking GVA multipliers.}

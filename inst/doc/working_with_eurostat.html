@@ -12,7 +12,7 @@
 
 <meta name="author" content="Daniel Antal, CFA" />
 
-<meta name="date" content="2021-06-02" />
+<meta name="date" content="2021-08-02" />
 
 <title>Working With Eurostat Data</title>
 
@@ -141,7 +141,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 <h1 class="title toc-ignore">Working With Eurostat Data</h1>
 <h4 class="author">Daniel Antal, CFA</h4>
-<h4 class="date">2021-06-02</h4>
+<h4 class="date">2021-08-02</h4>
 
 
 
@@ -191,10 +191,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a>                       <span class="st">&#39;naio_10_product_x_product.rda&#39;</span>))</span></code></pre></div>
 <p>For a quicker building of the vignette, the data is retrieved from the <em>not_included</em> directory. The chunk above can reproduce this data file.</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co">#load from pre-saved file to increase running speed</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="fu">load</span> (<span class="fu">system.file</span>(<span class="st">&#39;extdata&#39;</span>, </span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>                  <span class="st">&#39;naio_10_product_x_product.rda&#39;</span>, </span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>                  <span class="at">package =</span> <span class="st">&#39;iotables&#39;</span>) )</span></code></pre></div>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">load</span> (<span class="fu">system.file</span>(<span class="st">&#39;extdata&#39;</span>, </span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>                  <span class="st">&#39;naio_10_product_x_product.rda&#39;</span>, </span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>                  <span class="at">package =</span> <span class="st">&#39;iotables&#39;</span>) )</span></code></pre></div>
 <p>In this vignette example the Czech (2015) national currency unit and the Slovak (2010) euro tables are created. Since the Slovak national currency is the euro, there is no difference between the Slovak national currency unit and euro tables.</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>cz_io <span class="ot">&lt;-</span>  <span class="fu">iotable_get</span> ( <span class="at">labelled_io_data =</span> naio_10_cp1700, </span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>                         <span class="at">source =</span> <span class="st">&quot;naio_10_cp1700&quot;</span>, <span class="at">geo =</span> <span class="st">&quot;CZ&quot;</span>, </span>
@@ -655,7 +654,7 @@ CPA_C13-15
 <span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Columns and rows of NA, NA, NA, NA, NA are all zeros and will be removed.</span></span>
 <span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>direct_cz <span class="ot">&lt;-</span> <span class="fu">direct_effects_create</span>( primary_inputs_cz, I_cz )  </span>
-<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>direcz_sk <span class="ot">&lt;-</span> <span class="fu">direct_effects_create</span>( primary_inputs_sk, I_sk )  </span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>direct_sk <span class="ot">&lt;-</span> <span class="fu">direct_effects_create</span>( primary_inputs_sk, I_sk )  </span>
 <span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span> (<span class="fu">head</span>(direct_cz[,<span class="dv">1</span><span class="sc">:</span><span class="dv">8</span>]), <span class="at">digits =</span> <span class="dv">4</span>)</span></code></pre></div>
 <table>

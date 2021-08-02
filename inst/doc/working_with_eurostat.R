@@ -44,7 +44,6 @@ require(dplyr)
 
 ## ----load---------------------------------------------------------------------
 #load from pre-saved file to increase running speed
-
 load (system.file('extdata', 
                   'naio_10_product_x_product.rda', 
                   package = 'iotables') )
@@ -100,7 +99,7 @@ primary_inputs_sk <- coefficient_matrix_create(data_table = sk_io,
                                               return = 'primary_inputs')
 
 direct_cz <- direct_effects_create( primary_inputs_cz, I_cz )  
-direcz_sk <- direct_effects_create( primary_inputs_sk, I_sk )  
+direct_sk <- direct_effects_create( primary_inputs_sk, I_sk )  
 
 knitr::kable (head(direct_cz[,1:8]), digits = 4)
 
