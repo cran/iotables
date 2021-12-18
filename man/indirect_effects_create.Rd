@@ -15,8 +15,12 @@ indirect_effects_create(input_requirements, inverse, digits = NULL)
 \item{digits}{Rounding digits, defaults to \code{NULL}, in which case 
 no rounding takes place.}
 }
+\value{
+A data.frame containing the indirect effects and the necessary
+metadata to sort them or join them with other matrixes.
+}
 \description{
-The function creates the effects.
+The function creates the indirect effects vector.
 }
 \examples{
  
@@ -28,8 +32,8 @@ input_coeff_nl <- input_coefficient_matrix_create(
 
 compensation_indicator <- input_indicator_create(netherlands_2006, 'compensation_employees')
 
-I_nl <- leontieff_inverse_create( input_coeff_nl )
+I_nl <- leontieff_inverse_create(input_coeff_nl)
 
 direct_effects_create(input_requirements = compensation_indicator, 
-                           inverse = I_nl)
+                      inverse = I_nl)
 }

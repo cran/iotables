@@ -2,7 +2,7 @@
 % Please edit documentation in R/iotable_get.R
 \name{iotable_get}
 \alias{iotable_get}
-\title{Get An Input-Output Table Fom Bulk File}
+\title{Get an input-output table fom bulk file}
 \usage{
 iotable_get(
   labelled_io_data = NULL,
@@ -90,10 +90,10 @@ germany_table <- iotable_get( source = "germany_1990",
                  labelling  = "iotables" )
 }
 \seealso{
-Other iotables import functions: 
+Other import functions: 
 \code{\link{employment_get}()},
 \code{\link{iotables_download}()},
 \code{\link{iotables_metadata_get}()},
 \code{\link{iotables_read_tempdir}()}
 }
-\concept{iotables import functions}
+\concept{import functions}

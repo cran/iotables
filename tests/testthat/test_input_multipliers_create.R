@@ -1,5 +1,5 @@
 library (testthat)
-library (iotables)
+
 require (dplyr)
 context ("Creating an  input coefficient matrix")
 
@@ -11,8 +11,7 @@ input_coeff_nl <- input_coefficient_matrix_create(
 
 compensation_indicator <- input_indicator_create(netherlands_2006, 'compensation_employees')
 
-I_nl <- leontieff_inverse_create( input_coeff_nl )
-
+I_nl <- leontieff_inverse_create(input_coeff_nl)
 mult <- input_multipliers_create(
                       input_requirements = compensation_indicator, 
                       inverse = I_nl)

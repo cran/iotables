@@ -2,7 +2,7 @@
 % Please edit documentation in R/equation_solve.R
 \name{equation_solve}
 \alias{equation_solve}
-\title{Solve A Basic (Matrix) Equation}
+\title{Solve a basic (matrix) equation}
 \usage{
 equation_solve(LHS = NULL, Im = NULL)
 }
@@ -20,6 +20,8 @@ input-output tables.
 \description{
 The function matches to parts of the matrix equation, using the named
 formats with row names and solves the matrix equation.
+}
+\details{
 This function is used in wrapper functions, such as \code{\link{multiplier_create}}.
 to solve particular problems, but it can be used directly, too.
 The function only performs the lhs %*% im matrix equation, but after 

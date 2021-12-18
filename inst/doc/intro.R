@@ -1,38 +1,42 @@
-## ----setup, include=TRUE, message=FALSE---------------------------------------
+## ----setupknitr, include=FALSE, message=FALSE---------------------------------
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
 )
+
+## ----setup,  message=FALSE----------------------------------------------------
 library(iotables)
-require(dplyr); require(tidyr)
+library(dplyr, quietly = T)
+library(tidyr, quietly = T)
 
 ## ----iotables-----------------------------------------------------------------
-data_table <- iotable_get( labelling = "iotables" )
+germany_io <- iotable_get( labelling = "iotables" )
 input_flow <- input_flow_get ( 
-                  data_table = data_table, 
+                  data_table = germany_io, 
                   households = FALSE)
 
-de_output <- primary_input_get ( data_table, "output" )
+de_output <- primary_input_get ( germany_io, "output" )
 print (de_output[c(1:4)])
 
 ## ----inputcoeff, echo=TRUE----------------------------------------------------
 de_input_coeff <- input_coefficient_matrix_create( 
-     data_table = data_table, 
+     data_table = germany_io, 
      digits = 4)
 
 ## which is equivalent to:
 
-de_input_coeff <- coefficient_matrix_create( data_table, 
-                             total = "output", 
-                             return_part = "products", 
-                             households = FALSE,
-                             digits = 4)
+de_input_coeff <- coefficient_matrix_create( 
+  data_table = germany_io, 
+  total = "output", 
+  return_part = "products", 
+  households = FALSE,
+  digits = 4)
 
 print ( de_input_coeff[1:3, 1:3])
 
 ## ----outputcoeff, echo=FALSE--------------------------------------------------
 de_out <- output_coefficient_matrix_create ( 
-                                    io_table = data_table, 
+                                    io_table = germany_io, 
                                     total = 'tfu',
                                     digits = 4)
 
@@ -40,35 +44,36 @@ de_out <- output_coefficient_matrix_create (
 print ( de_out[1:3, 1:3] )
 
 ## ----leontieff----------------------------------------------------------------
-L_de <- leontieff_matrix_create ( technology_coefficients_matrix =
-                                 de_input_coeff )
+L_de <- leontieff_matrix_create ( 
+  technology_coefficients_matrix = de_input_coeff 
+  )
 I_de <- leontieff_inverse_create(de_input_coeff)
 I_de_4 <- leontieff_inverse_create(de_input_coeff, digits = 4)
 print (I_de_4[,1:3])
 
 ## ----employment_indicator-----------------------------------------------------
-de_emp <- primary_input_get ( data_table,
+de_emp <- primary_input_get ( germany_io,
                               primary_input = "employment_domestic_total" )
 
 de_emp_indicator <- input_indicator_create ( 
-    data_table  = data_table,
+    data_table  = germany_io,
     input_vector = "employment_domestic_total")
 
 print ( tidyr::gather( de_emp_indicator, indicators, values, !!2:ncol(de_emp_indicator))[,-1] )
 
 ## ----gva_indicator------------------------------------------------------------
-de_gva <- primary_input_get ( data_table,
+de_gva <- primary_input_get ( germany_io,
                               primary_input = "gva") 
 
 de_gva_indicator  <- input_indicator_create( 
-    data_table  = data_table,
+    data_table  = germany_io,
     input_vector = "gva")
 
 print( tidyr::gather(de_gva_indicator, indicators, values,!!2:ncol(de_gva_indicator))[,-1]  ) 
 
 ## ----input_indicator----------------------------------------------------------
 direct_effects_de <- coefficient_matrix_create(
-  data_table  = data_table, 
+  data_table  = germany_io, 
   total       = 'output', 
   return_part = 'primary_inputs')
 
@@ -88,7 +93,7 @@ knitr::kable(multipliers, digits= 4)
 
 ## ----employment_multiplier----------------------------------------------------
 de_emp_indicator <- input_indicator_create (
-  data_table = data_table, 
+  data_table = germany_io, 
   input = 'employment_domestic_total') 
 
 employment_multipliers <- multiplier_create ( 
@@ -122,7 +127,7 @@ print (tidyr::gather(de_bw, backward_linkages, values)[-1,])
 
 ## ----forward------------------------------------------------------------------
 de_out <- output_coefficient_matrix_create ( 
-  data_table, "final_demand", digits = 4
+  germany_io, "final_demand", digits = 4
   )
                                     
 forward_linkages ( output_coefficient_matrix = de_out )

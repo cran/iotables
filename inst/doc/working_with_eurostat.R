@@ -1,17 +1,19 @@
-## ----setup, include = FALSE---------------------------------------------------
+## ----setupknitr, include = FALSE----------------------------------------------
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
 )
-library(iotables)
-require(dplyr)
+
+## ----setup, include = TRUE----------------------------------------------------
+library(iotables, quietly = TRUE)
+library(dplyr, quietly = TRUE)
 
 ## ----download, eval=FALSE-----------------------------------------------------
 #  #Not run
 #  not_included_directory <- file.path('..', 'not_included')
 #  if ( ! dir.exists(not_included_directory) ) dir.create (not_included_directory)
-#  #The contents of the 'not_included' directory can be found on GitHub,
-#  #but they are not released and distributed with the package.
+#  # The contents of the 'not_included' directory can be found on GitHub,
+#  # but they are not released and distributed with the package.
 #  
 #  naio_10_cp1700 <- iotables_download(
 #    "naio_10_cp1700", #SIOT
@@ -27,7 +29,8 @@ require(dplyr)
 #  
 #  #Conforming employment data both sexes from 15 years old, year 2015.
 #  #prod_na vocabulary for product x product conformity
-#  emp_cz <- employment_get(geo = "CZ", year = "2015", sex = "Total",
+#  emp_cz <- employment_get(
+#    geo = "CZ", year = "2015", sex = "Total",
 #    age = "Y_GE15", labelling = "prod_na",
 #    data_directory = not_included_directory,
 #    force_download = TRUE)
@@ -46,48 +49,47 @@ require(dplyr)
 #load from pre-saved file to increase running speed
 load (system.file('extdata', 
                   'naio_10_product_x_product.rda', 
-                  package = 'iotables') )
-
+                  package = 'iotables')
+      )
 
 ## ----preprocess---------------------------------------------------------------
-cz_io <-  iotable_get ( labelled_io_data = naio_10_cp1700, 
-                         source = "naio_10_cp1700", geo = "CZ", 
-                         year = 2015, unit = "MIO_NAC", 
-                         stk_flow = "TOTAL",
-                         labelling = "short" )
+cz_io <- iotable_get( labelled_io_data = naio_10_cp1700, 
+                       source = "naio_10_cp1700", geo = "CZ", 
+                       year = 2015, unit = "MIO_NAC", 
+                       stk_flow = "TOTAL",
+                       labelling = "short" )
 
-sk_io <-  iotable_get ( labelled_io_data = naio_10_cp1700, 
-                        source = "naio_10_cp1700", geo = "SK", 
-                        year = 2010, unit = "MIO_EUR", 
-                        stk_flow = "TOTAL",
-                        labelling = "short" )
+sk_io <- iotable_get( labelled_io_data = naio_10_cp1700, 
+                      source = "naio_10_cp1700", geo = "SK", 
+                      year = 2010, unit = "MIO_EUR", 
+                      stk_flow = "TOTAL",
+                      labelling = "short" )
 
-cz_input_flow <- input_flow_get( data_table = cz_io )
 
-sk_input_flow <- input_flow_get( data_table = sk_io)
+cz_input_flow <- input_flow_get(data_table = cz_io)
+
+sk_input_flow <- input_flow_get(data_table = sk_io) 
 
 cz_output <- output_get( data_table = cz_io)
-sk_output <- output_get( data_table = sk_io)
+sk_output <- output_get( data_table = sk_io) 
 
-## ----inputcoeff, results='asis'-----------------------------------------------
-input_coeff_matrix_cz <- input_coefficient_matrix_create(
-  data_table = cz_io
-)
+## ----inputcoeff---------------------------------------------------------------
+input_coeff_matrix_cz <- input_coefficient_matrix_create(data_table = cz_io)
 
-input_coeff_matrix_sk <- input_coefficient_matrix_create(
-  data_table = sk_io
-)
+input_coeff_matrix_sk <- input_coefficient_matrix_create(data_table = sk_io) 
 
-knitr::kable(head(input_coeff_matrix_cz[,1:8]))
+head(input_coeff_matrix_cz[,1:8])
 
-## ----leontieff, results='asis'------------------------------------------------
-L_cz <- leontieff_matrix_create( input_coeff_matrix_cz  )
-I_cz <- leontieff_inverse_create( input_coeff_matrix_cz )
+## ----leontieff----------------------------------------------------------------
+L_cz <- leontieff_matrix_create(input_coeff_matrix_cz)
+I_cz <- leontieff_inverse_create(input_coeff_matrix_cz)
 
-L_sk <- leontieff_matrix_create( input_coeff_matrix_sk  )
-I_sk <- leontieff_inverse_create( input_coeff_matrix_sk )
+L_sk <- leontieff_matrix_create(
+  technology_coefficients_matrix=input_coeff_matrix_sk
+  )
+I_sk <- leontieff_inverse_create(input_coeff_matrix_sk )
 
-knitr::kable(head(I_cz[,1:8]))
+head(I_cz[,1:8])
 
 ## ----direct, results='asis'---------------------------------------------------
 primary_inputs_cz <- coefficient_matrix_create(data_table = cz_io, 
@@ -110,10 +112,13 @@ primary_inputs_cz <- coefficient_matrix_create(data_table = cz_io,
 
 primary_inputs_sk <- coefficient_matrix_create(data_table = sk_io, 
                                               total = 'output', 
-                                              return = 'primary_inputs')
+                                              return = 'primary_inputs') 
 
-multipliers_cz <- input_multipliers_create( primary_inputs_cz, I_cz )  
-multipliers_sk <- input_multipliers_create( primary_inputs_sk, I_sk ) 
+not_removed_cols <- names(primary_inputs_sk)[names(primary_inputs_sk) %in% names(I_sk)] 
+
+multipliers_cz <- input_multipliers_create( 
+  primary_inputs_cz[,names(primary_inputs_cz) %in% names(I_cz)], I_cz )  
+multipliers_sk <- input_multipliers_create( primary_inputs_sk[not_removed_cols], I_sk ) 
 
 knitr::kable (head(multipliers_cz[,1:8]), digits = 4)
 
@@ -141,17 +146,16 @@ emp_effect_cz <- direct_effects_create( emp_indicator_cz, I_cz )
 knitr::kable (emp_effect_cz[1:8], digits = 5)
 
 ## ----employmentindicator, results='asis'--------------------------------------
-#New function is needed to add employment vector to SIOT
 
-emp_multiplier_sk <- input_multipliers_create( emp_indicator_sk, I_sk )  
-emp_multiplier_cz <- input_multipliers_create( emp_indicator_cz, I_cz )  
+emp_multiplier_sk <- input_multipliers_create( emp_indicator_sk[not_removed_cols], I_sk )  
+emp_multiplier_cz <- input_multipliers_create( emp_indicator_cz[,names(emp_indicator_cz) %in% names(I_cz)], I_cz )  
 
 knitr::kable (emp_multiplier_cz[1:8], digits=5)
 
 ## ----output_multipliers, results='asis'---------------------------------------
 
 output_multipliers_cz <- output_multiplier_create (input_coeff_matrix_cz)
-output_multipliers_sk <- output_multiplier_create (input_coeff_matrix_sk)
+output_multipliers_sk <- output_multiplier_create (input_coeff_matrix_sk %>% empty_remove())
 
 knitr::kable (head(output_multipliers_cz[,1:8]), digits=4)
 
