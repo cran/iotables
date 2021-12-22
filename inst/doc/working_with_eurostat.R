@@ -9,7 +9,7 @@ library(iotables, quietly = TRUE)
 library(dplyr, quietly = TRUE)
 
 ## ----download, eval=FALSE-----------------------------------------------------
-#  #Not run
+#  # Not run on vignette
 #  not_included_directory <- file.path('..', 'not_included')
 #  if ( ! dir.exists(not_included_directory) ) dir.create (not_included_directory)
 #  # The contents of the 'not_included' directory can be found on GitHub,
@@ -55,7 +55,7 @@ load (system.file('extdata',
 ## ----preprocess---------------------------------------------------------------
 cz_io <- iotable_get( labelled_io_data = naio_10_cp1700, 
                        source = "naio_10_cp1700", geo = "CZ", 
-                       year = 2015, unit = "MIO_NAC", 
+                       year = 2015, unit = "MIO_EUR", 
                        stk_flow = "TOTAL",
                        labelling = "short" )
 
@@ -67,31 +67,33 @@ sk_io <- iotable_get( labelled_io_data = naio_10_cp1700,
 
 
 cz_input_flow <- input_flow_get(data_table = cz_io)
-
-sk_input_flow <- input_flow_get(data_table = sk_io) 
+sk_input_flow <- input_flow_get(data_table = sk_io)
 
 cz_output <- output_get( data_table = cz_io)
 sk_output <- output_get( data_table = sk_io) 
 
+## ----freeupmemory-------------------------------------------------------------
+# Remove the pre-processed naio_10_cp1700
+rm(naio_10_cp1700)
+
 ## ----inputcoeff---------------------------------------------------------------
 input_coeff_matrix_cz <- input_coefficient_matrix_create(data_table = cz_io)
-
 input_coeff_matrix_sk <- input_coefficient_matrix_create(data_table = sk_io) 
 
+## ----printinputcoeff----------------------------------------------------------
 head(input_coeff_matrix_cz[,1:8])
 
 ## ----leontieff----------------------------------------------------------------
 L_cz <- leontieff_matrix_create(input_coeff_matrix_cz)
 I_cz <- leontieff_inverse_create(input_coeff_matrix_cz)
 
-L_sk <- leontieff_matrix_create(
-  technology_coefficients_matrix=input_coeff_matrix_sk
-  )
+L_sk <- leontieff_matrix_create(input_coeff_matrix_sk)
 I_sk <- leontieff_inverse_create(input_coeff_matrix_sk )
 
+## ----printpartleontieff-------------------------------------------------------
 head(I_cz[,1:8])
 
-## ----direct, results='asis'---------------------------------------------------
+## ----direct-------------------------------------------------------------------
 primary_inputs_cz <- coefficient_matrix_create(data_table = cz_io, 
                                               total = 'output', 
                                               return = 'primary_inputs') 
@@ -101,11 +103,12 @@ primary_inputs_sk <- coefficient_matrix_create(data_table = sk_io,
                                               return = 'primary_inputs')
 
 direct_cz <- direct_effects_create( primary_inputs_cz, I_cz )  
-direct_sk <- direct_effects_create( primary_inputs_sk, I_sk )  
+direct_sk <- direct_effects_create( primary_inputs_sk, I_sk )
 
-knitr::kable (head(direct_cz[,1:8]), digits = 4)
+## ----printdirect--------------------------------------------------------------
+head(direct_cz[,1:8])
 
-## ----total, results='asis'----------------------------------------------------
+## ----total--------------------------------------------------------------------
 primary_inputs_cz <- coefficient_matrix_create(data_table = cz_io, 
                                               total = 'output', 
                                               return = 'primary_inputs') 
@@ -120,65 +123,88 @@ multipliers_cz <- input_multipliers_create(
   primary_inputs_cz[,names(primary_inputs_cz) %in% names(I_cz)], I_cz )  
 multipliers_sk <- input_multipliers_create( primary_inputs_sk[not_removed_cols], I_sk ) 
 
-knitr::kable (head(multipliers_cz[,1:8]), digits = 4)
+## ----printtotal---------------------------------------------------------------
+head(multipliers_cz[,1:8])
 
-## ----employmenteffect, results='asis', message=FALSE--------------------------
+## ----employmenteffect, message=FALSE------------------------------------------
 #New function is needed to add employment vector to SIOT
-names ( emp_sk )[1] <- 'prod_na'
-names ( emp_cz )[1] <- 'prod_na'
+names (emp_sk)[1] <- 'prod_na'
+names (emp_cz)[1] <- 'prod_na'
 
 emp_indicator_sk <- rbind ( 
   sk_io[, 1:66], 
-  emp_sk) %>% coefficient_matrix_create(., 
-       return_part = 'primary_inputs') %>%
+  emp_sk) %>% 
+  coefficient_matrix_create( return_part = 'primary_inputs') %>%
   filter ( prod_na == "employment_total" )
 
 emp_indicator_cz <- full_join ( 
   cz_io, 
-  emp_cz) %>% coefficient_matrix_create(., 
-       return_part = 'primary_inputs') %>%
+  emp_cz) %>% 
+  coefficient_matrix_create( return_part = 'primary_inputs') %>%
   filter ( prod_na == "employment_total" )
 
+emp_effect_sk <- direct_effects_create(emp_indicator_sk, I_sk)  
+emp_effect_cz <- direct_effects_create(emp_indicator_cz, I_cz)  
 
-emp_effect_sk <- direct_effects_create( emp_indicator_sk, I_sk )  
-emp_effect_cz <- direct_effects_create( emp_indicator_cz, I_cz )  
+## ----printemploymenteffect----------------------------------------------------
+vector_transpose (emp_effect_cz, values_to ="employment_effect_cz") %>%
+  left_join ( vector_transpose(emp_effect_sk, values_to = "employment_effect_sk"), by = 'nace_r2' ) %>%
+  mutate ( across(starts_with("employmnet"), function(x) x*1000)) %>%
+  arrange ( -.data$employment_effect_sk) %>%
+  top_n(8)
 
-knitr::kable (emp_effect_cz[1:8], digits = 5)
+## ----employmentindicator------------------------------------------------------
+emp_multiplier_sk <- input_multipliers_create(emp_indicator_sk[not_removed_cols], I_sk)  
+emp_multiplier_cz <- input_multipliers_create(
+  emp_indicator_cz[,names(emp_indicator_cz) %in% names(I_cz)], 
+  I_cz )  
 
-## ----employmentindicator, results='asis'--------------------------------------
+## ----printemploymentindicator-------------------------------------------------
+vector_transpose (emp_multiplier_cz, values_to ="employment_multiplier_cz") %>%
+  left_join ( vector_transpose(emp_multiplier_cz, 
+                               values_to = "employment_multiplier_sk"), by = 'nace_r2' ) %>%
+  mutate ( across(starts_with("employmnet"), function(x) x*1000)) %>%
+  arrange ( -.data$employment_multiplier_sk) %>%
+  top_n(8)
 
-emp_multiplier_sk <- input_multipliers_create( emp_indicator_sk[not_removed_cols], I_sk )  
-emp_multiplier_cz <- input_multipliers_create( emp_indicator_cz[,names(emp_indicator_cz) %in% names(I_cz)], I_cz )  
-
-knitr::kable (emp_multiplier_cz[1:8], digits=5)
-
-## ----output_multipliers, results='asis'---------------------------------------
-
+## ----outputmultipliers--------------------------------------------------------
 output_multipliers_cz <- output_multiplier_create (input_coeff_matrix_cz)
 output_multipliers_sk <- output_multiplier_create (input_coeff_matrix_sk %>% empty_remove())
 
-knitr::kable (head(output_multipliers_cz[,1:8]), digits=4)
+## ----printoutputmultiplierscz-------------------------------------------------
+vector_transpose (emp_multiplier_cz, 
+                  values_to ="employment_multiplier_cz") %>%
+  arrange( -.data$employment_multiplier_cz ) %>%
+  top_n(5)
 
-## ----backward, results='asis'-------------------------------------------------
+## ----backwardlinkages---------------------------------------------------------
 cz_bw <- backward_linkages(I_cz)
 sk_bw <- backward_linkages(I_sk)
 
-knitr::kable (head(cz_bw[,1:8]), digits=4)
+## ----printbackwardlinkages----------------------------------------------------
+#random sample
+set.seed(123)
+vector_transpose (cz_bw, 
+                  values_to ="backward_linkages") %>%
+  arrange( -.data$backward_linkages) %>%
+  sample_n(5)
 
-## ----output_coeff, results='asis', eval=FALSE---------------------------------
-#  output_coeff_cz <- output_coefficient_matrix_create(
-#    io_table = cz_io, total = "tfu", digits = 4)
-#  
-#  output_coeff_sk <- output_coefficient_matrix_create(
-#    io_table = sk_io, total = "tfu")
-#  
-#  knitr::kable (head(output_coeff_cz[,1:8]))
+## ----outputcoeff--------------------------------------------------------------
+output_coeff_cz <- output_coefficient_matrix_create( 
+  io_table = cz_io, total = "tfu", digits = 4)
 
-## ----forward, results='asis', eval=FALSE--------------------------------------
-#  cz_fw <- forward_linkages ( output_coeff_cz )
-#  sk_fw <- forward_linkages( output_coeff_sk )
-#  
-#  knitr::kable (head(cz_fw), digits=4)
+output_coeff_sk <- output_coefficient_matrix_create( 
+  io_table = sk_io, total = "tfu")
+
+## ----printoutputcoeff---------------------------------------------------------
+output_coeff_cz[,1:6]
+
+## ----forwardlinkages----------------------------------------------------------
+cz_fw <- forward_linkages(output_coeff_cz)
+sk_fw <- forward_linkages(output_coeff_sk)
+
+## ----printforwardlinkages-----------------------------------------------------
+head(cz_fw)
 
 ## ----reproduction_data, eval=FALSE--------------------------------------------
 #  require(xlsx)

@@ -24,7 +24,6 @@ de_input_coeff <- input_coefficient_matrix_create(
      digits = 4)
 
 ## which is equivalent to:
-
 de_input_coeff <- coefficient_matrix_create( 
   data_table = germany_io, 
   total = "output", 
@@ -32,7 +31,7 @@ de_input_coeff <- coefficient_matrix_create(
   households = FALSE,
   digits = 4)
 
-print ( de_input_coeff[1:3, 1:3])
+print (de_input_coeff[1:3, 1:3])
 
 ## ----outputcoeff, echo=FALSE--------------------------------------------------
 de_out <- output_coefficient_matrix_create ( 
@@ -41,25 +40,25 @@ de_out <- output_coefficient_matrix_create (
                                     digits = 4)
 
 # Rounding is slightly different in the Eurostat manual:
-print ( de_out[1:3, 1:3] )
+print(de_out[1:3, 1:3])
 
 ## ----leontieff----------------------------------------------------------------
 L_de <- leontieff_matrix_create ( 
   technology_coefficients_matrix = de_input_coeff 
   )
-I_de <- leontieff_inverse_create(de_input_coeff)
+I_de   <- leontieff_inverse_create(de_input_coeff)
 I_de_4 <- leontieff_inverse_create(de_input_coeff, digits = 4)
 print (I_de_4[,1:3])
 
 ## ----employment_indicator-----------------------------------------------------
-de_emp <- primary_input_get ( germany_io,
-                              primary_input = "employment_domestic_total" )
+de_emp <- primary_input_get(germany_io,
+                            primary_input = "employment_domestic_total" )
 
 de_emp_indicator <- input_indicator_create ( 
-    data_table  = germany_io,
+    data_table   = germany_io,
     input_vector = "employment_domestic_total")
 
-print ( tidyr::gather( de_emp_indicator, indicators, values, !!2:ncol(de_emp_indicator))[,-1] )
+vector_transpose(de_emp_indicator)
 
 ## ----gva_indicator------------------------------------------------------------
 de_gva <- primary_input_get ( germany_io,
@@ -69,7 +68,7 @@ de_gva_indicator  <- input_indicator_create(
     data_table  = germany_io,
     input_vector = "gva")
 
-print( tidyr::gather(de_gva_indicator, indicators, values,!!2:ncol(de_gva_indicator))[,-1]  ) 
+vector_transpose(de_gva_indicator)
 
 ## ----input_indicator----------------------------------------------------------
 direct_effects_de <- coefficient_matrix_create(
@@ -77,7 +76,7 @@ direct_effects_de <- coefficient_matrix_create(
   total       = 'output', 
   return_part = 'primary_inputs')
 
-knitr::kable ( direct_effects_de[1:6,1:4])
+direct_effects_de[1:6,1:4]
 
 ## ----inputmultipliers---------------------------------------------------------
 input_reqr <- coefficient_matrix_create(
@@ -89,7 +88,7 @@ multipliers <- input_multipliers_create(
   input_requirements = input_reqr,
   inverse = I_de)
 
-knitr::kable(multipliers, digits= 4)
+multipliers
 
 ## ----employment_multiplier----------------------------------------------------
 de_emp_indicator <- input_indicator_create (
@@ -114,21 +113,18 @@ de_input_coeff <- input_coefficient_matrix_create(
 output_multipliers <- output_multiplier_create ( 
                         input_coefficient_matrix = de_input_coeff )
 
-knitr::kable (
-  tidyr::gather(output_multipliers, multipliers, values)[-1,]
-  )
+vector_transpose(output_multipliers)
 
 ## ----backward-----------------------------------------------------------------
-de_coeff <- input_coefficient_matrix_create( iotable_get(), digits = 4)
-I_de <- leontieff_inverse_create ( de_coeff )
+de_coeff <- input_coefficient_matrix_create(iotable_get(), digits = 4)
+I_de <- leontieff_inverse_create (de_coeff)
 
-de_bw <- backward_linkages(I_de)
-print (tidyr::gather(de_bw, backward_linkages, values)[-1,])
+vector_transpose(backward_linkages(I_de))
 
 ## ----forward------------------------------------------------------------------
-de_out <- output_coefficient_matrix_create ( 
-  germany_io, "final_demand", digits = 4
+de_out <- output_coefficient_matrix_create (
+  io_table = germany_io, total = "final_demand", digits = 4
   )
                                     
-forward_linkages ( output_coefficient_matrix = de_out )
+forward_linkages (output_coefficient_matrix = de_out)
 
