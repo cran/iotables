@@ -1,16 +1,19 @@
 #' @title Create input multipliers
 #' 
-#' The function creates the multipliers (direct + indirect effects).
+#' @description The function creates the multipliers (direct + indirect effects).
 #' @param input_requirements A matrix or vector created by 
 #' \code{\link{input_indicator_create}}
-#' @param inverse A Leontieff-inverse created by \code{\link{leontieff_inverse_create}}.
+#' @param Im A Leontief-inverse created by \code{\link{leontief_inverse_create}}.
+#' @param multiplier_name An optional name to be placed in the key column of the multiplier.
+#' Defaults to \code{NULL}.
 #' @param digits Rounding digits, defaults to \code{NULL}, in which case 
 #' no rounding takes place. Rounding is important if you replicate examples from the literature,
 #' rounding differences can add up to visible differences in matrix equations.
 #' @importFrom dplyr select mutate across
 #' @importFrom rlang .data
 #' @return A data frame with the vector of multipliers and the an 
-#' auxiliary metadata column (for joining with other matrixes.)
+#' auxiliary metadata column, containing an automatically given row identifier (for joining with other matrixes) 
+#' which can be  overruled with setting \code{multiplier_name}.  
 #' @family multiplier functions
 #' @examples  
 #' nl <- netherlands_2006
@@ -21,24 +24,26 @@
 #'
 #' compensation_indicator <- input_indicator_create(netherlands_2006, 'compensation_employees')
 #'
-#' I_nl <- leontieff_inverse_create(input_coeff_nl)
+#' I_nl <- leontief_inverse_create(input_coeff_nl)
 #'
 #' input_multipliers_create(input_requirements = compensation_indicator, 
-#'                         inverse = I_nl)
+#'                         Im = I_nl)
 #' @export
 
 input_multipliers_create <- function ( input_requirements,
-                                       inverse,
+                                       Im,
+                                       multiplier_name = NULL,
                                        digits = NULL) { 
 
   names_direct <- names (input_requirements)
   
-  new_key_column <- input_requirements %>%
-    select (1:2) %>%
-    mutate(across(1, ~gsub(pattern ="_indicator",
-                                          replacement = "", 
-                                          x =.data )) ) %>%
-    mutate(across(1, ~paste0(.data, "_multiplier")))
+  
+  if (is.null(multiplier_name)) {
+    multiplier_name <- gsub("_coefficients|_coefficient|_effect", "_multiplier", input_requirements[1])
+  }
+  
+  
+  new_key_column <- key_column_create(names(Im)[1], multiplier_name)
   
   
   col_n <- ncol(input_requirements)
@@ -48,7 +53,7 @@ input_multipliers_create <- function ( input_requirements,
   #Remove key column------
   key_column                <- subset ( input_requirements, select = 1)
   input_requirements_matrix <- input_requirements[,-1]
-  inverse                   <- inverse[, -1]
+  inverse                   <- Im[, -1]
 
   inverse                   <- as.matrix ( inverse )
   input_requirements_matrix <- as.matrix ( input_requirements_matrix )
@@ -69,6 +74,6 @@ input_multipliers_create <- function ( input_requirements,
       multipliers <- round ( multipliers, digits )
    }
   
-  cbind (new_key_column[,1], multipliers)
+  cbind (new_key_column, multipliers)
  
 }

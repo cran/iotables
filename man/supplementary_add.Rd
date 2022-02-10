@@ -2,7 +2,7 @@
 % Please edit documentation in R/supplementary_add.R
 \name{supplementary_add}
 \alias{supplementary_add}
-\title{Add Supplementary Data}
+\title{Add supplementary data}
 \usage{
 supplementary_add(data_table, supplementary_data, supplementary_names = NULL)
 }
@@ -20,23 +20,55 @@ vector or a data frame of several rows.}
 Defaults  to \code{NULL}.}
 }
 \value{
+An extended \code{data_table} with the new row(s) binded.
+
 A symmetric input-output table with supplementary data,  
 of data.frame class. 
 The column names are ordered, and the row names are in the 
 first, auxiliary metadata column.
 }
 \description{
-Download the employment data for a country and arrange it to the 
-64x64 SIOTs. Currently works only with product x product tables.
+Add supplementary data to a SIOT, a use, supply or margins table.
+}
+\details{
+This function is a wrapper around the more general \code{\link{rows_add}} function.
 }
 \examples{
 de_io <- iotable_get()
-CO2 <- c( 0.2379, 0.5172, 0.0456, 0.1320, 0.0127, 0.0530)  
-names ( CO2) <- c("agriculture_group", "industry_group","construction",
-                  "trade_group","business_services_group","other_services_group") 
-CO2 <- cbind ( 
-  data.frame ( iotables_row = "CO2"),as.data.frame ( t(CO2)))
+CO2_coefficients <- data.frame(agriculture_group = 0.2379,
+                               industry_group    = 0.5172, 
+                               construction = 0.0456,
+                               trade_group = 0.1320, 
+                               business_services_group = 0.0127,
+                               other_services_group = 0.0530)
+CH4_coefficients <- data.frame(agriculture_group = 0.0349,
+                               industry_group    = 0.0011, 
+                               construction = 0,
+                               trade_group = 0, 
+                               business_services_group = 0,
+                               other_services_group = 0.0021)
+CO2 <- cbind (data.frame(iotables_row = "CO2"), 
+              CO2_coefficients)
+CH4 <- cbind(data.frame (iotables_row = "CH4_coefficients"),
+             CH4_coefficients)
 de_coeff <- input_coefficient_matrix_create ( iotable_get() )
+emissions <- rbind (CO2, CH4)
 
-supplementary_add ( de_io, CO2)
+# Check with the Eurostat Manual page 494:
+supplementary_add(de_io, emissions)
 }
+\seealso{
+Other iotables processing functions: 
+\code{\link{conforming_vector_create}()},
+\code{\link{household_column_get}()},
+\code{\link{iotable_year_get}()},
+\code{\link{key_column_create}()},
+\code{\link{matrix_round}()},
+\code{\link{output_get}()},
+\code{\link{primary_input_get}()},
+\code{\link{rows_add}()},
+\code{\link{total_tax_add}()},
+\code{\link{vector_transpose_longer}()},
+\code{\link{vector_transpose_wider}()}
+}
+\concept{iotables processing functions}

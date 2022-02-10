@@ -2,11 +2,11 @@
 % Please edit documentation in R/iotable_year_get.R
 \name{iotable_year_get}
 \alias{iotable_year_get}
-\title{Get Available Years For Input-Output Tables}
+\title{Get the available years from bulk downloaded input-output tables}
 \usage{
 iotable_year_get(
   labelled_io_data = NULL,
-  source = "germany_1990",
+  source = "germany_1995",
   geo = "DE",
   unit = "MIO_EUR",
   time_unit = "year",
@@ -59,10 +59,27 @@ A vector with the years that have available input-output tables.
 \description{
 The function selects the available tables by year or time as a date 
 for a specific country and currency unit in the Eurostat bulk file.
+}
+\details{
 Unless you want to work with bulk data files, you should not invoke  \code{\link{iotables_download}} 
 directly, rather via this function, if and when it is necessary.
 }
 \examples{
-germany_years <- iotable_year_get ( source = "germany_1990", geo = 'DE', 
+germany_years <- iotable_year_get ( source = "germany_1995", geo = 'DE', 
                                     unit = "MIO_EUR" )
 }
+\seealso{
+Other iotables processing functions: 
+\code{\link{conforming_vector_create}()},
+\code{\link{household_column_get}()},
+\code{\link{key_column_create}()},
+\code{\link{matrix_round}()},
+\code{\link{output_get}()},
+\code{\link{primary_input_get}()},
+\code{\link{rows_add}()},
+\code{\link{supplementary_add}()},
+\code{\link{total_tax_add}()},
+\code{\link{vector_transpose_longer}()},
+\code{\link{vector_transpose_wider}()}
+}
+\concept{iotables processing functions}

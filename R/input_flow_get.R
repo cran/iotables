@@ -1,6 +1,9 @@
-#' @title Create a use (input flow) matrix
+#' @title Create an inter-industry or input flow matrix
 #' 
-#' @description Select the use table from a symmetric input-output table.
+#' @description Select the first quadrant of the symmetric input-output table.
+#' 
+#' @details The first quadrant is called the input flow matrix, or the input requirements matrix, 
+#' or the inter-industry matrix in different contexts.
 #' @param data_table A symmetric input-output table or use table 
 #' retrieved by the \code{\link{iotable_get}} function. 
 #' @param households Defaults to \code{FALSE}. If \code{TRUE}, the 
@@ -9,11 +12,10 @@
 #' primary input rows, choose \code{FALSE}. Empty product/industry rows are always 
 #' removed to avoid division by zero error in the analytic functions.
 #' @importFrom dplyr mutate across left_join select
-#' @return A data flow matrix in a labelled data frame.
+#' @return A data flow matrix (a symmetric use table) with a key column.
 #' @family analytic object functions
 #' @examples 
-#' data_table <- iotable_get()
-#' input_flow <- input_flow_get(data_table = data_table, 
+#' input_flow <- input_flow_get(data_table = iotable_get(), 
 #'                              empty_remove = FALSE,
 #'                              households = TRUE)
 #' 
@@ -47,7 +49,6 @@ input_flow_get <- function ( data_table,
   last_row <- which(key_column %in% c("total", "cpa_total"))
   
   input_flow_table[1:last_row,]
-  
 }
 
 

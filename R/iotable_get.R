@@ -1,10 +1,10 @@
-#' @title Get an input-output table fom bulk file
+#' Get An Input-Output Table Fom Bulk File
 #' 
-#' @description This function is used to filter out  a single input-output table from
+#' This function is used to filter out  a single input-output table from
 #' a database, for example a raw file downloaded from the Eurostat 
 #' website.  It provides some functionality to avoid some pitfalls.
 #' 
-#' @details Unless you want to work with bulk data files, 
+#' Unless you want to work with bulk data files, 
 #' you should not invoke  \code{\link{iotables_download}} 
 #' directly, rather via this function, if and when it is necessary.
 #'  
@@ -55,22 +55,23 @@
 #' The bulk data files on the Eurostat website are in a long form and they are 
 #' not correctly ordered for further matrix equations.
 #' @importFrom magrittr %>%
-#' @importFrom dplyr filter select mutate rename left_join arrange all_of
+#' @importFrom dplyr filter select mutate rename left_join arrange 
+#' @importFrom dplyr mutate_if
+#' @importFrom tidyselect one_of all_of
 #' @importFrom tidyr spread
 #' @importFrom forcats fct_reorder
 #' @importFrom lubridate year
 #' @importFrom utils data
 #' @importFrom rlang .data
-#' @importFrom utils globalVariables
-#' @family import functions
+#' @family iotables import functions
 #' @examples 
-#' germany_table <- iotable_get( source = "germany_1990", 
+#' germany_table <- iotable_get( source = "germany_1995", 
 #'                  geo = 'DE', year = 1990, unit = "MIO_EUR", 
 #'                  labelling  = "iotables" )
 #' @export 
 
 iotable_get <- function ( labelled_io_data = NULL, 
-                          source = "germany_1990", 
+                          source = "germany_1995", 
                           geo = "DE",
                           year = 1990, unit = "MIO_EUR", 
                           stk_flow = "DOM", 
@@ -78,19 +79,19 @@ iotable_get <- function ( labelled_io_data = NULL,
                           data_directory = NULL, 
                           force_download = TRUE) { 
   
- 
   ## Initialize NSE variables -----------------------------------------
   #these should be eliminated, but this is a very long code.
   t_cols2  <- t_rows2 <- by_row <- by_col <- NULL
   account_group <- digit_1 <- digit_2 <- group <- quadrant <- NULL
   iotables_row <- iotables_col <- prod_na <- induse <- variable <-  NULL
-  code <- label <- NULL
+  row_order <- col_order <- code <- label <- NULL
+  uk_col <- uk_col_label <- uk_row <- uk_row_label <- indicator <- NULL
 
   if ( labelling == 'eurostat' ) labelling <- 'short'
   ## Parameter exception handling -------------------------------------
   if (is.null(source)){ stop ("Parameter 'source' is a mandatory input.")}
   if (is.null(labelled_io_data) & is.null(geo)) stop ("The 'geo' parameter must be a valid Eurostat 'geo' code")
-  if (is.null(labelled_io_data) & !source %in% c("germany_1990", 
+  if (is.null(labelled_io_data) & !source %in% c("germany_1995", 
                                                  "uk_2010", 
                                                  "croatia_2010_1900", 
                                                  "croatia_2010_1800", 
@@ -98,7 +99,7 @@ iotable_get <- function ( labelled_io_data = NULL,
     validate_source(source)
   }
   
-  ##Avoiding no visible binding for global variable 'data' ----------
+  ## Avoiding no visible binding for global variable 'data' ----------
   getdata <- function(...)
   {
     e <- new.env()
@@ -110,7 +111,7 @@ iotable_get <- function ( labelled_io_data = NULL,
   if ( source %in% c("naio_10_cp1620",  "naio_10_cp1630", 
                      "naio_10_pyp1620", "naio_10_pyp1630")
        ) {
-    stk_flow_input <- 'TOTAL'  #tax and margin tables only have one version 
+    stk_flow_input <- 'TOTAL'  # tax and margin tables only have one version 
   }
   
   uk_tables <- c("uk_2010_siot", "uk_2010_coeff", "uk_2010_inverse")
@@ -119,7 +120,7 @@ iotable_get <- function ( labelled_io_data = NULL,
   prod_ind <- c("naio_10_cp1700", "naio_10_cp1750", "naio_10_pyp1700",
                 "naio_10_pyp1750", "naio_10_cp15", "naio_10_cp16",
                 "naio_10_cp1610", "naio_10_cp1620", "naio_10_cp1630", 
-                "naio_10_pyp1620", "naio_10_pyp1630", "germany_1990")
+                "naio_10_pyp1620", "naio_10_pyp1630", "germany_1995")
   
   trow_tcol <- croatia_files <- c('croatia_2010_1700', 'croatia_2010_1800', 
                                   'croatia_2010_1900')
@@ -127,24 +128,24 @@ iotable_get <- function ( labelled_io_data = NULL,
   if ( source %in% prod_ind ) { 
     
     metadata_rows <- getdata (metadata) %>%  #tables that follow prod_ind vocabulary
-      filter( variable == "prod_na") %>%
+      dplyr::filter ( variable == "prod_na") %>%
       dplyr::rename ( prod_na = .data$code) %>%
       dplyr::rename ( prod_na_lab = .data$label ) %>%
       dplyr::rename ( row_order = .data$numeric_label ) %>%
       dplyr::rename ( iotables_row = .data$iotables_label )
     
     metadata_cols <- getdata(metadata) %>%
-      filter( variable == "induse") %>%
+      dplyr::filter ( variable == "induse") %>%
       dplyr::rename ( induse = .data$code) %>%
       dplyr::rename ( induse_lab = .data$label )%>%
       dplyr::rename ( col_order = .data$numeric_label ) %>%
       dplyr::rename ( iotables_col = .data$iotables_label )
     
-    if ( source == "germany_1990" ) { 
+    if ( source == "germany_1995" ) { 
       year <- 1990
       geo <- "DE"
       unit <- "MIO_EUR"
-      source <- "germany_1990"
+      source <- "germany_1995"
     }
     
     year_input <- year
@@ -157,14 +158,14 @@ iotable_get <- function ( labelled_io_data = NULL,
     metadata <- getdata(metadata)
     
     metadata_rows <- metadata %>%
-      filter( variable == "t_rows") %>%
+      dplyr::filter ( variable == "t_rows") %>%
       dplyr::rename ( t_rows2 = .data$code) %>%
       dplyr::rename ( t_rows2_lab = .data$label ) %>%
       dplyr::rename ( row_order = .data$numeric_label ) %>%
       dplyr::rename ( iotables_row = .data$iotables_label )
     
     metadata_cols <- metadata %>%
-      filter( variable == "t_cols") %>%
+      dplyr::filter ( variable == "t_cols") %>%
       dplyr::rename ( t_cols2 = .data$code) %>%
       dplyr::rename ( t_cols2_lab = .data$label ) %>%
       dplyr::rename ( col_order = .data$numeric_label ) %>%
@@ -185,8 +186,8 @@ iotable_get <- function ( labelled_io_data = NULL,
       metadata_uk_2010 <- getdata(metadata_uk_2010)
       
       metadata_cols <- metadata_uk_2010  %>%
-        filter( !is.na(.data$uk_col)) %>%
-        select( -.data$uk_row, -.data$uk_row_label, -.data$prod_na, -.data$row_order) %>%
+        dplyr::filter ( !is.na(.data$uk_col)) %>%
+        dplyr::select ( -uk_row, -uk_row_label, -prod_na, -row_order) %>%
         mutate ( uk_col = gsub("\\.", "-", as.character(.data$uk_col))) %>%
         mutate ( uk_col = gsub(" & ", "-", as.character(.data$uk_col))) %>%
         mutate ( uk_col = trimws(.data$uk_col, 'both'))
@@ -202,8 +203,8 @@ iotable_get <- function ( labelled_io_data = NULL,
     stop ("This type of input-output database is not (yet) recognized by iotables.")
   }
   
-  metadata_rows <- metadata_rows %>% mutate ( across(where(is.factor), as.character) )
-  metadata_cols <- metadata_cols %>% mutate ( across(where(is.factor), as.character) )
+  metadata_rows <- mutate_if ( metadata_rows, is.factor, as.character )
+  metadata_cols <- mutate_if ( metadata_cols, is.factor, as.character )
   
   ###Exception handling for wrong paramters that are not directly inputed-----
   if ( is.null(labelled_io_data) ) {  #if not directly inputed data 
@@ -227,10 +228,10 @@ iotable_get <- function ( labelled_io_data = NULL,
     tmp_rds <- file.path(tempdir(), paste0(source, "_", labelling, ".rds"))
     
     ## Read from file or internal dataset ----
-    if ( source_inputed == "germany_1990" ) {
+    if ( source_inputed == "germany_1995" ) {
       
-      germany_1990 <- getdata(germany_1990) 
-      labelled_io_data <- germany_1990    # use germany example 
+      germany_1995 <- getdata("germany_1995") 
+      labelled_io_data <- germany_1995    # use germany example 
       labelled_io_data$year <- 1990
       
     } else if ( source_inputed == "croatia_2010_1700" ) { 
@@ -266,27 +267,27 @@ iotable_get <- function ( labelled_io_data = NULL,
   if ( source %in% uk_tables ) {
     if ( source == "uk_2010_siot") {
       labelled_io_data <- labelled_io_data %>%
-        filter( .data$indicator == 'Input-Output table (domestic use, basic prices, product by product)')
+        dplyr::filter ( .data$indicator == 'Input-Output table (domestic use, basic prices, product by product)')
     }
     
     if ( source == "uk_2010_use") {
       labelled_io_data <- labelled_io_data %>%
-        filter( .data$indicator == 'Domestic use table at basic prices (product by industry)')
+        dplyr::filter ( .data$indicator == 'Domestic use table at basic prices (product by industry)')
     }
     
     if ( source == "uk_2010_imports") {
       labelled_io_data <- labelled_io_data %>%
-        filter( .data$indicator == 'Imports use table at basic prices (product by product)')
+        dplyr::filter ( .data$indicator == 'Imports use table at basic prices (product by product)')
     }
     
     if ( source == "uk_2010_coeff") {
       labelled_io_data <- labelled_io_data %>%
-        filter( .data$indicator == 'Matrix of coefficients (product by product)')
+        dplyr::filter ( .data$indicator == 'Matrix of coefficients (product by product)')
     }
     
     if ( source == "uk_2010_inverse") {
       labelled_io_data <- labelled_io_data %>%
-        filter( .data$indicator == 'Leontief Inverse (product by product)')
+        dplyr::filter ( .data$indicator == 'Leontief Inverse (product by product)')
     }
   } 
    
@@ -319,7 +320,7 @@ iotable_get <- function ( labelled_io_data = NULL,
 
   if ( ! source %in% c("croatia_2010_1700" , "croatia_2010_1800" , 
                        "croatia_2010_1900" , 
-                       "germany_1990", uk_tables ) ) {
+                       "germany_1995", uk_tables ) ) {
     selected_table <- which (   ## get the number of table to be selected
       labelled_io_data$year == year & 
         as.character(labelled_io_data$geo) == geo &
@@ -366,30 +367,30 @@ iotable_get <- function ( labelled_io_data = NULL,
   remove_vars  <- remove_vars [remove_vars %in% names (metadata_cols)]
   
   iotable_labelled <- iotable %>%
-    filter(stk_flow == stk_flow_input )  %>%
-    mutate( across(where(is.factor), as.character) ) %>%
-    left_join( metadata_cols, by = col_join  ) %>%
-    select( -all_of(remove_vars) ) %>%  #remove repeating columns before joining rows
-    mutate( across(where(is.factor), as.character) ) %>% 
-    left_join ( metadata_rows, by = row_join ) 
+    dplyr::filter (stk_flow == stk_flow_input )  %>%
+    dplyr::mutate_if ( is.factor, as.character ) %>%
+    dplyr::left_join ( metadata_cols, by = col_join  ) %>%
+    dplyr::select ( -one_of(remove_vars) ) %>%  #remove repeating columns before joining rows
+    dplyr::mutate_if ( is.factor, as.character ) %>% 
+    dplyr::left_join ( metadata_rows, by = row_join ) 
     
     if ( nrow (iotable_labelled) == 0 ) {
       stop ( "No rows found with geo = ", geo_input, " year = ", year, 
              " unit = ", unit, " and stk_flow = ", stk_flow_input, "." )
     }
   
-  iotable_labelled <- iotable_labelled %>%
-    mutate(prod_na = forcats::fct_reorder(prod_na, 
-                                          as.numeric(.data$row_order))) %>%
-    mutate(induse  = forcats::fct_reorder(induse, 
-                                          as.numeric(.data$col_order))) 
-  
+    iotable_labelled <- iotable_labelled %>%
+      dplyr::mutate ( prod_na = forcats::fct_reorder(prod_na, 
+                                              as.numeric(row_order))) %>%
+      dplyr::mutate ( induse  = forcats::fct_reorder(induse, 
+                                             as.numeric(col_order))) 
+    
     if ( all(c("iotables_row", "iotables_col") %in%  names (iotable_labelled)) ) {
       iotable_labelled <-  iotable_labelled %>%
-        mutate(iotables_row = forcats::fct_reorder(iotables_row ,
-                                                   as.numeric(.data$row_order))) %>%
-        mutate(iotables_col = forcats::fct_reorder(iotables_col, 
-                                                   as.numeric(.data$col_order)))
+        dplyr::mutate ( iotables_row = forcats::fct_reorder(iotables_row ,
+                                                            as.numeric(row_order))) %>%
+        dplyr::mutate ( iotables_col = forcats::fct_reorder(iotables_col, 
+                                                            as.numeric(col_order)))
     }
    
   } else  {
@@ -399,41 +400,41 @@ iotable_get <- function ( labelled_io_data = NULL,
       by_row <- names(iotable)[which ( names(iotable) %in% c("t_rows2", "t_rows2_lab", "iotables_row") )]
       
       iotable_labelled <- iotable %>%
-        mutate ( across(where(is.factor), as.character) ) %>%
-        left_join(metadata_cols, by = by_col)  %>%
-        left_join(metadata_rows, by = by_row) %>%
-        arrange ( .data$row_order, .data$col_order )
+        mutate_if ( is.factor, as.character ) %>%
+        left_join ( metadata_cols, by = by_col )  %>%
+        left_join ( metadata_rows, by = by_row ) %>%
+        arrange ( row_order, col_order )
     } else {
       iotable_labelled <- iotable 
     }
     iotable_labelled <- iotable_labelled %>%
-      mutate(t_rows2 = forcats::fct_reorder(t_rows2, 
-                                            as.numeric(.data$row_order))) %>%
-      mutate(t_cols2 = forcats::fct_reorder(t_cols2, 
-                                            as.numeric( .data$col_order ))) %>%
-      mutate(iotables_row = forcats::fct_reorder(iotables_row, 
-                                                 as.numeric(.data$row_order))) %>%
-      mutate(iotables_col = forcats::fct_reorder(iotables_col, 
-                                                 as.numeric(.data$col_order)))
+      dplyr::mutate ( t_rows2 = forcats::fct_reorder(t_rows2, 
+                                              as.numeric( row_order))) %>%
+      dplyr::mutate ( t_cols2 = forcats::fct_reorder(t_cols2, 
+                                              as.numeric( col_order ))) %>%
+      dplyr::mutate ( iotables_row = forcats::fct_reorder(iotables_row , 
+                                                       as.numeric(row_order))) %>%
+      dplyr::mutate ( iotables_col = forcats::fct_reorder(iotables_col, 
+                                                         as.numeric( col_order)))
   } #end of not prod_na cases
 
   if ( labelling == "iotables" ) {
     
     iotable_labelled_w <- iotable_labelled %>%
-      arrange (iotables_row, iotables_col) %>%
-      select( all_of(c("iotables_col", "iotables_row", "values")) ) %>% 
+      dplyr::arrange (iotables_row, iotables_col) %>%
+      dplyr::select ( all_of(c("iotables_col", "iotables_row", "values")) ) %>% 
       tidyr::spread (iotables_col, .data$values)
     
   } else if ( labelling == "short" & source %in% prod_ind ) {
     
     iotable_labelled_w <- iotable_labelled %>%
-      select(.data$prod_na, .data$induse, .data$values) %>%
-      filter( !is.na(.data$prod_na) )  %>%
+      dplyr::select (.data$prod_na, .data$induse, .data$values) %>%
+      dplyr::filter ( !is.na(.data$prod_na) )  %>%
       tidyr::spread (induse, .data$values )
 
   } else {
     iotable_labelled_w <- iotable_labelled %>%
-      select( all_of(c("t_rows2", "t_cols2", "values")) ) %>%
+      dplyr::select ( all_of(c("t_rows2", "t_cols2", "values")) ) %>%
       tidyr::spread ( t_cols2, .data$values )
   }
   

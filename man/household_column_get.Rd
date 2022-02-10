@@ -18,12 +18,20 @@ The column containing final household expenditure. If not found
 Return Final Household Expenditure
 }
 \examples{
-household_column_get(iotable_get (source = 'germany_1990'))
+household_column_get(iotable_get (source = 'germany_1995'))
 }
 \seealso{
 Other iotables processing functions: 
 \code{\link{conforming_vector_create}()},
+\code{\link{iotable_year_get}()},
+\code{\link{key_column_create}()},
+\code{\link{matrix_round}()},
 \code{\link{output_get}()},
-\code{\link{primary_input_get}()}
+\code{\link{primary_input_get}()},
+\code{\link{rows_add}()},
+\code{\link{supplementary_add}()},
+\code{\link{total_tax_add}()},
+\code{\link{vector_transpose_longer}()},
+\code{\link{vector_transpose_wider}()}
 }
 \concept{iotables processing functions}

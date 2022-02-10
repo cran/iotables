@@ -2,7 +2,10 @@
 % Please edit documentation in R/output_get.R
 \name{output_get}
 \alias{output_get}
-\title{Get an output vector}
+\title{Get an output vector
+
+This is a wrapper function around the \code{\link{primary_input_get}} 
+function.}
 \usage{
 output_get(data_table)
 }
@@ -16,6 +19,8 @@ A data frame with the vector of multipliers and the an
 auxiliary metadata column (for joining with other matrixes.)
 }
 \description{
+Get an output vector
+
 This is a wrapper function around the \code{\link{primary_input_get}} 
 function.
 }
@@ -26,6 +31,14 @@ output_get ( data_table = iotable_get () )
 Other iotables processing functions: 
 \code{\link{conforming_vector_create}()},
 \code{\link{household_column_get}()},
-\code{\link{primary_input_get}()}
+\code{\link{iotable_year_get}()},
+\code{\link{key_column_create}()},
+\code{\link{matrix_round}()},
+\code{\link{primary_input_get}()},
+\code{\link{rows_add}()},
+\code{\link{supplementary_add}()},
+\code{\link{total_tax_add}()},
+\code{\link{vector_transpose_longer}()},
+\code{\link{vector_transpose_wider}()}
 }
 \concept{iotables processing functions}

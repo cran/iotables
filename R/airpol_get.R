@@ -3,13 +3,13 @@
 #' @description Get air emissions accounts by NACE Rev. 2 activity for environmental impact
 #' assessments.
 #' 
-#' @details Currently works only with product x product tables. 
+#' @details Currently tested only with product x product tables. 
 #' The dataset air emissions accounts by NACE Rev. 2 activity [env_ac_ainah_r2] has five dimensions:
 #' The Air pollutant \code{airpol} variables are collected on the emissions of the following pollutants: 
-#' Carbon dioxide without emissions from biomass (CO2), Carbon dioxide from biomass (Biomass CO2), 
-#' Nitroux oxide (N2O), Methane (CH4), Perfluorocarbons (PFCs), Hydrofluorocarbons (HFCs), 
-#' Sulphur hexafluoride (SF6) including nitrogen trifluoride (NF3), Nitrogen oxides (NOx), 
-#' Non-methane volatile organic compounds, (NMVOC), Carbon monoxide (CO), 
+#' carbon dioxide without emissions from biomass (CO2), carbon dioxide from biomass (Biomass CO2), 
+#' nitroux oxide (N2O), methane (CH4), perfluorocarbons (PFCs), Hydrofluorocarbons (HFCs), 
+#' sulphur hexafluoride (SF6) including nitrogen trifluoride (NF3), nitrogen oxides (NOx), 
+#' Non-methane volatile organic compounds, (NMVOC), carbon monoxide (CO), 
 #' Particulate matter smaller than 10 micrometre (PM10), Particulate matter smaller than 2,5 micrometre (PM2,5), 
 #' Sulphur dioxide (SO2), Ammonia (NH3).
 #' 
@@ -22,7 +22,8 @@
 #'  \code{CO2_BIO}, \code{CO_NMVOCE}, \code{GHG}, \code{HFC_CO2E}, \code{N2O}, \code{N2O_CO2E}, 
 #'  \code{NF3_SF6_CO2E}, \code{NH3}, \code{NH3_SO2E}, \code{NMVOC}, \code{NOX}, \code{NOX_NMVOCE}, 
 #'  \code{NOX_SO2E}, \code{O3PR}, \code{PFC_CO2E}, \code{PM10}, \code{PM2_5}, \code{SOX_SO2E}.
-#' @param geo The country code. 
+#' @param geo The country code. The special value \code{'germany_1995'} will return the 
+#' replication dataset \code{\link{germany_airpol}}.
 #' @param year The year.  The average employment will be created for the given
 #' year, starting with \code{2008}, when the NACE Rev 2 was introduced in 
 #' employment statistics.
@@ -49,14 +50,25 @@
 #' input-output tables.
 #' @family import functions
 #' @examples 
-#' \donttest{
-#' airpol_get( airpol = "GHG", geo="BE", year = 2020, unit = "THS_T")
-#' 
-#' }
+#' airpol_get(airpol = "CO2", geo="germany_1995", year = 1995, unit = "THS_T") 
 #' @export
 
 airpol_get <- function( airpol = "GHG", geo="BE", year = 2020, unit = "THS_T", 
                         data_directory = NULL, force_download = TRUE) {
+  
+  
+  if ( geo == "germany_1995") {
+    ## Avoid large examples on CRAN
+    airpol_input <- airpol
+    return_df <- getdata('germany_airpol') %>%
+      filter ( .data$airpol %in% airpol_input ) %>%
+      select (.data$iotables_col, .data$value ) %>%
+      pivot_wider(names_from = .data$iotables_col, 
+                  values_from = .data$value) %>%
+      mutate ( indicator = paste0(airpol_input, "_emission")) %>%
+      relocate ( .data$indicator, .before = everything())
+    return(return_df)
+  }
   
   if ( force_download ) {
     tmp <- eurostat::get_eurostat("env_ac_ainah_r2")
@@ -65,7 +77,10 @@ airpol_get <- function( airpol = "GHG", geo="BE", year = 2020, unit = "THS_T",
   }
   
   if (!is.null(data_directory)) {
-    if ( dir.exists(data_directory)) saveRDS(tmp, file = file.path(data_directory, "env_ac_ainah_r2.rds"))
+    if ( dir.exists(data_directory) ) {
+      # If there is a temporary saving location given, save the data there.
+      saveRDS(tmp, file = file.path(data_directory, "env_ac_ainah_r2.rds")) 
+      }
   }
   
   assertthat::assert_that(

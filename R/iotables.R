@@ -19,7 +19,7 @@
 #' input-output tables and joining them correctly.
 #' \code{\link{conforming_vector_create}} is a helper function that creates
 #' a named vector that conforms with the analytical objects, such as the 
-#' use table, the Leontieff-matrix, etc.
+#' use table, the Leontief-matrix, etc.
 #' \code{\link{household_column_get}} returns the final household 
 #' expenditure.
 #' \code{\link{primary_input_get}} will retrieve any primary input from 
@@ -28,12 +28,16 @@
 #' \code{\link{total_tax_add}} adds taxes to an input-output table.
 #' \code{\link{empty_remove}} symmetrically removes columns and rows if they contain missing values, 
 #' or each and every value is zero. 
-#'
+#' \code{\link{rows_add}} Add conforming row(s) to a matrix. 
+#' \code{\link{key_column_create}} This function will likely be used with the creation of coefficients that need to be matched with
+#' a matrix that has a key column.
+#' 
 #' @section analytic object functions: 
 #' \code{\link{input_flow_get}} returns the use (input flow) matrix; 
-#' \code{\link{leontieff_matrix_create}} and the 
-#' \code{\link{leontieff_inverse_create}} to create the respective analytic
+#' \code{\link{leontief_matrix_create}} and the 
+#' \code{\link{leontief_inverse_create}} to create the respective analytic
 #' matrixes.
+#' \code{\link{ghosh_inverse_create}} will create the Gosh-inverse.
 #' 
 #' @section indicator functions:
 #' \code{\link{input_indicator_create}} The function creates the input indicators from the inputs and
@@ -54,7 +58,7 @@
 #' @section linkage functions:
 #' \code{\link{backward_linkages}} creates the vector of industry 
 #' (product) backward linkages in a wide
-#' data.frame class, following the column names of the Leontieff 
+#' data.frame class, following the column names of the Leontief 
 #' inverse matrix. 
 #' 
 #' \code{\link{forward_linkages}} creates the vector of industry 

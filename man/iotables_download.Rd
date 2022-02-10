@@ -13,8 +13,9 @@ iotables_download(
 \arguments{
 \item{source}{See the available list of sources above in the Description.}
 
-\item{data_directory}{Defaults to \code{NULL}, if a valid directory, it will 
-try to save the pre-processed data file here with labelling.}
+\item{data_directory}{Defaults to \code{NULL} when the files will be temporarily stored
+in the path retrieved by \code{\link[base]{tempdir}}. If it is a different valid directory, 
+it will try to save the pre-processed data file here with labelling.}
 
 \item{force_download}{Defaults to \code{FALSE} which will use the existing downloaded file
 in the \code{data_directory} or the temporary directory, if it exists. \code{TRUE} will
@@ -66,7 +67,6 @@ The function will make a copy of the rds file in this directory.
 Other import functions: 
 \code{\link{airpol_get}()},
 \code{\link{employment_get}()},
-\code{\link{iotable_get}()},
 \code{\link{iotables_metadata_get}()},
 \code{\link{iotables_read_tempdir}()}
 }

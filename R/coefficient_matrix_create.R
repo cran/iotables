@@ -1,9 +1,10 @@
-#' Create a coefficient matrix
+#' @title Create a coefficient matrix
 #' 
-#' Create a coefficient matrix from a Symmetric Input-Output Table. The
-#' coefficient matrix is related by default to output, but you can change
+#' @description Create a coefficient matrix from a Symmetric Input-Output Table. 
+#' 
+#' @details The coefficient matrix is related by default to output, but you can change
 #' this to total supply or other total aggregate if it exists 
-#' in your table.#' 
+#' in your table.
 #' @param data_table A symmetric input-output table, a use table, 
 #' a margins or tax table retrieved by the  \code{\link{iotable_get}}
 #'  function. 
@@ -26,25 +27,26 @@
 #' by \code{total} with a key column. Optionally the results are rounded to 
 #' given \code{digits}. 
 #' @importFrom dplyr mutate across left_join
+#' @importFrom tidyselect vars_select_helpers
 #' @references See 
 #' \href{https://webarchive.nationalarchives.gov.uk/20160114044923/http://www.ons.gov.uk/ons/rel/input-output/input-output-analytical-tables/2010/index.html}{United Kingdom Input-Output Analytical Tables 2010}
 #' for explanation on the use of the Coefficient matrix.
 #' @family indicator functions
 #' @examples 
-#' coefficient_matrix_create(data_table = iotable_get(source = "germany_1990"), 
+#' coefficient_matrix_create(data_table = iotable_get(source = "germany_1995"), 
 #'                           total = "output", 
 #'                           digits = 4 )
 #' @export 
 
-coefficient_matrix_create <- function ( data_table, 
-                                        total = "output", 
-                                        digits = NULL, 
-                                        remove_empty = TRUE,
-                                        households = FALSE,
-                                        return_part = NULL) {
+coefficient_matrix_create <- function (data_table, 
+                                       total = "output", 
+                                       digits = NULL, 
+                                       remove_empty = TRUE,
+                                       households = FALSE,
+                                       return_part = NULL) {
   
   # Create a coefficient matrix, including primary inputs.  
-  # For the Leontieff matrix, only the inputs part (first quadrant is used)
+  # For the Leontief matrix, only the inputs part (first quadrant is used)
   
   if ( !is.null(return_part)) {
     if ( ! return_part %in% c("products", "industry", "primary_inputs")) {
@@ -58,6 +60,8 @@ coefficient_matrix_create <- function ( data_table,
   
   ## Removing all zero columns and rows --------
   if ( remove_empty ) data_table <- empty_remove ( data_table )
+  
+  ## See the internal function in the source file quadrant_separator_find.R
   
   last_column <- quadrant_separator_find( data_table, 
                                           include_total = FALSE)
@@ -82,9 +86,9 @@ coefficient_matrix_create <- function ( data_table,
   
   ## Getting the row for division
   if ( total %in%  c("output", "p1", "output_bp")  ) { 
-    if (any( c("output", "p1", "output_bp")  %in%  key_column )) {
+    if (any( c("output", "p1", "output_bp", "total output")  %in%  key_column )) {
       total_row <- data_table[which ( key_column  %in%
-                                        c("output", "p1", "output_bp"))[1],]
+                                        c("output", "p1", "output_bp", "total output"))[1],]
     } else {
       stop ( "The output row was not found in the table as 'output', 
              'p1' or 'output_bp'")
@@ -95,7 +99,7 @@ coefficient_matrix_create <- function ( data_table,
       total_row <- data_table[total_row_n,]
     }
   } else {
-    total_row <- data_table[which ( key_column %in% c(total))[1],]
+    total_row <- data_table[which ( tolower(key_column) %in% tolower(total)[1]), ]
     if ( length(total_row) == 0) stop("The total row was not found.")
   } #end of else
   
@@ -104,8 +108,13 @@ coefficient_matrix_create <- function ( data_table,
   null_to_eps <- function(x) ifelse (x == 0, 0.000001, x)
   total_row <-  total_row %>% mutate(across(where(is.factor), as.character))
   total_row <-  total_row %>% mutate (across(where(is.factor), null_to_eps)) # avoid division by zero
+  total_row
   
-  coeff_matrix <- data_table
+  where <- tidyselect::vars_select_helpers$where
+  
+  ## Make sure that no integers remain in the data table, because they cannot be divided with numerics.
+  coeff_matrix <- data_table %>%
+    mutate (across(where(is.numeric), as.numeric))
   
   if (households == TRUE)  last_column <- last_column+1
   ###The actual creation of the coefficients-----
@@ -122,11 +131,11 @@ coefficient_matrix_create <- function ( data_table,
   
   household_earnings_row <- coeff_matrix[which( earnings_name == key_column), ]
   
-  ###If only a part should be returned----
+  # If only a part should be returned-----------------------------
   if ( ! is.null(return_part) )  {
     
     last_row <- which ( 
-      tolower(unlist(data_table[,1])) %in% c("cpa_total", "total")
+      tolower(unlist(data_table[,1])) %in% c("cpa_total", "total", "total output")
     ) #not last column
     
     if ( return_part == "primary_inputs" ) {
@@ -146,3 +155,4 @@ coefficient_matrix_create <- function ( data_table,
     round_table (coeff_matrix, digits = digits)
   }
 }
+

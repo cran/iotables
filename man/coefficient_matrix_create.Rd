@@ -44,13 +44,15 @@ by \code{total} with a key column. Optionally the results are rounded to
 given \code{digits}.
 }
 \description{
-Create a coefficient matrix from a Symmetric Input-Output Table. The
-coefficient matrix is related by default to output, but you can change
+Create a coefficient matrix from a Symmetric Input-Output Table.
+}
+\details{
+The coefficient matrix is related by default to output, but you can change
 this to total supply or other total aggregate if it exists 
-in your table.#'
+in your table.
 }
 \examples{
-coefficient_matrix_create(data_table = iotable_get(source = "germany_1990"), 
+coefficient_matrix_create(data_table = iotable_get(source = "germany_1995"), 
                           total = "output", 
                           digits = 4 )
 }

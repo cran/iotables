@@ -6,7 +6,7 @@
 \usage{
 input_indicator_create(
   data_table,
-  input_vector = c("gva_bp", "net_tax_production"),
+  input_row = c("gva_bp", "net_tax_production"),
   digits = NULL,
   households = FALSE,
   indicator_names = NULL
@@ -17,8 +17,8 @@ input_indicator_create(
 a margins or tax table retrieved by the  \code{\link{iotable_get}}
 function.}
 
-\item{input_vector}{The name of inputs for which you want to create the 
-indicators. They must be found in the \code{data_table}.}
+\item{input_row}{The name of input(s) for which you want to create the 
+indicator(s). Must be present in the \code{data_table}.}
 
 \item{digits}{Rounding digits, if omitted, no rounding takes place.}
 
@@ -40,7 +40,7 @@ the outputs.
 \examples{
  
 input_indicator_create( data_table = iotable_get(), 
-                        input_vector = c("gva", "compensation_employees"),
+                        input_row = c("gva", "compensation_employees"),
                         digits = 4, 
                         indicator_names = c("GVA indicator", "Income indicator"))
 }

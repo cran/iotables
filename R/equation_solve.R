@@ -10,7 +10,7 @@
 #' 
 #' @param LHS A left-hand side vector with a key column containing the 
 #' industry or product names for matching, for example the employment coefficients. 
-#' @param Im A Leontieff-inverse with a key column containing the industry or 
+#' @param Im A Leontief-inverse with a key column containing the industry or 
 #' product names for matching.
 #' @importFrom dplyr select mutate mutate across full_join any_of
 #' @return A data.frame with auxiliary metadata to conform the symmetric
@@ -46,18 +46,24 @@ equation_solve <- function (LHS = NULL, Im = NULL) {
                                "TOTAL", "CPA_TOTAL"))) {
      warning ( paste ( not_found, collapse = ','),  
                 ' from the input vector is removed. These are likely zero values, 
-               and cannot be found in the Leontieff-inverse.'
+               and cannot be found in the Leontief-inverse.'
               )
      LHS <- dplyr::select ( LHS, -dplyr::any_of ( not_found ) )   
      } else if  ( any( not_found  %in%  c("households", "P3_S14"))  )  {
-       stop ("The input vector has households but the Leontieff-inverse has not.")
+       stop ("The input vector has households but the Leontief-inverse has not.")
      } else {
-     stop ("Non conforming input vector and Leontieff-inverse.")
+     stop ("Non conforming input vector and Leontief-inverse.")
    }
   }
 
   ###Joining matrixes to find out if all data is present ---------------------   
 
+  names_lhs <- names(LHS)
+  names_Im <- names(Im)
+
+  names_lhs
+  names_Im
+    
   joined <- tryCatch(
       full_join (LHS, Im, by = names(LHS)), 
       error = function(e) {
@@ -73,8 +79,13 @@ equation_solve <- function (LHS = NULL, Im = NULL) {
   lhs <- joined[1,]
   lhs <- as.numeric(lhs[1,2:ncol(lhs)])  #numeric left-hand side in conforming order
   
+  #lhs <- LHS[ ,which ( vapply(LHS,is.numeric,  logical(1)))]
+  #lhs <- lhs %>% select ( any_of(names(Im))) %>% as.matrix()
+  
   im <- joined[2:nrow(joined),]
-  im <- as.matrix(im[,2:ncol(im)])  #numeric Leontieff inverse in conforming order
+  im <- as.matrix(im[,2:ncol(im)])  #numeric Leontief inverse in conforming order
+  
+  #im <- Im[, which ( vapply(LHS,is.numeric,  logical(1)))]
    
 
   ###Try to solve the matrix equation  ---------------------   

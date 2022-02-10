@@ -1,6 +1,21 @@
+# iotables 0.9
+* This is a patch for a vignette that has occassional building problems, and the last release before the major release 1.0 with a long-form publication.
+* The `germany_1990` dataset was incorrectly named, because it refers to another year, it is now corrected to be `germany_1995`.
+
+# iotables 0.4.9
+* Extending replication results from the [Handbook on Supply and Use Tables and Input-Output Tables with Extensions and Applications](https://unstats.un.org/unsd/nationalaccount/docs/SUT_IOT_HB_Final_Cover.pdf) published by the United Nations.
+* A new function, 'gosh_inverse_create()' for the creation of forward linkages.
+* See also a long-form documentation (publication candidate) [iotables: an R Package for Reproducible Input-Output Economics Analysis, Economic and Environmental Impact Assessment with Empirical Data](https://zenodo.org/record/5887038#.Ye2ovv7MLIU) on Zenodo.
+
+# iotablles 0.4.8
+* A new function, 'output_coefficients_create()' creates a conforming vector of various air pollutants for European input-output tables.
+* A new vignette, [Introduction to iotables](https://iotables.dataobservatory.eu/articles/intro.html) shows comparable results with the Eurostat Manual.
+* The [Environmental Impacts](https://iotables.dataobservatory.eu/articles/environmental_impact.html) is not comparable, it will need to be reworked to be comparable with the Eurostat Manual.
+
 # iotablles 0.4.7
 * A new function, 'airpol_get()' creates a conforming vector of various air pollutants for European input-output tables.
 * A new vignette, [Environmental Impacts](https://iotables.dataobservatory.eu/articles/environmental_impact.html) shows its use.
+* Released on CRAN.
 
 # iotables 0.4.6
 * Eliminating deprecated tidyverse functions. 
@@ -106,7 +121,6 @@ Error corrected concerning creation of temporary files on non-Windows environmen
 # iotables 0.2.8
 Handles tables with purchasers' prices. Imports Eurostat employment data.
 
-
 # iotables 0.2.7 
 Default data directory for faster programmatic use and phasing out discontinued Eurostat statistics. A bit improved messages and documentation.
 
@@ -137,7 +151,7 @@ The forthcoming update will rewrite and generalize some of the earlier functions
 
 At this point I will go with preparing a release the table on CRAN. The current version builds without warnings or notes on Windows and Linux. 
 
-iotables 0.2 is moved to rOpenGov.
+iotables 0.2 is moved to [rOpenGov](http://ropengov.org/).
  
  
 # iotables 0.1.4
@@ -150,7 +164,6 @@ New functions are added which enable a very simple IO analysis. As an important 
 * Further example data is added from Croatia, together with the `employment_aggregate()` helper function to match SIOT data with non-conforming employment statistics.
 * There is a vignette called _Working with Croatian Symmetric Input-Output Tables_ that shows some real-life uses. 
 * Testing on Travis (ubuntu and OSX tests.)
-
 
 # iotables 0.1.3
 
