@@ -1,3 +1,6 @@
+# iotables 0.9.1
+* This is a minor release that fixes a bug report on `indirect_effects_create()` and a  HTML version of manual issue on CRAN.
+
 # iotables 0.9
 * This is a patch for a vignette that has occassional building problems, and the last release before the major release 1.0 with a long-form publication.
 * The `germany_1990` dataset was incorrectly named, because it refers to another year, it is now corrected to be `germany_1995`.
@@ -30,7 +33,7 @@
 * Very small documentation changes.
 * Changing the code to dplyr 1.0+ and rlang in non-standard evaluation.
 * New website, CI on Github. Renewed [![codecov](https://codecov.io/gh/rOpenGov/iotables/branch/master/graph/badge.svg)](https://app.codecov.io/gh/rOpenGov/iotables), documentation changed to gfm flavored markdown.
-* Thanks to [\@KKulma](https://github.com/KKulma/) for setting up new and improved continuous integration, and [\@pitkant](https://github.com/pitkant) for implementing many good practices on improving the code. See [contributors](https://github.com/ropengov/iotables/graphs/contributors). This project is part of [rOpenGov](http://ropengov.org).
+* Thanks to [\@KKulma](https://github.com/KKulma/) for setting up new and improved continuous integration, and [\@pitkant](https://github.com/pitkant) for implementing many good practices on improving the code. See [contributors](https://github.com/ropengov/iotables/graphs/contributors). This project is part of [rOpenGov](https://ropengov.org).
 * 0.4.4 is released on CRAN.
 
 # iotables 0.4.3
@@ -71,7 +74,7 @@ is seldom used, as the analytical function will call it as needed.
 * New convenience function for nicer printing of structured SIOT tables and related matrix results.  Not yet exported, first will be used on vignettes only. 
 
 # iotables 0.3.7
-* New example `data(netherlands_2006)`, terminology and analytical improvements following  [Input-Output Multipliers Specification Sheet and Supporting Material, Spicosa Project Report](http://www.coastal-saf.eu/output-step/pdf/Specification sheet I_O_final.pdf). Results are checked against the publication.
+* New example `data(netherlands_2006)`, terminology and analytical improvements following  [Input-Output Multipliers Specification Sheet and Supporting Material, Spicosa Project Report](https://web.archive.org/web/20220331124544/www.coastal-saf.eu/output-step/pdf/Specification%20sheet%20I_O_final.pdf). Results are checked against the publication.
 * For terminological clarity, earlier `direct_supply_effects_create()` function is renamed `direct_supply_effects_create()`.
 * The function `effects_create()` currently refers to the function returning direct effects of a change in demand.
 * The function `multipliers_create()` refers to the function returning direct and indirect effects of a change in demand.
@@ -151,7 +154,7 @@ The forthcoming update will rewrite and generalize some of the earlier functions
 
 At this point I will go with preparing a release the table on CRAN. The current version builds without warnings or notes on Windows and Linux. 
 
-iotables 0.2 is moved to [rOpenGov](http://ropengov.org/).
+iotables 0.2 is moved to [rOpenGov](https://ropengov.org/).
  
  
 # iotables 0.1.4
@@ -170,4 +173,4 @@ New functions are added which enable a very simple IO analysis. As an important 
 * Added a `NEWS.md` file to track changes to the package.
 * Added Contributor Code of Conduct in `CONDUCT.md`
 * Some functions have parallel versions, and will be brought to [rOpenSci](https://github.com/ropensci/software-review) naming conventions (`object_verb()`)
-* Asked to join [rOpenGov](http://ropengov.github.io/) - excited but inexperienced in this!
+* Asked to join [rOpenGov](https://ropengov.github.io/) - excited but inexperienced in this!

@@ -5,16 +5,19 @@
 <!-- <img src="/man/figures/logo.png" align="right" height="205 width="205"/>-->
 
 ![iotables](man/figures/logo20.png)
-[![rOG-badge](https://ropengov.github.io/rogtemplate/reference/figures/ropengov-badge.svg)](http://ropengov.org/)
-[![packageversion](https://img.shields.io/badge/Package%20version-0.9-orange.svg?style=flat-square)](https://github.com/rOpenGov/iotables/commits/master)
+[![rOG-badge](https://ropengov.github.io/rogtemplate/reference/figures/ropengov-badge.svg)](https://ropengov.org/)
+[![packageversion](https://img.shields.io/badge/Package%20version-0.9.1-orange.svg?style=flat-square)](https://github.com/rOpenGov/iotables/commits/master)
 [![R-CMD-check](https://github.com/rOpenGov/iotables/workflows/R-CMD-check/badge.svg)](https://github.com/rOpenGov/iotables/actions)
-[![CRAN\_Status\_Badge](https://www.r-pkg.org/badges/version/iotables)](https://cran.r-project.org/package=iotables)
-[![CRAN\_time\_from\_release](https://www.r-pkg.org/badges/ago/iotables)](https://cran.r-project.org/package=iotables)
+[![CRAN_Status_Badge](https://www.r-pkg.org/badges/version/iotables)](https://cran.r-project.org/package=iotables)
+[![CRAN_time_from_release](https://www.r-pkg.org/badges/ago/iotables)](https://cran.r-project.org/package=iotables)
 [![metacran
 downloads](https://cranlogs.r-pkg.org/badges/iotables)](https://cran.r-project.org/package=iotables)
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.6033771.svg)](https://doi.org/10.5281/zenodo.6033771)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.7109769.svg)](https://doi.org/10.5281/zenodo.7109769)
 [![license](https://img.shields.io/badge/license-MIT%20+%20file%20LICENSE-lightgrey.svg)](https://choosealicense.com/)
 [![codecov](https://codecov.io/gh/rOpenGov/iotables/branch/master/graph/badge.svg)](https://app.codecov.io/gh/rOpenGov/iotables)
+[![AppVeyor build
+status](https://ci.appveyor.com/api/projects/status/github/rOpenGov/iotables?branch=master&svg=true)](https://ci.appveyor.com/project/rOpenGov/iotables)
+[![dataobservatory](https://img.shields.io/badge/ecosystem-dataobservatory.eu-3EA135.svg)](https://dataobservatory.eu/)
 [![Follow
 rOpenGov](https://img.shields.io/twitter/follow/ropengov.svg?style=social)](https://twitter.com/intent/follow?screen_name=ropengov)
 [![Follow
@@ -26,7 +29,7 @@ structure. They are often found in spreadsheets that follow this
 structure, or in the case Eurostat in a data repository. In both cases
 they in reproducible research must be downloaded and restructured to
 programmatically accessible form. Often these highly structured
-statistics need to be analyzed together with other data, for example,
+statistics need to be analysed together with other data, for example,
 when employment effects and multipliers are calculated. In this case
 processing the employment data to SIOT conforming format is a
 significant preprocessing challenge.
@@ -56,12 +59,12 @@ vignette.
 The calculation of induced effects (Type-II multipliers) are following
 the [Input-Output Multipliers Specification Sheet and Supporting
 Material, Spicosa Project
-Report](http://www.coastal-saf.eu/output-step/pdf/Specification%20sheet%20I_O_final.pdf).
+Report](https://web.archive.org/web/20220331124544/www.coastal-saf.eu/output-step/pdf/Specification%20sheet%20I_O_final.pdf).
 The analytical functions are tested against this example, too.
 
 ## Installation
 
-You can install iotables 0.4.7 from CRAN or the latest 0.9 development
+You can install iotables 0.9 from CRAN or the latest 0.9.1 development
 version with github:
 
 ``` r
@@ -74,11 +77,6 @@ devtools::install_github("rOpenGov/iotables")
 #with vignettes:
 #devtools::install_github("rOpenGov/iotables", build_vignettes = TRUE)
 ```
-
-You can download the manual in PDF for the [0.9 development
-release](https://iotables.dataobservatory.eu/iotables_0.9.pdf). and
-follow the changes on the
-[Changelog/NEWS](https://iotables.dataobservatory.eu/news/index.html).
 
 See also a long-form documentation (publication candidate) [iotables: an
 R Package for Reproducible Input-Output Economics Analysis, Economic and
@@ -150,9 +148,9 @@ Contributions are very welcome:
 
 **Kindly cite this work** as follows:
 
-Daniel Antal. (2022, February 10). rOpenGov/iotables: Importing and
-Manipulating Symmetric Input-Output Tables (Version 0.9). Zenodo.
-[https://doi.org/10.5281/zenodo.6033771](https://zenodo.org/record/5153006/)
+Daniel Antal. (2022. September 24.) rOpenGov/iotables: Importing and
+Manipulating Symmetric Input-Output Tables (Version 0.9.1). Zenodo.
+[https://doi.org/10.5281/zenodo.7109769](https://zenodo.org/record/5153006/)
 for released version. Development version URL:
 <https://ropengov.github.io/iotables/>
 
@@ -161,7 +159,7 @@ improved continuous integration, and
 [@pitkant](https://github.com/pitkant) for implementing many good
 practices on improving the code. See
 [contributors](https://github.com/ropengov/iotables/graphs/contributors).
-This project is part of [rOpenGov](http://ropengov.org).
+This project is part of [rOpenGov](https://ropengov.org).
 
 ## Code of Conduct
 
