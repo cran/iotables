@@ -12,7 +12,7 @@
 
 <meta name="author" content="Daniel Antal, CFA" />
 
-<meta name="date" content="2022-09-24" />
+<meta name="date" content="2024-01-08" />
 
 <title>Working With Eurostat Data</title>
 
@@ -31,23 +31,23 @@ document.addEventListener('DOMContentLoaded', function(e) {
 </script>
 
 <style type="text/css">
-  code{white-space: pre-wrap;}
-  span.smallcaps{font-variant: small-caps;}
-  span.underline{text-decoration: underline;}
-  div.column{display: inline-block; vertical-align: top; width: 50%;}
-  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
-  ul.task-list{list-style: none;}
-    </style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+</style>
 
 
 
 <style type="text/css">
-  code {
-    white-space: pre;
-  }
-  .sourceCode {
-    overflow: visible;
-  }
+code {
+white-space: pre;
+}
+.sourceCode {
+overflow: visible;
+}
 </style>
 <style type="text/css" data-origin="pandoc">
 pre > code.sourceCode { white-space: pre; position: relative; }
@@ -65,55 +65,54 @@ pre > code.sourceCode { white-space: pre-wrap; }
 pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
 }
 pre.numberSource code
-  { counter-reset: source-line 0; }
+{ counter-reset: source-line 0; }
 pre.numberSource code > span
-  { position: relative; left: -4em; counter-increment: source-line; }
+{ position: relative; left: -4em; counter-increment: source-line; }
 pre.numberSource code > span > a:first-child::before
-  { content: counter(source-line);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-    color: #aaaaaa;
-  }
-pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+{ content: counter(source-line);
+position: relative; left: -1em; text-align: right; vertical-align: baseline;
+border: none; display: inline-block;
+-webkit-touch-callout: none; -webkit-user-select: none;
+-khtml-user-select: none; -moz-user-select: none;
+-ms-user-select: none; user-select: none;
+padding: 0 4px; width: 4em;
+color: #aaaaaa;
+}
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa; padding-left: 4px; }
 div.sourceCode
-  {   }
+{ }
 @media screen {
 pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
-code span.al { color: #ff0000; font-weight: bold; } /* Alert */
-code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
-code span.at { color: #7d9029; } /* Attribute */
-code span.bn { color: #40a070; } /* BaseN */
-code span.bu { } /* BuiltIn */
-code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
-code span.ch { color: #4070a0; } /* Char */
-code span.cn { color: #880000; } /* Constant */
-code span.co { color: #60a0b0; font-style: italic; } /* Comment */
-code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
-code span.do { color: #ba2121; font-style: italic; } /* Documentation */
-code span.dt { color: #902000; } /* DataType */
-code span.dv { color: #40a070; } /* DecVal */
-code span.er { color: #ff0000; font-weight: bold; } /* Error */
-code span.ex { } /* Extension */
-code span.fl { color: #40a070; } /* Float */
-code span.fu { color: #06287e; } /* Function */
-code span.im { } /* Import */
-code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
-code span.kw { color: #007020; font-weight: bold; } /* Keyword */
-code span.op { color: #666666; } /* Operator */
-code span.ot { color: #007020; } /* Other */
-code span.pp { color: #bc7a00; } /* Preprocessor */
-code span.sc { color: #4070a0; } /* SpecialChar */
-code span.ss { color: #bb6688; } /* SpecialString */
-code span.st { color: #4070a0; } /* String */
-code span.va { color: #19177c; } /* Variable */
-code span.vs { color: #4070a0; } /* VerbatimString */
-code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
-
+code span.al { color: #ff0000; font-weight: bold; } 
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.at { color: #7d9029; } 
+code span.bn { color: #40a070; } 
+code span.bu { color: #008000; } 
+code span.cf { color: #007020; font-weight: bold; } 
+code span.ch { color: #4070a0; } 
+code span.cn { color: #880000; } 
+code span.co { color: #60a0b0; font-style: italic; } 
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.do { color: #ba2121; font-style: italic; } 
+code span.dt { color: #902000; } 
+code span.dv { color: #40a070; } 
+code span.er { color: #ff0000; font-weight: bold; } 
+code span.ex { } 
+code span.fl { color: #40a070; } 
+code span.fu { color: #06287e; } 
+code span.im { color: #008000; font-weight: bold; } 
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.kw { color: #007020; font-weight: bold; } 
+code span.op { color: #666666; } 
+code span.ot { color: #007020; } 
+code span.pp { color: #bc7a00; } 
+code span.sc { color: #4070a0; } 
+code span.ss { color: #bb6688; } 
+code span.st { color: #4070a0; } 
+code span.va { color: #19177c; } 
+code span.vs { color: #4070a0; } 
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } 
 </style>
 <script>
 // apply pandoc div.sourceCode style to pre.sourceCode instead
@@ -341,7 +340,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 
 <h1 class="title toc-ignore">Working With Eurostat Data</h1>
 <h4 class="author">Daniel Antal, CFA</h4>
-<h4 class="date">2022-09-24</h4>
+<h4 class="date">2024-01-08</h4>
 
 
 
@@ -391,69 +390,69 @@ processing of the rather complex SIOT bulk files.</p>
 <p>The contents of the <a href="https://github.com/rOpenGov/iotables/tree/master/not_included">not_included</a>
 directory can be found on GitHub, but they are not released and
 distributed with the package.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Not run</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>not_included_directory <span class="ot">&lt;-</span> <span class="fu">file.path</span>(<span class="st">&#39;..&#39;</span>, <span class="st">&#39;not_included&#39;</span>)</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> ( <span class="sc">!</span> <span class="fu">dir.exists</span>(not_included_directory) ) <span class="fu">dir.create</span> (not_included_directory)</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co">#The contents of the &#39;not_included&#39; directory can be found on GitHub, </span></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co">#but they are not released and distributed with the package.</span></span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>naio_10_cp1700 <span class="ot">&lt;-</span> <span class="fu">iotables_download</span>(</span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;naio_10_cp1700&quot;</span>, <span class="co">#SIOT</span></span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">data_directory =</span> not_included_directory) </span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="co"># For inclusion in the package, the files must be smaller. </span></span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Reducing the size of the bulk files will not affect</span></span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="co"># the demonstration.</span></span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>naio_10_cp1700 <span class="ot">&lt;-</span> naio_10_cp1700 <span class="sc">%&gt;%</span></span>
-<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span> ( geo <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">&quot;CZ&quot;</span>, <span class="st">&quot;SK&quot;</span>)) <span class="sc">%&gt;%</span></span>
-<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span> ( year <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">2010</span>, <span class="dv">2015</span>))</span>
-<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="co">#Conforming employment data both sexes from 15 years old, year 2015.</span></span>
-<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a><span class="co">#prod_na vocabulary for product x product conformity</span></span>
-<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>emp_cz <span class="ot">&lt;-</span> <span class="fu">employment_get</span>(<span class="at">geo =</span> <span class="st">&quot;CZ&quot;</span>, <span class="at">year =</span> <span class="st">&quot;2015&quot;</span>, <span class="at">sex =</span> <span class="st">&quot;Total&quot;</span>,</span>
-<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>  <span class="at">age =</span> <span class="st">&quot;Y_GE15&quot;</span>, <span class="at">labelling =</span> <span class="st">&quot;prod_na&quot;</span>, </span>
-<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>  <span class="at">data_directory =</span> not_included_directory,</span>
-<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>  <span class="at">force_download =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a><span class="co">#Conforming employment data #both sexes from 15 years old, year 2017.</span></span>
-<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>emp_sk <span class="ot">&lt;-</span> <span class="fu">employment_get</span>(<span class="at">geo =</span> <span class="st">&quot;SK&quot;</span>, <span class="at">year =</span> <span class="st">&quot;2017&quot;</span>, <span class="at">sex =</span> <span class="st">&quot;Total&quot;</span>,</span>
-<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>  <span class="at">age =</span> <span class="st">&quot;Y_GE15&quot;</span>, <span class="at">labelling =</span> <span class="st">&quot;prod_na&quot;</span>,</span>
-<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>  <span class="at">data_directory =</span> not_included_directory,</span>
-<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>  <span class="at">force_download =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a><span class="fu">save</span> (naio_10_cp1700, emp_sk, emp_cz, </span>
-<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a>      <span class="at">file =</span> <span class="fu">file.path</span>(<span class="st">&#39;..&#39;</span>, <span class="st">&#39;inst&#39;</span>, <span class="st">&#39;extdata&#39;</span>,</span>
-<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a>                       <span class="st">&#39;naio_10_product_x_product.rda&#39;</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="co">#Not run</span></span>
+<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a>not_included_directory <span class="ot">&lt;-</span> <span class="fu">file.path</span>(<span class="st">&#39;..&#39;</span>, <span class="st">&#39;not_included&#39;</span>)</span>
+<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a><span class="cf">if</span> ( <span class="sc">!</span> <span class="fu">dir.exists</span>(not_included_directory) ) <span class="fu">dir.create</span> (not_included_directory)</span>
+<span id="cb1-4"><a href="#cb1-4" tabindex="-1"></a><span class="co">#The contents of the &#39;not_included&#39; directory can be found on GitHub, </span></span>
+<span id="cb1-5"><a href="#cb1-5" tabindex="-1"></a><span class="co">#but they are not released and distributed with the package.</span></span>
+<span id="cb1-6"><a href="#cb1-6" tabindex="-1"></a></span>
+<span id="cb1-7"><a href="#cb1-7" tabindex="-1"></a>naio_10_cp1700 <span class="ot">&lt;-</span> <span class="fu">iotables_download</span>(</span>
+<span id="cb1-8"><a href="#cb1-8" tabindex="-1"></a>  <span class="st">&quot;naio_10_cp1700&quot;</span>, <span class="co">#SIOT</span></span>
+<span id="cb1-9"><a href="#cb1-9" tabindex="-1"></a>  <span class="at">data_directory =</span> not_included_directory) </span>
+<span id="cb1-10"><a href="#cb1-10" tabindex="-1"></a></span>
+<span id="cb1-11"><a href="#cb1-11" tabindex="-1"></a><span class="co"># For inclusion in the package, the files must be smaller. </span></span>
+<span id="cb1-12"><a href="#cb1-12" tabindex="-1"></a><span class="co"># Reducing the size of the bulk files will not affect</span></span>
+<span id="cb1-13"><a href="#cb1-13" tabindex="-1"></a><span class="co"># the demonstration.</span></span>
+<span id="cb1-14"><a href="#cb1-14" tabindex="-1"></a></span>
+<span id="cb1-15"><a href="#cb1-15" tabindex="-1"></a>naio_10_cp1700 <span class="ot">&lt;-</span> naio_10_cp1700 <span class="sc">%&gt;%</span></span>
+<span id="cb1-16"><a href="#cb1-16" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span> ( geo <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">&quot;CZ&quot;</span>, <span class="st">&quot;SK&quot;</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb1-17"><a href="#cb1-17" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span> ( year <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">2010</span>, <span class="dv">2015</span>))</span>
+<span id="cb1-18"><a href="#cb1-18" tabindex="-1"></a></span>
+<span id="cb1-19"><a href="#cb1-19" tabindex="-1"></a><span class="co">#Conforming employment data both sexes from 15 years old, year 2015.</span></span>
+<span id="cb1-20"><a href="#cb1-20" tabindex="-1"></a><span class="co">#prod_na vocabulary for product x product conformity</span></span>
+<span id="cb1-21"><a href="#cb1-21" tabindex="-1"></a>emp_cz <span class="ot">&lt;-</span> <span class="fu">employment_get</span>(<span class="at">geo =</span> <span class="st">&quot;CZ&quot;</span>, <span class="at">year =</span> <span class="st">&quot;2015&quot;</span>, <span class="at">sex =</span> <span class="st">&quot;Total&quot;</span>,</span>
+<span id="cb1-22"><a href="#cb1-22" tabindex="-1"></a>  <span class="at">age =</span> <span class="st">&quot;Y_GE15&quot;</span>, <span class="at">labelling =</span> <span class="st">&quot;prod_na&quot;</span>, </span>
+<span id="cb1-23"><a href="#cb1-23" tabindex="-1"></a>  <span class="at">data_directory =</span> not_included_directory,</span>
+<span id="cb1-24"><a href="#cb1-24" tabindex="-1"></a>  <span class="at">force_download =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb1-25"><a href="#cb1-25" tabindex="-1"></a></span>
+<span id="cb1-26"><a href="#cb1-26" tabindex="-1"></a><span class="co">#Conforming employment data #both sexes from 15 years old, year 2017.</span></span>
+<span id="cb1-27"><a href="#cb1-27" tabindex="-1"></a>emp_sk <span class="ot">&lt;-</span> <span class="fu">employment_get</span>(<span class="at">geo =</span> <span class="st">&quot;SK&quot;</span>, <span class="at">year =</span> <span class="st">&quot;2017&quot;</span>, <span class="at">sex =</span> <span class="st">&quot;Total&quot;</span>,</span>
+<span id="cb1-28"><a href="#cb1-28" tabindex="-1"></a>  <span class="at">age =</span> <span class="st">&quot;Y_GE15&quot;</span>, <span class="at">labelling =</span> <span class="st">&quot;prod_na&quot;</span>,</span>
+<span id="cb1-29"><a href="#cb1-29" tabindex="-1"></a>  <span class="at">data_directory =</span> not_included_directory,</span>
+<span id="cb1-30"><a href="#cb1-30" tabindex="-1"></a>  <span class="at">force_download =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb1-31"><a href="#cb1-31" tabindex="-1"></a></span>
+<span id="cb1-32"><a href="#cb1-32" tabindex="-1"></a><span class="fu">save</span> (naio_10_cp1700, emp_sk, emp_cz, </span>
+<span id="cb1-33"><a href="#cb1-33" tabindex="-1"></a>      <span class="at">file =</span> <span class="fu">file.path</span>(<span class="st">&#39;..&#39;</span>, <span class="st">&#39;inst&#39;</span>, <span class="st">&#39;extdata&#39;</span>,</span>
+<span id="cb1-34"><a href="#cb1-34" tabindex="-1"></a>                       <span class="st">&#39;naio_10_product_x_product.rda&#39;</span>))</span></code></pre></div>
 <p>For a quicker building of the vignette, the data is retrieved from
 the <em>not_included</em> directory. The chunk above can reproduce this
 data file.</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co">#load from pre-saved file to increase running speed</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">load</span> (<span class="fu">system.file</span>(<span class="st">&#39;extdata&#39;</span>, </span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>                  <span class="st">&#39;naio_10_product_x_product.rda&#39;</span>, </span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>                  <span class="at">package =</span> <span class="st">&#39;iotables&#39;</span>) )</span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="co">#load from pre-saved file to increase running speed</span></span>
+<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a><span class="fu">load</span> (<span class="fu">system.file</span>(<span class="st">&#39;extdata&#39;</span>, </span>
+<span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a>                  <span class="st">&#39;naio_10_product_x_product.rda&#39;</span>, </span>
+<span id="cb2-4"><a href="#cb2-4" tabindex="-1"></a>                  <span class="at">package =</span> <span class="st">&#39;iotables&#39;</span>) )</span></code></pre></div>
 <p>In this vignette example the Czech (2015) national currency unit and
 the Slovak (2010) euro tables are created. Since the Slovak national
 currency is the euro, there is no difference between the Slovak national
 currency unit and euro tables.</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>cz_io <span class="ot">&lt;-</span>  <span class="fu">iotable_get</span> ( <span class="at">labelled_io_data =</span> naio_10_cp1700, </span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>                         <span class="at">source =</span> <span class="st">&quot;naio_10_cp1700&quot;</span>, <span class="at">geo =</span> <span class="st">&quot;CZ&quot;</span>, </span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>                         <span class="at">year =</span> <span class="dv">2015</span>, <span class="at">unit =</span> <span class="st">&quot;MIO_NAC&quot;</span>, </span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>                         <span class="at">stk_flow =</span> <span class="st">&quot;TOTAL&quot;</span>,</span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>                         <span class="at">labelling =</span> <span class="st">&quot;short&quot;</span> )</span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>sk_io <span class="ot">&lt;-</span>  <span class="fu">iotable_get</span> ( <span class="at">labelled_io_data =</span> naio_10_cp1700, </span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>                        <span class="at">source =</span> <span class="st">&quot;naio_10_cp1700&quot;</span>, <span class="at">geo =</span> <span class="st">&quot;SK&quot;</span>, </span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>                        <span class="at">year =</span> <span class="dv">2010</span>, <span class="at">unit =</span> <span class="st">&quot;MIO_EUR&quot;</span>, </span>
-<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>                        <span class="at">stk_flow =</span> <span class="st">&quot;TOTAL&quot;</span>,</span>
-<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>                        <span class="at">labelling =</span> <span class="st">&quot;short&quot;</span> )</span>
-<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>cz_input_flow <span class="ot">&lt;-</span> <span class="fu">input_flow_get</span>( <span class="at">data_table =</span> cz_io )</span>
-<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>sk_input_flow <span class="ot">&lt;-</span> <span class="fu">input_flow_get</span>( <span class="at">data_table =</span> sk_io)</span>
-<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>cz_output <span class="ot">&lt;-</span> <span class="fu">output_get</span>( <span class="at">data_table =</span> cz_io)</span>
-<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>sk_output <span class="ot">&lt;-</span> <span class="fu">output_get</span>( <span class="at">data_table =</span> sk_io)</span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a>cz_io <span class="ot">&lt;-</span>  <span class="fu">iotable_get</span> ( <span class="at">labelled_io_data =</span> naio_10_cp1700, </span>
+<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a>                         <span class="at">source =</span> <span class="st">&quot;naio_10_cp1700&quot;</span>, <span class="at">geo =</span> <span class="st">&quot;CZ&quot;</span>, </span>
+<span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a>                         <span class="at">year =</span> <span class="dv">2015</span>, <span class="at">unit =</span> <span class="st">&quot;MIO_NAC&quot;</span>, </span>
+<span id="cb3-4"><a href="#cb3-4" tabindex="-1"></a>                         <span class="at">stk_flow =</span> <span class="st">&quot;TOTAL&quot;</span>,</span>
+<span id="cb3-5"><a href="#cb3-5" tabindex="-1"></a>                         <span class="at">labelling =</span> <span class="st">&quot;short&quot;</span> )</span>
+<span id="cb3-6"><a href="#cb3-6" tabindex="-1"></a></span>
+<span id="cb3-7"><a href="#cb3-7" tabindex="-1"></a>sk_io <span class="ot">&lt;-</span>  <span class="fu">iotable_get</span> ( <span class="at">labelled_io_data =</span> naio_10_cp1700, </span>
+<span id="cb3-8"><a href="#cb3-8" tabindex="-1"></a>                        <span class="at">source =</span> <span class="st">&quot;naio_10_cp1700&quot;</span>, <span class="at">geo =</span> <span class="st">&quot;SK&quot;</span>, </span>
+<span id="cb3-9"><a href="#cb3-9" tabindex="-1"></a>                        <span class="at">year =</span> <span class="dv">2010</span>, <span class="at">unit =</span> <span class="st">&quot;MIO_EUR&quot;</span>, </span>
+<span id="cb3-10"><a href="#cb3-10" tabindex="-1"></a>                        <span class="at">stk_flow =</span> <span class="st">&quot;TOTAL&quot;</span>,</span>
+<span id="cb3-11"><a href="#cb3-11" tabindex="-1"></a>                        <span class="at">labelling =</span> <span class="st">&quot;short&quot;</span> )</span>
+<span id="cb3-12"><a href="#cb3-12" tabindex="-1"></a></span>
+<span id="cb3-13"><a href="#cb3-13" tabindex="-1"></a>cz_input_flow <span class="ot">&lt;-</span> <span class="fu">input_flow_get</span>( <span class="at">data_table =</span> cz_io )</span>
+<span id="cb3-14"><a href="#cb3-14" tabindex="-1"></a></span>
+<span id="cb3-15"><a href="#cb3-15" tabindex="-1"></a>sk_input_flow <span class="ot">&lt;-</span> <span class="fu">input_flow_get</span>( <span class="at">data_table =</span> sk_io)</span>
+<span id="cb3-16"><a href="#cb3-16" tabindex="-1"></a></span>
+<span id="cb3-17"><a href="#cb3-17" tabindex="-1"></a>cz_output <span class="ot">&lt;-</span> <span class="fu">output_get</span>( <span class="at">data_table =</span> cz_io)</span>
+<span id="cb3-18"><a href="#cb3-18" tabindex="-1"></a>sk_output <span class="ot">&lt;-</span> <span class="fu">output_get</span>( <span class="at">data_table =</span> sk_io)</span></code></pre></div>
 <p>By default, total rows and columns are removed when creating use
 tables.</p>
 </div>
@@ -472,16 +471,16 @@ of the Eurostat Manual.</p>
 </ol>
 <p>It checks the correct ordering of columns, and furthermore it fills
 up 0 values with 0.000001 to avoid division with zero.</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>input_coeff_matrix_cz <span class="ot">&lt;-</span> <span class="fu">input_coefficient_matrix_create</span>(</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">data_table =</span> cz_io</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>input_coeff_matrix_sk <span class="ot">&lt;-</span> <span class="fu">input_coefficient_matrix_create</span>(</span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">data_table =</span> sk_io</span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Columns and rows of CPA_L68A, CPA_T, CPA_U, P6_U2, P6_U3 are all zeros and will be removed.</span></span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(<span class="fu">head</span>(input_coeff_matrix_cz[,<span class="dv">1</span><span class="sc">:</span><span class="dv">8</span>]))</span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a>input_coeff_matrix_cz <span class="ot">&lt;-</span> <span class="fu">input_coefficient_matrix_create</span>(</span>
+<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a>  <span class="at">data_table =</span> cz_io</span>
+<span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a>)</span>
+<span id="cb4-4"><a href="#cb4-4" tabindex="-1"></a></span>
+<span id="cb4-5"><a href="#cb4-5" tabindex="-1"></a>input_coeff_matrix_sk <span class="ot">&lt;-</span> <span class="fu">input_coefficient_matrix_create</span>(</span>
+<span id="cb4-6"><a href="#cb4-6" tabindex="-1"></a>  <span class="at">data_table =</span> sk_io</span>
+<span id="cb4-7"><a href="#cb4-7" tabindex="-1"></a>)</span>
+<span id="cb4-8"><a href="#cb4-8" tabindex="-1"></a><span class="co">#&gt; Columns and rows of CPA_L68A, CPA_T, CPA_U, P6_U2, P6_U3 are all zeros and will be removed.</span></span>
+<span id="cb4-9"><a href="#cb4-9" tabindex="-1"></a></span>
+<span id="cb4-10"><a href="#cb4-10" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(<span class="fu">head</span>(input_coeff_matrix_cz[,<span class="dv">1</span><span class="sc">:</span><span class="dv">8</span>]))</span></code></pre></div>
 <table>
 <thead>
 <tr>
@@ -694,21 +693,21 @@ will not change the results.</p>
 Leontief-matrix.</p>
 <p>The code chunk below prints a small part of the Czech
 Leontief-inverse.</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>L_cz <span class="ot">&lt;-</span> <span class="fu">leontieff_matrix_create</span>( input_coeff_matrix_cz  )</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Warning: leontieff_matrix_create() is spelled correctly as</span></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; leontief_matrix_create()</span></span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>I_cz <span class="ot">&lt;-</span> <span class="fu">leontieff_inverse_create</span>( input_coeff_matrix_cz )</span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Warning: leontieff_inverse_create() is spelled correctly as</span></span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; leontief_inverse_create()</span></span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>L_sk <span class="ot">&lt;-</span> <span class="fu">leontieff_matrix_create</span>( input_coeff_matrix_sk  )</span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Warning: leontieff_matrix_create() is spelled correctly as</span></span>
-<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; leontief_matrix_create()</span></span>
-<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>I_sk <span class="ot">&lt;-</span> <span class="fu">leontieff_inverse_create</span>( input_coeff_matrix_sk )</span>
-<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Warning: leontieff_inverse_create() is spelled correctly as</span></span>
-<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; leontief_inverse_create()</span></span>
-<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(<span class="fu">head</span>(I_cz[,<span class="dv">1</span><span class="sc">:</span><span class="dv">8</span>]))</span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a>L_cz <span class="ot">&lt;-</span> <span class="fu">leontieff_matrix_create</span>( input_coeff_matrix_cz  )</span>
+<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a><span class="co">#&gt; Warning: leontieff_matrix_create() is spelled correctly as</span></span>
+<span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a><span class="co">#&gt; leontief_matrix_create()</span></span>
+<span id="cb5-4"><a href="#cb5-4" tabindex="-1"></a>I_cz <span class="ot">&lt;-</span> <span class="fu">leontieff_inverse_create</span>( input_coeff_matrix_cz )</span>
+<span id="cb5-5"><a href="#cb5-5" tabindex="-1"></a><span class="co">#&gt; Warning: leontieff_inverse_create() is spelled correctly as</span></span>
+<span id="cb5-6"><a href="#cb5-6" tabindex="-1"></a><span class="co">#&gt; leontief_inverse_create()</span></span>
+<span id="cb5-7"><a href="#cb5-7" tabindex="-1"></a></span>
+<span id="cb5-8"><a href="#cb5-8" tabindex="-1"></a>L_sk <span class="ot">&lt;-</span> <span class="fu">leontieff_matrix_create</span>( input_coeff_matrix_sk  )</span>
+<span id="cb5-9"><a href="#cb5-9" tabindex="-1"></a><span class="co">#&gt; Warning: leontieff_matrix_create() is spelled correctly as</span></span>
+<span id="cb5-10"><a href="#cb5-10" tabindex="-1"></a><span class="co">#&gt; leontief_matrix_create()</span></span>
+<span id="cb5-11"><a href="#cb5-11" tabindex="-1"></a>I_sk <span class="ot">&lt;-</span> <span class="fu">leontieff_inverse_create</span>( input_coeff_matrix_sk )</span>
+<span id="cb5-12"><a href="#cb5-12" tabindex="-1"></a><span class="co">#&gt; Warning: leontieff_inverse_create() is spelled correctly as</span></span>
+<span id="cb5-13"><a href="#cb5-13" tabindex="-1"></a><span class="co">#&gt; leontief_inverse_create()</span></span>
+<span id="cb5-14"><a href="#cb5-14" tabindex="-1"></a></span>
+<span id="cb5-15"><a href="#cb5-15" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(<span class="fu">head</span>(I_cz[,<span class="dv">1</span><span class="sc">:</span><span class="dv">8</span>]))</span></code></pre></div>
 <table>
 <thead>
 <tr>
@@ -919,19 +918,19 @@ domestic product or total supply.</p>
 inputs to total final demand / supply. You can make comparisons to total
 product or total output, too. The code below prints a part of the Czech
 direct effects rounded to 4 digits.</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>primary_inputs_cz <span class="ot">&lt;-</span> <span class="fu">coefficient_matrix_create</span>(<span class="at">data_table =</span> cz_io, </span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>                                              <span class="at">total =</span> <span class="st">&#39;output&#39;</span>, </span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>                                              <span class="at">return =</span> <span class="st">&#39;primary_inputs&#39;</span>) </span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>primary_inputs_sk <span class="ot">&lt;-</span> <span class="fu">coefficient_matrix_create</span>(<span class="at">data_table =</span> sk_io, </span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>                                              <span class="at">total =</span> <span class="st">&#39;output&#39;</span>, </span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>                                              <span class="at">return =</span> <span class="st">&#39;primary_inputs&#39;</span>)</span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Columns and rows of CPA_L68A, CPA_T, CPA_U, P6_U2, P6_U3 are all zeros and will be removed.</span></span>
-<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>direct_cz <span class="ot">&lt;-</span> <span class="fu">direct_effects_create</span>( primary_inputs_cz, I_cz )  </span>
-<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>direct_sk <span class="ot">&lt;-</span> <span class="fu">direct_effects_create</span>( primary_inputs_sk, I_sk )  </span>
-<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span> (<span class="fu">head</span>(direct_cz[,<span class="dv">1</span><span class="sc">:</span><span class="dv">8</span>]), <span class="at">digits =</span> <span class="dv">4</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a>primary_inputs_cz <span class="ot">&lt;-</span> <span class="fu">coefficient_matrix_create</span>(<span class="at">data_table =</span> cz_io, </span>
+<span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a>                                              <span class="at">total =</span> <span class="st">&#39;output&#39;</span>, </span>
+<span id="cb6-3"><a href="#cb6-3" tabindex="-1"></a>                                              <span class="at">return =</span> <span class="st">&#39;primary_inputs&#39;</span>) </span>
+<span id="cb6-4"><a href="#cb6-4" tabindex="-1"></a></span>
+<span id="cb6-5"><a href="#cb6-5" tabindex="-1"></a>primary_inputs_sk <span class="ot">&lt;-</span> <span class="fu">coefficient_matrix_create</span>(<span class="at">data_table =</span> sk_io, </span>
+<span id="cb6-6"><a href="#cb6-6" tabindex="-1"></a>                                              <span class="at">total =</span> <span class="st">&#39;output&#39;</span>, </span>
+<span id="cb6-7"><a href="#cb6-7" tabindex="-1"></a>                                              <span class="at">return =</span> <span class="st">&#39;primary_inputs&#39;</span>)</span>
+<span id="cb6-8"><a href="#cb6-8" tabindex="-1"></a><span class="co">#&gt; Columns and rows of CPA_L68A, CPA_T, CPA_U, P6_U2, P6_U3 are all zeros and will be removed.</span></span>
+<span id="cb6-9"><a href="#cb6-9" tabindex="-1"></a></span>
+<span id="cb6-10"><a href="#cb6-10" tabindex="-1"></a>direct_cz <span class="ot">&lt;-</span> <span class="fu">direct_effects_create</span>( primary_inputs_cz, I_cz )  </span>
+<span id="cb6-11"><a href="#cb6-11" tabindex="-1"></a>direct_sk <span class="ot">&lt;-</span> <span class="fu">direct_effects_create</span>( primary_inputs_sk, I_sk )  </span>
+<span id="cb6-12"><a href="#cb6-12" tabindex="-1"></a></span>
+<span id="cb6-13"><a href="#cb6-13" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span> (<span class="fu">head</span>(direct_cz[,<span class="dv">1</span><span class="sc">:</span><span class="dv">8</span>]), <span class="at">digits =</span> <span class="dv">4</span>)</span></code></pre></div>
 <table>
 <thead>
 <tr>
@@ -1147,19 +1146,19 @@ supply.</p>
 </blockquote>
 <p>The code chunk below prints a part of the Czech multipliers, rounded
 to 4 digits.</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>primary_inputs_cz <span class="ot">&lt;-</span> <span class="fu">coefficient_matrix_create</span>(<span class="at">data_table =</span> cz_io, </span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>                                              <span class="at">total =</span> <span class="st">&#39;output&#39;</span>, </span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>                                              <span class="at">return =</span> <span class="st">&#39;primary_inputs&#39;</span>) </span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>primary_inputs_sk <span class="ot">&lt;-</span> <span class="fu">coefficient_matrix_create</span>(<span class="at">data_table =</span> sk_io, </span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>                                              <span class="at">total =</span> <span class="st">&#39;output&#39;</span>, </span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>                                              <span class="at">return =</span> <span class="st">&#39;primary_inputs&#39;</span>)</span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Columns and rows of CPA_L68A, CPA_T, CPA_U, P6_U2, P6_U3 are all zeros and will be removed.</span></span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>multipliers_cz <span class="ot">&lt;-</span> <span class="fu">input_multipliers_create</span>( primary_inputs_cz, I_cz )  </span>
-<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>multipliers_sk <span class="ot">&lt;-</span> <span class="fu">input_multipliers_create</span>( primary_inputs_sk, I_sk ) </span>
-<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span> (<span class="fu">head</span>(multipliers_cz[,<span class="dv">1</span><span class="sc">:</span><span class="dv">8</span>]), <span class="at">digits =</span> <span class="dv">4</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a>primary_inputs_cz <span class="ot">&lt;-</span> <span class="fu">coefficient_matrix_create</span>(<span class="at">data_table =</span> cz_io, </span>
+<span id="cb7-2"><a href="#cb7-2" tabindex="-1"></a>                                              <span class="at">total =</span> <span class="st">&#39;output&#39;</span>, </span>
+<span id="cb7-3"><a href="#cb7-3" tabindex="-1"></a>                                              <span class="at">return =</span> <span class="st">&#39;primary_inputs&#39;</span>) </span>
+<span id="cb7-4"><a href="#cb7-4" tabindex="-1"></a></span>
+<span id="cb7-5"><a href="#cb7-5" tabindex="-1"></a>primary_inputs_sk <span class="ot">&lt;-</span> <span class="fu">coefficient_matrix_create</span>(<span class="at">data_table =</span> sk_io, </span>
+<span id="cb7-6"><a href="#cb7-6" tabindex="-1"></a>                                              <span class="at">total =</span> <span class="st">&#39;output&#39;</span>, </span>
+<span id="cb7-7"><a href="#cb7-7" tabindex="-1"></a>                                              <span class="at">return =</span> <span class="st">&#39;primary_inputs&#39;</span>)</span>
+<span id="cb7-8"><a href="#cb7-8" tabindex="-1"></a><span class="co">#&gt; Columns and rows of CPA_L68A, CPA_T, CPA_U, P6_U2, P6_U3 are all zeros and will be removed.</span></span>
+<span id="cb7-9"><a href="#cb7-9" tabindex="-1"></a></span>
+<span id="cb7-10"><a href="#cb7-10" tabindex="-1"></a>multipliers_cz <span class="ot">&lt;-</span> <span class="fu">input_multipliers_create</span>( primary_inputs_cz, I_cz )  </span>
+<span id="cb7-11"><a href="#cb7-11" tabindex="-1"></a>multipliers_sk <span class="ot">&lt;-</span> <span class="fu">input_multipliers_create</span>( primary_inputs_sk, I_sk ) </span>
+<span id="cb7-12"><a href="#cb7-12" tabindex="-1"></a></span>
+<span id="cb7-13"><a href="#cb7-13" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span> (<span class="fu">head</span>(multipliers_cz[,<span class="dv">1</span><span class="sc">:</span><span class="dv">8</span>]), <span class="at">digits =</span> <span class="dv">4</span>)</span></code></pre></div>
 <table>
 <thead>
 <tr>
@@ -1368,27 +1367,27 @@ likely to be need a manual aggregation. The helper function
 <code>conforming_vector_create</code> will create an empty vector that
 you can save as a .csv or Excel file and fill up manually with customary
 input data.</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co">#New function is needed to add employment vector to SIOT</span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span> ( emp_sk )[<span class="dv">1</span>] <span class="ot">&lt;-</span> <span class="st">&#39;prod_na&#39;</span></span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span> ( emp_cz )[<span class="dv">1</span>] <span class="ot">&lt;-</span> <span class="st">&#39;prod_na&#39;</span></span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>emp_indicator_sk <span class="ot">&lt;-</span> <span class="fu">rbind</span> ( </span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>  sk_io[, <span class="dv">1</span><span class="sc">:</span><span class="dv">66</span>], </span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>  emp_sk) <span class="sc">%&gt;%</span> <span class="fu">coefficient_matrix_create</span>(., </span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>       <span class="at">return_part =</span> <span class="st">&#39;primary_inputs&#39;</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span> ( prod_na <span class="sc">==</span> <span class="st">&quot;employment_total&quot;</span> )</span>
-<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>emp_indicator_cz <span class="ot">&lt;-</span> <span class="fu">full_join</span> ( </span>
-<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>  cz_io, </span>
-<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>  emp_cz) <span class="sc">%&gt;%</span> <span class="fu">coefficient_matrix_create</span>(., </span>
-<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>       <span class="at">return_part =</span> <span class="st">&#39;primary_inputs&#39;</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span> ( prod_na <span class="sc">==</span> <span class="st">&quot;employment_total&quot;</span> )</span>
-<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>emp_effect_sk <span class="ot">&lt;-</span> <span class="fu">direct_effects_create</span>( emp_indicator_sk, I_sk )  </span>
-<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a>emp_effect_cz <span class="ot">&lt;-</span> <span class="fu">direct_effects_create</span>( emp_indicator_cz, I_cz )  </span>
-<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span> (emp_effect_cz[<span class="dv">1</span><span class="sc">:</span><span class="dv">8</span>], <span class="at">digits =</span> <span class="dv">5</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a><span class="co">#New function is needed to add employment vector to SIOT</span></span>
+<span id="cb8-2"><a href="#cb8-2" tabindex="-1"></a><span class="fu">names</span> ( emp_sk )[<span class="dv">1</span>] <span class="ot">&lt;-</span> <span class="st">&#39;prod_na&#39;</span></span>
+<span id="cb8-3"><a href="#cb8-3" tabindex="-1"></a><span class="fu">names</span> ( emp_cz )[<span class="dv">1</span>] <span class="ot">&lt;-</span> <span class="st">&#39;prod_na&#39;</span></span>
+<span id="cb8-4"><a href="#cb8-4" tabindex="-1"></a></span>
+<span id="cb8-5"><a href="#cb8-5" tabindex="-1"></a>emp_indicator_sk <span class="ot">&lt;-</span> <span class="fu">rbind</span> ( </span>
+<span id="cb8-6"><a href="#cb8-6" tabindex="-1"></a>  sk_io[, <span class="dv">1</span><span class="sc">:</span><span class="dv">66</span>], </span>
+<span id="cb8-7"><a href="#cb8-7" tabindex="-1"></a>  emp_sk) <span class="sc">%&gt;%</span> <span class="fu">coefficient_matrix_create</span>(., </span>
+<span id="cb8-8"><a href="#cb8-8" tabindex="-1"></a>       <span class="at">return_part =</span> <span class="st">&#39;primary_inputs&#39;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb8-9"><a href="#cb8-9" tabindex="-1"></a>  <span class="fu">filter</span> ( prod_na <span class="sc">==</span> <span class="st">&quot;employment_total&quot;</span> )</span>
+<span id="cb8-10"><a href="#cb8-10" tabindex="-1"></a></span>
+<span id="cb8-11"><a href="#cb8-11" tabindex="-1"></a>emp_indicator_cz <span class="ot">&lt;-</span> <span class="fu">full_join</span> ( </span>
+<span id="cb8-12"><a href="#cb8-12" tabindex="-1"></a>  cz_io, </span>
+<span id="cb8-13"><a href="#cb8-13" tabindex="-1"></a>  emp_cz) <span class="sc">%&gt;%</span> <span class="fu">coefficient_matrix_create</span>(., </span>
+<span id="cb8-14"><a href="#cb8-14" tabindex="-1"></a>       <span class="at">return_part =</span> <span class="st">&#39;primary_inputs&#39;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb8-15"><a href="#cb8-15" tabindex="-1"></a>  <span class="fu">filter</span> ( prod_na <span class="sc">==</span> <span class="st">&quot;employment_total&quot;</span> )</span>
+<span id="cb8-16"><a href="#cb8-16" tabindex="-1"></a></span>
+<span id="cb8-17"><a href="#cb8-17" tabindex="-1"></a></span>
+<span id="cb8-18"><a href="#cb8-18" tabindex="-1"></a>emp_effect_sk <span class="ot">&lt;-</span> <span class="fu">direct_effects_create</span>( emp_indicator_sk, I_sk )  </span>
+<span id="cb8-19"><a href="#cb8-19" tabindex="-1"></a>emp_effect_cz <span class="ot">&lt;-</span> <span class="fu">direct_effects_create</span>( emp_indicator_cz, I_cz )  </span>
+<span id="cb8-20"><a href="#cb8-20" tabindex="-1"></a></span>
+<span id="cb8-21"><a href="#cb8-21" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span> (emp_effect_cz[<span class="dv">1</span><span class="sc">:</span><span class="dv">8</span>], <span class="at">digits =</span> <span class="dv">5</span>)</span></code></pre></div>
 <table>
 <thead>
 <tr>
@@ -1447,12 +1446,12 @@ employment_total_effect
 </tr>
 </tbody>
 </table>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co">#New function is needed to add employment vector to SIOT</span></span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>emp_multiplier_sk <span class="ot">&lt;-</span> <span class="fu">input_multipliers_create</span>( emp_indicator_sk, I_sk )  </span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>emp_multiplier_cz <span class="ot">&lt;-</span> <span class="fu">input_multipliers_create</span>( emp_indicator_cz, I_cz )  </span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span> (emp_multiplier_cz[<span class="dv">1</span><span class="sc">:</span><span class="dv">8</span>], <span class="at">digits=</span><span class="dv">5</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" tabindex="-1"></a><span class="co">#New function is needed to add employment vector to SIOT</span></span>
+<span id="cb9-2"><a href="#cb9-2" tabindex="-1"></a></span>
+<span id="cb9-3"><a href="#cb9-3" tabindex="-1"></a>emp_multiplier_sk <span class="ot">&lt;-</span> <span class="fu">input_multipliers_create</span>( emp_indicator_sk, I_sk )  </span>
+<span id="cb9-4"><a href="#cb9-4" tabindex="-1"></a>emp_multiplier_cz <span class="ot">&lt;-</span> <span class="fu">input_multipliers_create</span>( emp_indicator_cz, I_cz )  </span>
+<span id="cb9-5"><a href="#cb9-5" tabindex="-1"></a></span>
+<span id="cb9-6"><a href="#cb9-6" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span> (emp_multiplier_cz[<span class="dv">1</span><span class="sc">:</span><span class="dv">8</span>], <span class="at">digits=</span><span class="dv">5</span>)</span></code></pre></div>
 <table>
 <thead>
 <tr>
@@ -1514,11 +1513,11 @@ employment_total
 </div>
 <div id="output-multipliers" class="section level3">
 <h3>Output multipliers</h3>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>output_multipliers_cz <span class="ot">&lt;-</span> <span class="fu">output_multiplier_create</span> (input_coeff_matrix_cz)</span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>output_multipliers_sk <span class="ot">&lt;-</span> <span class="fu">output_multiplier_create</span> (input_coeff_matrix_sk)</span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span> (<span class="fu">head</span>(output_multipliers_cz[,<span class="dv">1</span><span class="sc">:</span><span class="dv">8</span>]), <span class="at">digits=</span><span class="dv">4</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" tabindex="-1"></a></span>
+<span id="cb10-2"><a href="#cb10-2" tabindex="-1"></a>output_multipliers_cz <span class="ot">&lt;-</span> <span class="fu">output_multiplier_create</span> (input_coeff_matrix_cz)</span>
+<span id="cb10-3"><a href="#cb10-3" tabindex="-1"></a>output_multipliers_sk <span class="ot">&lt;-</span> <span class="fu">output_multiplier_create</span> (input_coeff_matrix_sk)</span>
+<span id="cb10-4"><a href="#cb10-4" tabindex="-1"></a></span>
+<span id="cb10-5"><a href="#cb10-5" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span> (<span class="fu">head</span>(output_multipliers_cz[,<span class="dv">1</span><span class="sc">:</span><span class="dv">8</span>]), <span class="at">digits=</span><span class="dv">4</span>)</span></code></pre></div>
 <table>
 <thead>
 <tr>
@@ -1586,10 +1585,10 @@ output_multipliers
 <h2>Backward linkages</h2>
 <p>Backward linkages show the effect on industries that are suppliers to
 the production (industry) in question.</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>cz_bw <span class="ot">&lt;-</span> <span class="fu">backward_linkages</span>(I_cz)</span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>sk_bw <span class="ot">&lt;-</span> <span class="fu">backward_linkages</span>(I_sk)</span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span> (<span class="fu">head</span>(cz_bw[,<span class="dv">1</span><span class="sc">:</span><span class="dv">8</span>]), <span class="at">digits=</span><span class="dv">4</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" tabindex="-1"></a>cz_bw <span class="ot">&lt;-</span> <span class="fu">backward_linkages</span>(I_cz)</span>
+<span id="cb11-2"><a href="#cb11-2" tabindex="-1"></a>sk_bw <span class="ot">&lt;-</span> <span class="fu">backward_linkages</span>(I_sk)</span>
+<span id="cb11-3"><a href="#cb11-3" tabindex="-1"></a></span>
+<span id="cb11-4"><a href="#cb11-4" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span> (<span class="fu">head</span>(cz_bw[,<span class="dv">1</span><span class="sc">:</span><span class="dv">8</span>]), <span class="at">digits=</span><span class="dv">4</span>)</span></code></pre></div>
 <table>
 <thead>
 <tr>
@@ -1654,21 +1653,21 @@ backward linkages
 <p>Forward linkages show the effects on other industries that use the
 product (industry output) at question as an input. Forward linkages can
 be derived from the ouput coefficient table.</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>output_coeff_cz <span class="ot">&lt;-</span> <span class="fu">output_coefficient_matrix_create</span>( </span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">io_table =</span> cz_io, <span class="at">total =</span> <span class="st">&quot;tfu&quot;</span>, <span class="at">digits =</span> <span class="dv">4</span>)</span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>output_coeff_sk <span class="ot">&lt;-</span> <span class="fu">output_coefficient_matrix_create</span>( </span>
-<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">io_table =</span> sk_io, <span class="at">total =</span> <span class="st">&quot;tfu&quot;</span>)</span>
-<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span> (<span class="fu">head</span>(output_coeff_cz[,<span class="dv">1</span><span class="sc">:</span><span class="dv">8</span>]))</span></code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" tabindex="-1"></a>output_coeff_cz <span class="ot">&lt;-</span> <span class="fu">output_coefficient_matrix_create</span>( </span>
+<span id="cb12-2"><a href="#cb12-2" tabindex="-1"></a>  <span class="at">io_table =</span> cz_io, <span class="at">total =</span> <span class="st">&quot;tfu&quot;</span>, <span class="at">digits =</span> <span class="dv">4</span>)</span>
+<span id="cb12-3"><a href="#cb12-3" tabindex="-1"></a></span>
+<span id="cb12-4"><a href="#cb12-4" tabindex="-1"></a>output_coeff_sk <span class="ot">&lt;-</span> <span class="fu">output_coefficient_matrix_create</span>( </span>
+<span id="cb12-5"><a href="#cb12-5" tabindex="-1"></a>  <span class="at">io_table =</span> sk_io, <span class="at">total =</span> <span class="st">&quot;tfu&quot;</span>)</span>
+<span id="cb12-6"><a href="#cb12-6" tabindex="-1"></a></span>
+<span id="cb12-7"><a href="#cb12-7" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span> (<span class="fu">head</span>(output_coeff_cz[,<span class="dv">1</span><span class="sc">:</span><span class="dv">8</span>]))</span></code></pre></div>
 <p>From the output coefficient matrix we can create the Leontief-matrix
 for outputs, its inverse, and summarize for forward linkages. These
 steps are taking place in the <code>forward_linkages</code>
 function.</p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>cz_fw <span class="ot">&lt;-</span> <span class="fu">forward_linkages</span> ( output_coeff_cz )</span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>sk_fw <span class="ot">&lt;-</span> <span class="fu">forward_linkages</span>( output_coeff_sk )</span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span> (<span class="fu">head</span>(cz_fw), <span class="at">digits=</span><span class="dv">4</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" tabindex="-1"></a>cz_fw <span class="ot">&lt;-</span> <span class="fu">forward_linkages</span> ( output_coeff_cz )</span>
+<span id="cb13-2"><a href="#cb13-2" tabindex="-1"></a>sk_fw <span class="ot">&lt;-</span> <span class="fu">forward_linkages</span>( output_coeff_sk )</span>
+<span id="cb13-3"><a href="#cb13-3" tabindex="-1"></a></span>
+<span id="cb13-4"><a href="#cb13-4" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span> (<span class="fu">head</span>(cz_fw), <span class="at">digits=</span><span class="dv">4</span>)</span></code></pre></div>
 </div>
 <div id="write-results-into-excel-files" class="section level2">
 <h2>Write results into Excel files</h2>
@@ -1678,89 +1677,89 @@ application.</p>
 <p>The contents of the <a href="https://github.com/rOpenGov/iotables/tree/master/not_included">not_included</a>
 directory can be found on GitHub, but they are not released and
 distributed with the package.</p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">require</span>(xlsx)</span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>cz_file_name <span class="ot">&lt;-</span> <span class="fu">file.path</span>(<span class="st">&quot;..&quot;</span>, <span class="st">&quot;not_included&quot;</span>, <span class="st">&quot;CzechRep_test.xlsx&quot;</span>)</span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="co">#Czech Republic data</span></span>
-<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>xlsx<span class="sc">::</span><span class="fu">write.xlsx</span> ( cz_io, <span class="at">file =</span> cz_file_name, <span class="at">sheetName =</span> <span class="st">&quot;io_table&quot;</span>,</span>
-<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>                   <span class="at">col.names=</span><span class="cn">TRUE</span>, <span class="at">row.names=</span><span class="cn">TRUE</span>, <span class="at">append=</span><span class="cn">FALSE</span>)</span>
-<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>xlsx<span class="sc">::</span><span class="fu">write.xlsx</span> ( cz_output, <span class="at">file =</span> cz_file_name, <span class="at">sheetName =</span> <span class="st">&quot;cz_output&quot;</span>,</span>
-<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>                   <span class="at">col.names=</span><span class="cn">TRUE</span>, <span class="at">row.names=</span><span class="cn">TRUE</span>, <span class="at">append=</span><span class="cn">TRUE</span>)</span>
-<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>xlsx<span class="sc">::</span><span class="fu">write.xlsx</span> ( input_coeff_matrix_cz, <span class="at">file =</span> cz_file_name, </span>
-<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>                   <span class="at">sheetName =</span> <span class="st">&quot;input_coeff_matrix_cz&quot;</span>,</span>
-<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>                   <span class="at">col.names=</span><span class="cn">TRUE</span>, <span class="at">row.names=</span><span class="cn">TRUE</span>, <span class="at">append=</span><span class="cn">TRUE</span>)</span>
-<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>xlsx<span class="sc">::</span><span class="fu">write.xlsx</span> ( L_cz, <span class="at">file =</span> cz_file_name, <span class="at">sheetName =</span> <span class="st">&quot;L_cz&quot;</span>,</span>
-<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a>                   <span class="at">col.names=</span><span class="cn">TRUE</span>, <span class="at">row.names=</span><span class="cn">TRUE</span>, <span class="at">append=</span><span class="cn">TRUE</span>)</span>
-<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a>xlsx<span class="sc">::</span><span class="fu">write.xlsx</span> ( I_cz, <span class="at">file =</span> cz_file_name, <span class="at">sheetName =</span> <span class="st">&quot;I_cz&quot;</span>,</span>
-<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a>                   <span class="at">col.names=</span><span class="cn">TRUE</span>, <span class="at">row.names=</span><span class="cn">TRUE</span>, <span class="at">append=</span><span class="cn">TRUE</span>)</span>
-<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a>xlsx<span class="sc">::</span><span class="fu">write.xlsx</span> ( direct_cz, <span class="at">file =</span> cz_file_name, </span>
-<span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a>                   <span class="at">sheetName =</span> <span class="st">&quot;direct_cz&quot;</span>,</span>
-<span id="cb14-17"><a href="#cb14-17" aria-hidden="true" tabindex="-1"></a>                   <span class="at">col.names=</span><span class="cn">TRUE</span>, <span class="at">row.names=</span><span class="cn">TRUE</span>, <span class="at">append=</span><span class="cn">TRUE</span>)</span>
-<span id="cb14-18"><a href="#cb14-18" aria-hidden="true" tabindex="-1"></a>xlsx<span class="sc">::</span><span class="fu">write.xlsx</span> ( multipliers_cz, <span class="at">file =</span> cz_file_name, </span>
-<span id="cb14-19"><a href="#cb14-19" aria-hidden="true" tabindex="-1"></a>                   <span class="at">sheetName =</span> <span class="st">&quot;multipliers_cz&quot;</span>,</span>
-<span id="cb14-20"><a href="#cb14-20" aria-hidden="true" tabindex="-1"></a>                   <span class="at">col.names=</span><span class="cn">TRUE</span>, <span class="at">row.names=</span><span class="cn">TRUE</span>, <span class="at">append=</span><span class="cn">TRUE</span>)</span>
-<span id="cb14-21"><a href="#cb14-21" aria-hidden="true" tabindex="-1"></a>xlsx<span class="sc">::</span><span class="fu">write.xlsx</span> ( emp_effect_cz, <span class="at">file =</span> cz_file_name, </span>
-<span id="cb14-22"><a href="#cb14-22" aria-hidden="true" tabindex="-1"></a>                   <span class="at">sheetName =</span> <span class="st">&quot;emp_effect_cz_2015&quot;</span>,</span>
-<span id="cb14-23"><a href="#cb14-23" aria-hidden="true" tabindex="-1"></a>                   <span class="at">col.names=</span><span class="cn">TRUE</span>, <span class="at">row.names=</span><span class="cn">TRUE</span>, <span class="at">append=</span><span class="cn">TRUE</span>)</span>
-<span id="cb14-24"><a href="#cb14-24" aria-hidden="true" tabindex="-1"></a>xlsx<span class="sc">::</span><span class="fu">write.xlsx</span> ( emp_indicator_cz, <span class="at">file =</span> cz_file_name, </span>
-<span id="cb14-25"><a href="#cb14-25" aria-hidden="true" tabindex="-1"></a>                   <span class="at">sheetName =</span> <span class="st">&quot;emp_indicator_cz&quot;</span>,</span>
-<span id="cb14-26"><a href="#cb14-26" aria-hidden="true" tabindex="-1"></a>                   <span class="at">col.names=</span><span class="cn">TRUE</span>, <span class="at">row.names=</span><span class="cn">TRUE</span>, <span class="at">append=</span><span class="cn">TRUE</span>)</span>
-<span id="cb14-27"><a href="#cb14-27" aria-hidden="true" tabindex="-1"></a>xlsx<span class="sc">::</span><span class="fu">write.xlsx</span> ( emp_multiplier_cz, <span class="at">file =</span> cz_file_name, </span>
-<span id="cb14-28"><a href="#cb14-28" aria-hidden="true" tabindex="-1"></a>                   <span class="at">sheetName =</span> <span class="st">&quot;emp_multiplier_cz&quot;</span>,</span>
-<span id="cb14-29"><a href="#cb14-29" aria-hidden="true" tabindex="-1"></a>                   <span class="at">col.names=</span><span class="cn">TRUE</span>, <span class="at">row.names=</span><span class="cn">TRUE</span>, <span class="at">append=</span><span class="cn">TRUE</span>)</span>
-<span id="cb14-30"><a href="#cb14-30" aria-hidden="true" tabindex="-1"></a>xlsx<span class="sc">::</span><span class="fu">write.xlsx</span> ( cz_bw, <span class="at">file =</span> cz_file_name, </span>
-<span id="cb14-31"><a href="#cb14-31" aria-hidden="true" tabindex="-1"></a>                   <span class="at">sheetName =</span> <span class="st">&quot;cz_backward_linkages&quot;</span>,</span>
-<span id="cb14-32"><a href="#cb14-32" aria-hidden="true" tabindex="-1"></a>                   <span class="at">col.names=</span><span class="cn">TRUE</span>, <span class="at">row.names=</span><span class="cn">TRUE</span>, <span class="at">append=</span><span class="cn">TRUE</span>)</span>
-<span id="cb14-33"><a href="#cb14-33" aria-hidden="true" tabindex="-1"></a>xlsx<span class="sc">::</span><span class="fu">write.xlsx</span> ( output_coeff_cz, <span class="at">file =</span> cz_file_name, </span>
-<span id="cb14-34"><a href="#cb14-34" aria-hidden="true" tabindex="-1"></a>                   <span class="at">sheetName =</span> <span class="st">&quot;output_coeff_sk&quot;</span>,</span>
-<span id="cb14-35"><a href="#cb14-35" aria-hidden="true" tabindex="-1"></a>                   <span class="at">col.names=</span><span class="cn">TRUE</span>, <span class="at">row.names=</span><span class="cn">TRUE</span>, <span class="at">append=</span><span class="cn">TRUE</span>)</span>
-<span id="cb14-36"><a href="#cb14-36" aria-hidden="true" tabindex="-1"></a>xlsx<span class="sc">::</span><span class="fu">write.xlsx</span> ( cz_fw, <span class="at">file =</span> cz_file_name, </span>
-<span id="cb14-37"><a href="#cb14-37" aria-hidden="true" tabindex="-1"></a>                   <span class="at">sheetName =</span> <span class="st">&quot;cz_forward_linkages&quot;</span>,</span>
-<span id="cb14-38"><a href="#cb14-38" aria-hidden="true" tabindex="-1"></a>                   <span class="at">col.names=</span><span class="cn">TRUE</span>, <span class="at">row.names=</span><span class="cn">TRUE</span>, <span class="at">append=</span><span class="cn">TRUE</span>)</span>
-<span id="cb14-39"><a href="#cb14-39" aria-hidden="true" tabindex="-1"></a>xlsx<span class="sc">::</span><span class="fu">write.xlsx</span> ( output_multipliers_cz, <span class="at">file =</span> cz_file_name, </span>
-<span id="cb14-40"><a href="#cb14-40" aria-hidden="true" tabindex="-1"></a>                   <span class="at">sheetName =</span> <span class="st">&quot;output_multipliers_cz&quot;</span>,</span>
-<span id="cb14-41"><a href="#cb14-41" aria-hidden="true" tabindex="-1"></a>                   <span class="at">col.names=</span><span class="cn">TRUE</span>, <span class="at">row.names=</span><span class="cn">TRUE</span>, <span class="at">append=</span><span class="cn">TRUE</span>)</span>
-<span id="cb14-42"><a href="#cb14-42" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-43"><a href="#cb14-43" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-44"><a href="#cb14-44" aria-hidden="true" tabindex="-1"></a>sk_file_name <span class="ot">&lt;-</span> <span class="fu">file.path</span>(<span class="st">&quot;..&quot;</span>, <span class="st">&quot;not_included&quot;</span>, <span class="st">&quot;SlovakRep_test.xlsx&quot;</span>)</span>
-<span id="cb14-45"><a href="#cb14-45" aria-hidden="true" tabindex="-1"></a><span class="co">#Czech Republic data</span></span>
-<span id="cb14-46"><a href="#cb14-46" aria-hidden="true" tabindex="-1"></a>xlsx<span class="sc">::</span><span class="fu">write.xlsx</span> ( sk_io, <span class="at">file =</span> sk_file_name, <span class="at">sheetName =</span> <span class="st">&quot;io_table&quot;</span>,</span>
-<span id="cb14-47"><a href="#cb14-47" aria-hidden="true" tabindex="-1"></a>                   <span class="at">col.names=</span><span class="cn">TRUE</span>, <span class="at">row.names=</span><span class="cn">TRUE</span>, <span class="at">append=</span><span class="cn">FALSE</span>)</span>
-<span id="cb14-48"><a href="#cb14-48" aria-hidden="true" tabindex="-1"></a>xlsx<span class="sc">::</span><span class="fu">write.xlsx</span> ( sk_output, <span class="at">file =</span> sk_file_name, <span class="at">sheetName =</span> <span class="st">&quot;sk_output&quot;</span>,</span>
-<span id="cb14-49"><a href="#cb14-49" aria-hidden="true" tabindex="-1"></a>                   <span class="at">col.names=</span><span class="cn">TRUE</span>, <span class="at">row.names=</span><span class="cn">TRUE</span>, <span class="at">append=</span><span class="cn">TRUE</span>)</span>
-<span id="cb14-50"><a href="#cb14-50" aria-hidden="true" tabindex="-1"></a>xlsx<span class="sc">::</span><span class="fu">write.xlsx</span> ( input_coeff_matrix_sk, <span class="at">file =</span> sk_file_name, </span>
-<span id="cb14-51"><a href="#cb14-51" aria-hidden="true" tabindex="-1"></a>                   <span class="at">sheetName =</span> <span class="st">&quot;input_coeff_matrix_sk&quot;</span>,</span>
-<span id="cb14-52"><a href="#cb14-52" aria-hidden="true" tabindex="-1"></a>                   <span class="at">col.names=</span><span class="cn">TRUE</span>, <span class="at">row.names=</span><span class="cn">TRUE</span>, <span class="at">append=</span><span class="cn">TRUE</span>)</span>
-<span id="cb14-53"><a href="#cb14-53" aria-hidden="true" tabindex="-1"></a>xlsx<span class="sc">::</span><span class="fu">write.xlsx</span> ( L_sk, <span class="at">file =</span> sk_file_name, <span class="at">sheetName =</span> <span class="st">&quot;L_sk&quot;</span>,</span>
-<span id="cb14-54"><a href="#cb14-54" aria-hidden="true" tabindex="-1"></a>                   <span class="at">col.names=</span><span class="cn">TRUE</span>, <span class="at">row.names=</span><span class="cn">TRUE</span>, <span class="at">append=</span><span class="cn">TRUE</span>)</span>
-<span id="cb14-55"><a href="#cb14-55" aria-hidden="true" tabindex="-1"></a>xlsx<span class="sc">::</span><span class="fu">write.xlsx</span> ( I_sk, <span class="at">file =</span> sk_file_name, <span class="at">sheetName =</span> <span class="st">&quot;I_sk&quot;</span>,</span>
-<span id="cb14-56"><a href="#cb14-56" aria-hidden="true" tabindex="-1"></a>                   <span class="at">col.names=</span><span class="cn">TRUE</span>, <span class="at">row.names=</span><span class="cn">TRUE</span>, <span class="at">append=</span><span class="cn">TRUE</span>)</span>
-<span id="cb14-57"><a href="#cb14-57" aria-hidden="true" tabindex="-1"></a>xlsx<span class="sc">::</span><span class="fu">write.xlsx</span> ( direct_sk, <span class="at">file =</span> sk_file_name, </span>
-<span id="cb14-58"><a href="#cb14-58" aria-hidden="true" tabindex="-1"></a>                   <span class="at">sheetName =</span> <span class="st">&quot;direct_sk&quot;</span>,</span>
-<span id="cb14-59"><a href="#cb14-59" aria-hidden="true" tabindex="-1"></a>                   <span class="at">col.names=</span><span class="cn">TRUE</span>, <span class="at">row.names=</span><span class="cn">TRUE</span>, <span class="at">append=</span><span class="cn">TRUE</span>)</span>
-<span id="cb14-60"><a href="#cb14-60" aria-hidden="true" tabindex="-1"></a>xlsx<span class="sc">::</span><span class="fu">write.xlsx</span> ( multipliers_sk, <span class="at">file =</span> sk_file_name, </span>
-<span id="cb14-61"><a href="#cb14-61" aria-hidden="true" tabindex="-1"></a>                   <span class="at">sheetName =</span> <span class="st">&quot;multipliers_sk&quot;</span>,</span>
-<span id="cb14-62"><a href="#cb14-62" aria-hidden="true" tabindex="-1"></a>                   <span class="at">col.names=</span><span class="cn">TRUE</span>, <span class="at">row.names=</span><span class="cn">TRUE</span>, <span class="at">append=</span><span class="cn">TRUE</span>)</span>
-<span id="cb14-63"><a href="#cb14-63" aria-hidden="true" tabindex="-1"></a>xlsx<span class="sc">::</span><span class="fu">write.xlsx</span> ( emp_effect_sk, <span class="at">file =</span> sk_file_name, </span>
-<span id="cb14-64"><a href="#cb14-64" aria-hidden="true" tabindex="-1"></a>                   <span class="at">sheetName =</span> <span class="st">&quot;emp_effect_sk_2015&quot;</span>,</span>
-<span id="cb14-65"><a href="#cb14-65" aria-hidden="true" tabindex="-1"></a>                   <span class="at">col.names=</span><span class="cn">TRUE</span>, <span class="at">row.names=</span><span class="cn">TRUE</span>, <span class="at">append=</span><span class="cn">TRUE</span>)</span>
-<span id="cb14-66"><a href="#cb14-66" aria-hidden="true" tabindex="-1"></a>xlsx<span class="sc">::</span><span class="fu">write.xlsx</span> ( emp_indicator_sk,<span class="at">file =</span> sk_file_name, </span>
-<span id="cb14-67"><a href="#cb14-67" aria-hidden="true" tabindex="-1"></a>                   <span class="at">sheetName =</span> <span class="st">&quot;emp_indicator_sk&quot;</span>,</span>
-<span id="cb14-68"><a href="#cb14-68" aria-hidden="true" tabindex="-1"></a>                   <span class="at">col.names=</span><span class="cn">TRUE</span>, <span class="at">row.names=</span><span class="cn">TRUE</span>, <span class="at">append=</span><span class="cn">TRUE</span>)</span>
-<span id="cb14-69"><a href="#cb14-69" aria-hidden="true" tabindex="-1"></a>xlsx<span class="sc">::</span><span class="fu">write.xlsx</span> ( emp_multiplier_sk, <span class="at">file =</span> sk_file_name, </span>
-<span id="cb14-70"><a href="#cb14-70" aria-hidden="true" tabindex="-1"></a>                   <span class="at">sheetName =</span> <span class="st">&quot;employment_multipliers_sk&quot;</span>,</span>
-<span id="cb14-71"><a href="#cb14-71" aria-hidden="true" tabindex="-1"></a>                   <span class="at">col.names=</span><span class="cn">TRUE</span>, <span class="at">row.names=</span><span class="cn">TRUE</span>, <span class="at">append=</span><span class="cn">TRUE</span>)</span>
-<span id="cb14-72"><a href="#cb14-72" aria-hidden="true" tabindex="-1"></a>xlsx<span class="sc">::</span><span class="fu">write.xlsx</span> ( sk_bw, <span class="at">file =</span> sk_file_name, </span>
-<span id="cb14-73"><a href="#cb14-73" aria-hidden="true" tabindex="-1"></a>                   <span class="at">sheetName =</span> <span class="st">&quot;sk_backward_linkages&quot;</span>,</span>
-<span id="cb14-74"><a href="#cb14-74" aria-hidden="true" tabindex="-1"></a>                   <span class="at">col.names=</span><span class="cn">TRUE</span>, <span class="at">row.names=</span><span class="cn">TRUE</span>, <span class="at">append=</span><span class="cn">TRUE</span>)</span>
-<span id="cb14-75"><a href="#cb14-75" aria-hidden="true" tabindex="-1"></a>xlsx<span class="sc">::</span><span class="fu">write.xlsx</span> ( output_coeff_sk, <span class="at">file =</span> sk_file_name, </span>
-<span id="cb14-76"><a href="#cb14-76" aria-hidden="true" tabindex="-1"></a>                   <span class="at">sheetName =</span> <span class="st">&quot;output_coeff_sk&quot;</span>,</span>
-<span id="cb14-77"><a href="#cb14-77" aria-hidden="true" tabindex="-1"></a>                   <span class="at">col.names=</span><span class="cn">TRUE</span>, <span class="at">row.names=</span><span class="cn">TRUE</span>, <span class="at">append=</span><span class="cn">TRUE</span>)</span>
-<span id="cb14-78"><a href="#cb14-78" aria-hidden="true" tabindex="-1"></a>xlsx<span class="sc">::</span><span class="fu">write.xlsx</span> ( sk_fw, <span class="at">file =</span> sk_file_name, </span>
-<span id="cb14-79"><a href="#cb14-79" aria-hidden="true" tabindex="-1"></a>                   <span class="at">sheetName =</span> <span class="st">&quot;sk_forward_linkages&quot;</span>,</span>
-<span id="cb14-80"><a href="#cb14-80" aria-hidden="true" tabindex="-1"></a>                   <span class="at">col.names=</span><span class="cn">TRUE</span>, <span class="at">row.names=</span><span class="cn">TRUE</span>, <span class="at">append=</span><span class="cn">TRUE</span>)</span>
-<span id="cb14-81"><a href="#cb14-81" aria-hidden="true" tabindex="-1"></a>xlsx<span class="sc">::</span><span class="fu">write.xlsx</span> ( output_multipliers_sk, <span class="at">file =</span> sk_file_name, </span>
-<span id="cb14-82"><a href="#cb14-82" aria-hidden="true" tabindex="-1"></a>                   <span class="at">sheetName =</span> <span class="st">&quot;output_multipliers_sk&quot;</span>,</span>
-<span id="cb14-83"><a href="#cb14-83" aria-hidden="true" tabindex="-1"></a>                   <span class="at">col.names=</span><span class="cn">TRUE</span>, <span class="at">row.names=</span><span class="cn">TRUE</span>, <span class="at">append=</span><span class="cn">TRUE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" tabindex="-1"></a><span class="fu">require</span>(xlsx)</span>
+<span id="cb14-2"><a href="#cb14-2" tabindex="-1"></a>cz_file_name <span class="ot">&lt;-</span> <span class="fu">file.path</span>(<span class="st">&quot;..&quot;</span>, <span class="st">&quot;not_included&quot;</span>, <span class="st">&quot;CzechRep_test.xlsx&quot;</span>)</span>
+<span id="cb14-3"><a href="#cb14-3" tabindex="-1"></a><span class="co">#Czech Republic data</span></span>
+<span id="cb14-4"><a href="#cb14-4" tabindex="-1"></a>xlsx<span class="sc">::</span><span class="fu">write.xlsx</span> ( cz_io, <span class="at">file =</span> cz_file_name, <span class="at">sheetName =</span> <span class="st">&quot;io_table&quot;</span>,</span>
+<span id="cb14-5"><a href="#cb14-5" tabindex="-1"></a>                   <span class="at">col.names=</span><span class="cn">TRUE</span>, <span class="at">row.names=</span><span class="cn">TRUE</span>, <span class="at">append=</span><span class="cn">FALSE</span>)</span>
+<span id="cb14-6"><a href="#cb14-6" tabindex="-1"></a>xlsx<span class="sc">::</span><span class="fu">write.xlsx</span> ( cz_output, <span class="at">file =</span> cz_file_name, <span class="at">sheetName =</span> <span class="st">&quot;cz_output&quot;</span>,</span>
+<span id="cb14-7"><a href="#cb14-7" tabindex="-1"></a>                   <span class="at">col.names=</span><span class="cn">TRUE</span>, <span class="at">row.names=</span><span class="cn">TRUE</span>, <span class="at">append=</span><span class="cn">TRUE</span>)</span>
+<span id="cb14-8"><a href="#cb14-8" tabindex="-1"></a>xlsx<span class="sc">::</span><span class="fu">write.xlsx</span> ( input_coeff_matrix_cz, <span class="at">file =</span> cz_file_name, </span>
+<span id="cb14-9"><a href="#cb14-9" tabindex="-1"></a>                   <span class="at">sheetName =</span> <span class="st">&quot;input_coeff_matrix_cz&quot;</span>,</span>
+<span id="cb14-10"><a href="#cb14-10" tabindex="-1"></a>                   <span class="at">col.names=</span><span class="cn">TRUE</span>, <span class="at">row.names=</span><span class="cn">TRUE</span>, <span class="at">append=</span><span class="cn">TRUE</span>)</span>
+<span id="cb14-11"><a href="#cb14-11" tabindex="-1"></a>xlsx<span class="sc">::</span><span class="fu">write.xlsx</span> ( L_cz, <span class="at">file =</span> cz_file_name, <span class="at">sheetName =</span> <span class="st">&quot;L_cz&quot;</span>,</span>
+<span id="cb14-12"><a href="#cb14-12" tabindex="-1"></a>                   <span class="at">col.names=</span><span class="cn">TRUE</span>, <span class="at">row.names=</span><span class="cn">TRUE</span>, <span class="at">append=</span><span class="cn">TRUE</span>)</span>
+<span id="cb14-13"><a href="#cb14-13" tabindex="-1"></a>xlsx<span class="sc">::</span><span class="fu">write.xlsx</span> ( I_cz, <span class="at">file =</span> cz_file_name, <span class="at">sheetName =</span> <span class="st">&quot;I_cz&quot;</span>,</span>
+<span id="cb14-14"><a href="#cb14-14" tabindex="-1"></a>                   <span class="at">col.names=</span><span class="cn">TRUE</span>, <span class="at">row.names=</span><span class="cn">TRUE</span>, <span class="at">append=</span><span class="cn">TRUE</span>)</span>
+<span id="cb14-15"><a href="#cb14-15" tabindex="-1"></a>xlsx<span class="sc">::</span><span class="fu">write.xlsx</span> ( direct_cz, <span class="at">file =</span> cz_file_name, </span>
+<span id="cb14-16"><a href="#cb14-16" tabindex="-1"></a>                   <span class="at">sheetName =</span> <span class="st">&quot;direct_cz&quot;</span>,</span>
+<span id="cb14-17"><a href="#cb14-17" tabindex="-1"></a>                   <span class="at">col.names=</span><span class="cn">TRUE</span>, <span class="at">row.names=</span><span class="cn">TRUE</span>, <span class="at">append=</span><span class="cn">TRUE</span>)</span>
+<span id="cb14-18"><a href="#cb14-18" tabindex="-1"></a>xlsx<span class="sc">::</span><span class="fu">write.xlsx</span> ( multipliers_cz, <span class="at">file =</span> cz_file_name, </span>
+<span id="cb14-19"><a href="#cb14-19" tabindex="-1"></a>                   <span class="at">sheetName =</span> <span class="st">&quot;multipliers_cz&quot;</span>,</span>
+<span id="cb14-20"><a href="#cb14-20" tabindex="-1"></a>                   <span class="at">col.names=</span><span class="cn">TRUE</span>, <span class="at">row.names=</span><span class="cn">TRUE</span>, <span class="at">append=</span><span class="cn">TRUE</span>)</span>
+<span id="cb14-21"><a href="#cb14-21" tabindex="-1"></a>xlsx<span class="sc">::</span><span class="fu">write.xlsx</span> ( emp_effect_cz, <span class="at">file =</span> cz_file_name, </span>
+<span id="cb14-22"><a href="#cb14-22" tabindex="-1"></a>                   <span class="at">sheetName =</span> <span class="st">&quot;emp_effect_cz_2015&quot;</span>,</span>
+<span id="cb14-23"><a href="#cb14-23" tabindex="-1"></a>                   <span class="at">col.names=</span><span class="cn">TRUE</span>, <span class="at">row.names=</span><span class="cn">TRUE</span>, <span class="at">append=</span><span class="cn">TRUE</span>)</span>
+<span id="cb14-24"><a href="#cb14-24" tabindex="-1"></a>xlsx<span class="sc">::</span><span class="fu">write.xlsx</span> ( emp_indicator_cz, <span class="at">file =</span> cz_file_name, </span>
+<span id="cb14-25"><a href="#cb14-25" tabindex="-1"></a>                   <span class="at">sheetName =</span> <span class="st">&quot;emp_indicator_cz&quot;</span>,</span>
+<span id="cb14-26"><a href="#cb14-26" tabindex="-1"></a>                   <span class="at">col.names=</span><span class="cn">TRUE</span>, <span class="at">row.names=</span><span class="cn">TRUE</span>, <span class="at">append=</span><span class="cn">TRUE</span>)</span>
+<span id="cb14-27"><a href="#cb14-27" tabindex="-1"></a>xlsx<span class="sc">::</span><span class="fu">write.xlsx</span> ( emp_multiplier_cz, <span class="at">file =</span> cz_file_name, </span>
+<span id="cb14-28"><a href="#cb14-28" tabindex="-1"></a>                   <span class="at">sheetName =</span> <span class="st">&quot;emp_multiplier_cz&quot;</span>,</span>
+<span id="cb14-29"><a href="#cb14-29" tabindex="-1"></a>                   <span class="at">col.names=</span><span class="cn">TRUE</span>, <span class="at">row.names=</span><span class="cn">TRUE</span>, <span class="at">append=</span><span class="cn">TRUE</span>)</span>
+<span id="cb14-30"><a href="#cb14-30" tabindex="-1"></a>xlsx<span class="sc">::</span><span class="fu">write.xlsx</span> ( cz_bw, <span class="at">file =</span> cz_file_name, </span>
+<span id="cb14-31"><a href="#cb14-31" tabindex="-1"></a>                   <span class="at">sheetName =</span> <span class="st">&quot;cz_backward_linkages&quot;</span>,</span>
+<span id="cb14-32"><a href="#cb14-32" tabindex="-1"></a>                   <span class="at">col.names=</span><span class="cn">TRUE</span>, <span class="at">row.names=</span><span class="cn">TRUE</span>, <span class="at">append=</span><span class="cn">TRUE</span>)</span>
+<span id="cb14-33"><a href="#cb14-33" tabindex="-1"></a>xlsx<span class="sc">::</span><span class="fu">write.xlsx</span> ( output_coeff_cz, <span class="at">file =</span> cz_file_name, </span>
+<span id="cb14-34"><a href="#cb14-34" tabindex="-1"></a>                   <span class="at">sheetName =</span> <span class="st">&quot;output_coeff_sk&quot;</span>,</span>
+<span id="cb14-35"><a href="#cb14-35" tabindex="-1"></a>                   <span class="at">col.names=</span><span class="cn">TRUE</span>, <span class="at">row.names=</span><span class="cn">TRUE</span>, <span class="at">append=</span><span class="cn">TRUE</span>)</span>
+<span id="cb14-36"><a href="#cb14-36" tabindex="-1"></a>xlsx<span class="sc">::</span><span class="fu">write.xlsx</span> ( cz_fw, <span class="at">file =</span> cz_file_name, </span>
+<span id="cb14-37"><a href="#cb14-37" tabindex="-1"></a>                   <span class="at">sheetName =</span> <span class="st">&quot;cz_forward_linkages&quot;</span>,</span>
+<span id="cb14-38"><a href="#cb14-38" tabindex="-1"></a>                   <span class="at">col.names=</span><span class="cn">TRUE</span>, <span class="at">row.names=</span><span class="cn">TRUE</span>, <span class="at">append=</span><span class="cn">TRUE</span>)</span>
+<span id="cb14-39"><a href="#cb14-39" tabindex="-1"></a>xlsx<span class="sc">::</span><span class="fu">write.xlsx</span> ( output_multipliers_cz, <span class="at">file =</span> cz_file_name, </span>
+<span id="cb14-40"><a href="#cb14-40" tabindex="-1"></a>                   <span class="at">sheetName =</span> <span class="st">&quot;output_multipliers_cz&quot;</span>,</span>
+<span id="cb14-41"><a href="#cb14-41" tabindex="-1"></a>                   <span class="at">col.names=</span><span class="cn">TRUE</span>, <span class="at">row.names=</span><span class="cn">TRUE</span>, <span class="at">append=</span><span class="cn">TRUE</span>)</span>
+<span id="cb14-42"><a href="#cb14-42" tabindex="-1"></a></span>
+<span id="cb14-43"><a href="#cb14-43" tabindex="-1"></a></span>
+<span id="cb14-44"><a href="#cb14-44" tabindex="-1"></a>sk_file_name <span class="ot">&lt;-</span> <span class="fu">file.path</span>(<span class="st">&quot;..&quot;</span>, <span class="st">&quot;not_included&quot;</span>, <span class="st">&quot;SlovakRep_test.xlsx&quot;</span>)</span>
+<span id="cb14-45"><a href="#cb14-45" tabindex="-1"></a><span class="co">#Czech Republic data</span></span>
+<span id="cb14-46"><a href="#cb14-46" tabindex="-1"></a>xlsx<span class="sc">::</span><span class="fu">write.xlsx</span> ( sk_io, <span class="at">file =</span> sk_file_name, <span class="at">sheetName =</span> <span class="st">&quot;io_table&quot;</span>,</span>
+<span id="cb14-47"><a href="#cb14-47" tabindex="-1"></a>                   <span class="at">col.names=</span><span class="cn">TRUE</span>, <span class="at">row.names=</span><span class="cn">TRUE</span>, <span class="at">append=</span><span class="cn">FALSE</span>)</span>
+<span id="cb14-48"><a href="#cb14-48" tabindex="-1"></a>xlsx<span class="sc">::</span><span class="fu">write.xlsx</span> ( sk_output, <span class="at">file =</span> sk_file_name, <span class="at">sheetName =</span> <span class="st">&quot;sk_output&quot;</span>,</span>
+<span id="cb14-49"><a href="#cb14-49" tabindex="-1"></a>                   <span class="at">col.names=</span><span class="cn">TRUE</span>, <span class="at">row.names=</span><span class="cn">TRUE</span>, <span class="at">append=</span><span class="cn">TRUE</span>)</span>
+<span id="cb14-50"><a href="#cb14-50" tabindex="-1"></a>xlsx<span class="sc">::</span><span class="fu">write.xlsx</span> ( input_coeff_matrix_sk, <span class="at">file =</span> sk_file_name, </span>
+<span id="cb14-51"><a href="#cb14-51" tabindex="-1"></a>                   <span class="at">sheetName =</span> <span class="st">&quot;input_coeff_matrix_sk&quot;</span>,</span>
+<span id="cb14-52"><a href="#cb14-52" tabindex="-1"></a>                   <span class="at">col.names=</span><span class="cn">TRUE</span>, <span class="at">row.names=</span><span class="cn">TRUE</span>, <span class="at">append=</span><span class="cn">TRUE</span>)</span>
+<span id="cb14-53"><a href="#cb14-53" tabindex="-1"></a>xlsx<span class="sc">::</span><span class="fu">write.xlsx</span> ( L_sk, <span class="at">file =</span> sk_file_name, <span class="at">sheetName =</span> <span class="st">&quot;L_sk&quot;</span>,</span>
+<span id="cb14-54"><a href="#cb14-54" tabindex="-1"></a>                   <span class="at">col.names=</span><span class="cn">TRUE</span>, <span class="at">row.names=</span><span class="cn">TRUE</span>, <span class="at">append=</span><span class="cn">TRUE</span>)</span>
+<span id="cb14-55"><a href="#cb14-55" tabindex="-1"></a>xlsx<span class="sc">::</span><span class="fu">write.xlsx</span> ( I_sk, <span class="at">file =</span> sk_file_name, <span class="at">sheetName =</span> <span class="st">&quot;I_sk&quot;</span>,</span>
+<span id="cb14-56"><a href="#cb14-56" tabindex="-1"></a>                   <span class="at">col.names=</span><span class="cn">TRUE</span>, <span class="at">row.names=</span><span class="cn">TRUE</span>, <span class="at">append=</span><span class="cn">TRUE</span>)</span>
+<span id="cb14-57"><a href="#cb14-57" tabindex="-1"></a>xlsx<span class="sc">::</span><span class="fu">write.xlsx</span> ( direct_sk, <span class="at">file =</span> sk_file_name, </span>
+<span id="cb14-58"><a href="#cb14-58" tabindex="-1"></a>                   <span class="at">sheetName =</span> <span class="st">&quot;direct_sk&quot;</span>,</span>
+<span id="cb14-59"><a href="#cb14-59" tabindex="-1"></a>                   <span class="at">col.names=</span><span class="cn">TRUE</span>, <span class="at">row.names=</span><span class="cn">TRUE</span>, <span class="at">append=</span><span class="cn">TRUE</span>)</span>
+<span id="cb14-60"><a href="#cb14-60" tabindex="-1"></a>xlsx<span class="sc">::</span><span class="fu">write.xlsx</span> ( multipliers_sk, <span class="at">file =</span> sk_file_name, </span>
+<span id="cb14-61"><a href="#cb14-61" tabindex="-1"></a>                   <span class="at">sheetName =</span> <span class="st">&quot;multipliers_sk&quot;</span>,</span>
+<span id="cb14-62"><a href="#cb14-62" tabindex="-1"></a>                   <span class="at">col.names=</span><span class="cn">TRUE</span>, <span class="at">row.names=</span><span class="cn">TRUE</span>, <span class="at">append=</span><span class="cn">TRUE</span>)</span>
+<span id="cb14-63"><a href="#cb14-63" tabindex="-1"></a>xlsx<span class="sc">::</span><span class="fu">write.xlsx</span> ( emp_effect_sk, <span class="at">file =</span> sk_file_name, </span>
+<span id="cb14-64"><a href="#cb14-64" tabindex="-1"></a>                   <span class="at">sheetName =</span> <span class="st">&quot;emp_effect_sk_2015&quot;</span>,</span>
+<span id="cb14-65"><a href="#cb14-65" tabindex="-1"></a>                   <span class="at">col.names=</span><span class="cn">TRUE</span>, <span class="at">row.names=</span><span class="cn">TRUE</span>, <span class="at">append=</span><span class="cn">TRUE</span>)</span>
+<span id="cb14-66"><a href="#cb14-66" tabindex="-1"></a>xlsx<span class="sc">::</span><span class="fu">write.xlsx</span> ( emp_indicator_sk,<span class="at">file =</span> sk_file_name, </span>
+<span id="cb14-67"><a href="#cb14-67" tabindex="-1"></a>                   <span class="at">sheetName =</span> <span class="st">&quot;emp_indicator_sk&quot;</span>,</span>
+<span id="cb14-68"><a href="#cb14-68" tabindex="-1"></a>                   <span class="at">col.names=</span><span class="cn">TRUE</span>, <span class="at">row.names=</span><span class="cn">TRUE</span>, <span class="at">append=</span><span class="cn">TRUE</span>)</span>
+<span id="cb14-69"><a href="#cb14-69" tabindex="-1"></a>xlsx<span class="sc">::</span><span class="fu">write.xlsx</span> ( emp_multiplier_sk, <span class="at">file =</span> sk_file_name, </span>
+<span id="cb14-70"><a href="#cb14-70" tabindex="-1"></a>                   <span class="at">sheetName =</span> <span class="st">&quot;employment_multipliers_sk&quot;</span>,</span>
+<span id="cb14-71"><a href="#cb14-71" tabindex="-1"></a>                   <span class="at">col.names=</span><span class="cn">TRUE</span>, <span class="at">row.names=</span><span class="cn">TRUE</span>, <span class="at">append=</span><span class="cn">TRUE</span>)</span>
+<span id="cb14-72"><a href="#cb14-72" tabindex="-1"></a>xlsx<span class="sc">::</span><span class="fu">write.xlsx</span> ( sk_bw, <span class="at">file =</span> sk_file_name, </span>
+<span id="cb14-73"><a href="#cb14-73" tabindex="-1"></a>                   <span class="at">sheetName =</span> <span class="st">&quot;sk_backward_linkages&quot;</span>,</span>
+<span id="cb14-74"><a href="#cb14-74" tabindex="-1"></a>                   <span class="at">col.names=</span><span class="cn">TRUE</span>, <span class="at">row.names=</span><span class="cn">TRUE</span>, <span class="at">append=</span><span class="cn">TRUE</span>)</span>
+<span id="cb14-75"><a href="#cb14-75" tabindex="-1"></a>xlsx<span class="sc">::</span><span class="fu">write.xlsx</span> ( output_coeff_sk, <span class="at">file =</span> sk_file_name, </span>
+<span id="cb14-76"><a href="#cb14-76" tabindex="-1"></a>                   <span class="at">sheetName =</span> <span class="st">&quot;output_coeff_sk&quot;</span>,</span>
+<span id="cb14-77"><a href="#cb14-77" tabindex="-1"></a>                   <span class="at">col.names=</span><span class="cn">TRUE</span>, <span class="at">row.names=</span><span class="cn">TRUE</span>, <span class="at">append=</span><span class="cn">TRUE</span>)</span>
+<span id="cb14-78"><a href="#cb14-78" tabindex="-1"></a>xlsx<span class="sc">::</span><span class="fu">write.xlsx</span> ( sk_fw, <span class="at">file =</span> sk_file_name, </span>
+<span id="cb14-79"><a href="#cb14-79" tabindex="-1"></a>                   <span class="at">sheetName =</span> <span class="st">&quot;sk_forward_linkages&quot;</span>,</span>
+<span id="cb14-80"><a href="#cb14-80" tabindex="-1"></a>                   <span class="at">col.names=</span><span class="cn">TRUE</span>, <span class="at">row.names=</span><span class="cn">TRUE</span>, <span class="at">append=</span><span class="cn">TRUE</span>)</span>
+<span id="cb14-81"><a href="#cb14-81" tabindex="-1"></a>xlsx<span class="sc">::</span><span class="fu">write.xlsx</span> ( output_multipliers_sk, <span class="at">file =</span> sk_file_name, </span>
+<span id="cb14-82"><a href="#cb14-82" tabindex="-1"></a>                   <span class="at">sheetName =</span> <span class="st">&quot;output_multipliers_sk&quot;</span>,</span>
+<span id="cb14-83"><a href="#cb14-83" tabindex="-1"></a>                   <span class="at">col.names=</span><span class="cn">TRUE</span>, <span class="at">row.names=</span><span class="cn">TRUE</span>, <span class="at">append=</span><span class="cn">TRUE</span>)</span></code></pre></div>
 </div>
 
 

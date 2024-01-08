@@ -10,20 +10,20 @@ nl_coeff   <- input_coefficient_matrix_create( data_table = nl,
 
 nl_services_row <- nl_coeff %>%
   dplyr::filter ( prod_na == "services_group" ) %>%
-  dplyr::select ( -.data$prod_na ) %>%
+  dplyr::select ( -prod_na ) %>%
   unlist() %>% as.numeric ()
 
 de_input_coefficients <- input_coefficient_matrix_create (
   iotable_get(), digits = 5)
 
 business_agriculture_input <- de_input_coefficients %>%
-  dplyr::filter ( .data$iotables_row == "business_services_group") %>%
-  dplyr::select ( .data$agriculture_group) %>%
+  dplyr::filter ( iotables_row == "business_services_group") %>%
+  dplyr::select ( agriculture_group) %>%
   as.numeric()
 
 BSBS <- de_input_coefficients %>%
-  dplyr::filter ( .data$iotables_row == "business_services_group") %>%
-  dplyr::select ( .data$business_services_group ) %>%
+  dplyr::filter ( iotables_row == "business_services_group") %>%
+  dplyr::select ( business_services_group ) %>%
   as.numeric()
 
 test_that("input_flow_get correct and input_coefficient_matrix_create work as expected together", {

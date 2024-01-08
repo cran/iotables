@@ -12,7 +12,7 @@
 
 <meta name="author" content="Daniel Antal, based on the work of Jorg Beutel" />
 
-<meta name="date" content="2022-09-24" />
+<meta name="date" content="2024-01-08" />
 
 <title>Introduction to iotables</title>
 
@@ -31,23 +31,23 @@ document.addEventListener('DOMContentLoaded', function(e) {
 </script>
 
 <style type="text/css">
-  code{white-space: pre-wrap;}
-  span.smallcaps{font-variant: small-caps;}
-  span.underline{text-decoration: underline;}
-  div.column{display: inline-block; vertical-align: top; width: 50%;}
-  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
-  ul.task-list{list-style: none;}
-    </style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+</style>
 
 
 
 <style type="text/css">
-  code {
-    white-space: pre;
-  }
-  .sourceCode {
-    overflow: visible;
-  }
+code {
+white-space: pre;
+}
+.sourceCode {
+overflow: visible;
+}
 </style>
 <style type="text/css" data-origin="pandoc">
 pre > code.sourceCode { white-space: pre; position: relative; }
@@ -65,55 +65,54 @@ pre > code.sourceCode { white-space: pre-wrap; }
 pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
 }
 pre.numberSource code
-  { counter-reset: source-line 0; }
+{ counter-reset: source-line 0; }
 pre.numberSource code > span
-  { position: relative; left: -4em; counter-increment: source-line; }
+{ position: relative; left: -4em; counter-increment: source-line; }
 pre.numberSource code > span > a:first-child::before
-  { content: counter(source-line);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-    color: #aaaaaa;
-  }
-pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+{ content: counter(source-line);
+position: relative; left: -1em; text-align: right; vertical-align: baseline;
+border: none; display: inline-block;
+-webkit-touch-callout: none; -webkit-user-select: none;
+-khtml-user-select: none; -moz-user-select: none;
+-ms-user-select: none; user-select: none;
+padding: 0 4px; width: 4em;
+color: #aaaaaa;
+}
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa; padding-left: 4px; }
 div.sourceCode
-  {   }
+{ }
 @media screen {
 pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
-code span.al { color: #ff0000; font-weight: bold; } /* Alert */
-code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
-code span.at { color: #7d9029; } /* Attribute */
-code span.bn { color: #40a070; } /* BaseN */
-code span.bu { } /* BuiltIn */
-code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
-code span.ch { color: #4070a0; } /* Char */
-code span.cn { color: #880000; } /* Constant */
-code span.co { color: #60a0b0; font-style: italic; } /* Comment */
-code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
-code span.do { color: #ba2121; font-style: italic; } /* Documentation */
-code span.dt { color: #902000; } /* DataType */
-code span.dv { color: #40a070; } /* DecVal */
-code span.er { color: #ff0000; font-weight: bold; } /* Error */
-code span.ex { } /* Extension */
-code span.fl { color: #40a070; } /* Float */
-code span.fu { color: #06287e; } /* Function */
-code span.im { } /* Import */
-code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
-code span.kw { color: #007020; font-weight: bold; } /* Keyword */
-code span.op { color: #666666; } /* Operator */
-code span.ot { color: #007020; } /* Other */
-code span.pp { color: #bc7a00; } /* Preprocessor */
-code span.sc { color: #4070a0; } /* SpecialChar */
-code span.ss { color: #bb6688; } /* SpecialString */
-code span.st { color: #4070a0; } /* String */
-code span.va { color: #19177c; } /* Variable */
-code span.vs { color: #4070a0; } /* VerbatimString */
-code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
-
+code span.al { color: #ff0000; font-weight: bold; } 
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.at { color: #7d9029; } 
+code span.bn { color: #40a070; } 
+code span.bu { color: #008000; } 
+code span.cf { color: #007020; font-weight: bold; } 
+code span.ch { color: #4070a0; } 
+code span.cn { color: #880000; } 
+code span.co { color: #60a0b0; font-style: italic; } 
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.do { color: #ba2121; font-style: italic; } 
+code span.dt { color: #902000; } 
+code span.dv { color: #40a070; } 
+code span.er { color: #ff0000; font-weight: bold; } 
+code span.ex { } 
+code span.fl { color: #40a070; } 
+code span.fu { color: #06287e; } 
+code span.im { color: #008000; font-weight: bold; } 
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.kw { color: #007020; font-weight: bold; } 
+code span.op { color: #666666; } 
+code span.ot { color: #007020; } 
+code span.pp { color: #bc7a00; } 
+code span.sc { color: #4070a0; } 
+code span.ss { color: #bb6688; } 
+code span.st { color: #4070a0; } 
+code span.va { color: #19177c; } 
+code span.vs { color: #4070a0; } 
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } 
 </style>
 <script>
 // apply pandoc div.sourceCode style to pre.sourceCode instead
@@ -341,13 +340,13 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 
 <h1 class="title toc-ignore">Introduction to iotables</h1>
 <h4 class="author">Daniel Antal, based on the work of Jorg Beutel</h4>
-<h4 class="date">2022-09-24</h4>
+<h4 class="date">2024-01-08</h4>
 
 
 
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(iotables)</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr, <span class="at">quietly =</span> T)</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyr, <span class="at">quietly =</span> T)</span></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="fu">library</span>(iotables)</span>
+<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a><span class="fu">library</span>(dplyr, <span class="at">quietly =</span> T)</span>
+<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a><span class="fu">library</span>(tidyr, <span class="at">quietly =</span> T)</span></code></pre></div>
 <p>This introduction shows the reproducible workflow of iotables with
 the examples of the <a href="https://ec.europa.eu/eurostat/documents/3859598/5902113/KS-RA-07-013-EN.PDF/b0b3d71e-3930-4442-94be-70b36cea9b39?version=1.0">Eurostat
 Manual of Supply, Use and Input-Output Tables</a>. by Joerg Beutel
@@ -375,15 +374,15 @@ labels of the dataset were slightly changed to match the current
 metadata names. The changes are minor and self-evident, the comparison
 of the <code>germany_1995</code> dataset and the Manual should cause no
 misunderstandings.</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>germany_io <span class="ot">&lt;-</span> <span class="fu">iotable_get</span>( <span class="at">labelling =</span> <span class="st">&quot;iotables&quot;</span> )</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>input_flow <span class="ot">&lt;-</span> <span class="fu">input_flow_get</span> ( </span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>                  <span class="at">data_table =</span> germany_io, </span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>                  <span class="at">households =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>de_output <span class="ot">&lt;-</span> <span class="fu">primary_input_get</span> ( germany_io, <span class="st">&quot;output&quot;</span> )</span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span> (de_output[<span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>)])</span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    iotables_row agriculture_group industry_group construction</span></span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 15       output             43910        1079446       245606</span></span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a>germany_io <span class="ot">&lt;-</span> <span class="fu">iotable_get</span>( <span class="at">labelling =</span> <span class="st">&quot;iotables&quot;</span> )</span>
+<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a>input_flow <span class="ot">&lt;-</span> <span class="fu">input_flow_get</span> ( </span>
+<span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a>                  <span class="at">data_table =</span> germany_io, </span>
+<span id="cb2-4"><a href="#cb2-4" tabindex="-1"></a>                  <span class="at">households =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb2-5"><a href="#cb2-5" tabindex="-1"></a></span>
+<span id="cb2-6"><a href="#cb2-6" tabindex="-1"></a>de_output <span class="ot">&lt;-</span> <span class="fu">primary_input_get</span> ( germany_io, <span class="st">&quot;output&quot;</span> )</span>
+<span id="cb2-7"><a href="#cb2-7" tabindex="-1"></a><span class="fu">print</span> (de_output[<span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>)])</span>
+<span id="cb2-8"><a href="#cb2-8" tabindex="-1"></a><span class="co">#&gt;    iotables_row agriculture_group industry_group construction</span></span>
+<span id="cb2-9"><a href="#cb2-9" tabindex="-1"></a><span class="co">#&gt; 15       output             43910        1079446       245606</span></span></code></pre></div>
 <p>The <code>input_flow()</code> function selects the first quadrant,
 often called as input flow matrix, or inter-industry matrix, from the
 German input-output table. The <code>primary_input_get()</code> selects
@@ -410,23 +409,23 @@ of the <em>Eurostat Manual</em>.</p>
 </ol>
 <p>It checks the correct ordering of columns, and furthermore it fills
 up 0 values with 0.000001 to avoid division with zero.</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>de_input_coeff <span class="ot">&lt;-</span> <span class="fu">input_coefficient_matrix_create</span>( </span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>     <span class="at">data_table =</span> germany_io, </span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>     <span class="at">digits =</span> <span class="dv">4</span>)</span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="do">## which is equivalent to:</span></span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>de_input_coeff <span class="ot">&lt;-</span> <span class="fu">coefficient_matrix_create</span>( </span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">data_table =</span> germany_io, </span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">total =</span> <span class="st">&quot;output&quot;</span>, </span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">return_part =</span> <span class="st">&quot;products&quot;</span>, </span>
-<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">households =</span> <span class="cn">FALSE</span>,</span>
-<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">digits =</span> <span class="dv">4</span>)</span>
-<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span> (de_input_coeff[<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>])</span>
-<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;        iotables_row agriculture_group industry_group</span></span>
-<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 agriculture_group            0.0258         0.0236</span></span>
-<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2    industry_group            0.1806         0.2822</span></span>
-<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3      construction            0.0097         0.0068</span></span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a>de_input_coeff <span class="ot">&lt;-</span> <span class="fu">input_coefficient_matrix_create</span>( </span>
+<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a>     <span class="at">data_table =</span> germany_io, </span>
+<span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a>     <span class="at">digits =</span> <span class="dv">4</span>)</span>
+<span id="cb3-4"><a href="#cb3-4" tabindex="-1"></a></span>
+<span id="cb3-5"><a href="#cb3-5" tabindex="-1"></a><span class="do">## which is equivalent to:</span></span>
+<span id="cb3-6"><a href="#cb3-6" tabindex="-1"></a>de_input_coeff <span class="ot">&lt;-</span> <span class="fu">coefficient_matrix_create</span>( </span>
+<span id="cb3-7"><a href="#cb3-7" tabindex="-1"></a>  <span class="at">data_table =</span> germany_io, </span>
+<span id="cb3-8"><a href="#cb3-8" tabindex="-1"></a>  <span class="at">total =</span> <span class="st">&quot;output&quot;</span>, </span>
+<span id="cb3-9"><a href="#cb3-9" tabindex="-1"></a>  <span class="at">return_part =</span> <span class="st">&quot;products&quot;</span>, </span>
+<span id="cb3-10"><a href="#cb3-10" tabindex="-1"></a>  <span class="at">households =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb3-11"><a href="#cb3-11" tabindex="-1"></a>  <span class="at">digits =</span> <span class="dv">4</span>)</span>
+<span id="cb3-12"><a href="#cb3-12" tabindex="-1"></a></span>
+<span id="cb3-13"><a href="#cb3-13" tabindex="-1"></a><span class="fu">print</span> (de_input_coeff[<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>])</span>
+<span id="cb3-14"><a href="#cb3-14" tabindex="-1"></a><span class="co">#&gt;        iotables_row agriculture_group industry_group</span></span>
+<span id="cb3-15"><a href="#cb3-15" tabindex="-1"></a><span class="co">#&gt; 1 agriculture_group            0.0258         0.0236</span></span>
+<span id="cb3-16"><a href="#cb3-16" tabindex="-1"></a><span class="co">#&gt; 2    industry_group            0.1806         0.2822</span></span>
+<span id="cb3-17"><a href="#cb3-17" tabindex="-1"></a><span class="co">#&gt; 3      construction            0.0097         0.0068</span></span></code></pre></div>
 <p>These results are identical after similar rounding to the Table 15.6
 of the Manual (on page 485.)</p>
 <p>Similarly, the output coefficient matrix is defined in the following
@@ -455,20 +454,20 @@ output coefficient matrix.</p>
 <p>The Leontief inverse is and it is created with the
 <code>leontief_inverse_create()</code> function from the
 Leontief-matrix.</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>L_de <span class="ot">&lt;-</span> <span class="fu">leontief_matrix_create</span> ( </span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">technology_coefficients_matrix =</span> de_input_coeff </span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>I_de   <span class="ot">&lt;-</span> <span class="fu">leontief_inverse_create</span>(de_input_coeff)</span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>I_de_4 <span class="ot">&lt;-</span> <span class="fu">leontief_inverse_create</span>(<span class="at">technology_coefficients_matrix=</span>de_input_coeff,</span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>                                  <span class="at">digits =</span> <span class="dv">4</span>)</span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span> (I_de_4[,<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>])</span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;              iotables_row agriculture_group industry_group</span></span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1          industry_group            1.4155         0.5605</span></span>
-<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2            construction            0.0441         1.0462</span></span>
-<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3             trade_group            0.2180         0.2292</span></span>
-<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4 business_services_group            0.2892         0.3237</span></span>
-<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 5    other_services_group            0.1089         0.1014</span></span>
-<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 6                   total            1.1152         1.3025</span></span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a>L_de <span class="ot">&lt;-</span> <span class="fu">leontief_matrix_create</span> ( </span>
+<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a>  <span class="at">technology_coefficients_matrix =</span> de_input_coeff </span>
+<span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a>  )</span>
+<span id="cb5-4"><a href="#cb5-4" tabindex="-1"></a>I_de   <span class="ot">&lt;-</span> <span class="fu">leontief_inverse_create</span>(de_input_coeff)</span>
+<span id="cb5-5"><a href="#cb5-5" tabindex="-1"></a>I_de_4 <span class="ot">&lt;-</span> <span class="fu">leontief_inverse_create</span>(<span class="at">technology_coefficients_matrix=</span>de_input_coeff,</span>
+<span id="cb5-6"><a href="#cb5-6" tabindex="-1"></a>                                  <span class="at">digits =</span> <span class="dv">4</span>)</span>
+<span id="cb5-7"><a href="#cb5-7" tabindex="-1"></a><span class="fu">print</span> (I_de_4[,<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>])</span>
+<span id="cb5-8"><a href="#cb5-8" tabindex="-1"></a><span class="co">#&gt;              iotables_row agriculture_group industry_group</span></span>
+<span id="cb5-9"><a href="#cb5-9" tabindex="-1"></a><span class="co">#&gt; 1          industry_group            1.4155         0.5605</span></span>
+<span id="cb5-10"><a href="#cb5-10" tabindex="-1"></a><span class="co">#&gt; 2            construction            0.0441         1.0462</span></span>
+<span id="cb5-11"><a href="#cb5-11" tabindex="-1"></a><span class="co">#&gt; 3             trade_group            0.2180         0.2292</span></span>
+<span id="cb5-12"><a href="#cb5-12" tabindex="-1"></a><span class="co">#&gt; 4 business_services_group            0.2892         0.3237</span></span>
+<span id="cb5-13"><a href="#cb5-13" tabindex="-1"></a><span class="co">#&gt; 5    other_services_group            0.1089         0.1014</span></span>
+<span id="cb5-14"><a href="#cb5-14" tabindex="-1"></a><span class="co">#&gt; 6                   total            1.1152         1.3025</span></span></code></pre></div>
 <p><em>You can check the Leontief matrix against Table 15.9 on page 487
 of the</em> Eurostat Manual, <em>and the Leontief inverse against Table
 15.10 on page 488. The ordering of the industries is different in the
@@ -489,23 +488,23 @@ capital is required to produce a unit of industry output.</p>
 from the SIOT and brings it to a conforming form. The
 <code>input_indicator_create()</code> creates the vector of technical
 input coefficients.</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>de_emp <span class="ot">&lt;-</span> <span class="fu">primary_input_get</span>(germany_io,</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>                            <span class="at">primary_input =</span> <span class="st">&quot;employment_domestic_total&quot;</span>)</span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>de_emp_indicator <span class="ot">&lt;-</span> <span class="fu">input_indicator_create</span>( </span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">data_table =</span> germany_io,</span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">input_row  =</span> <span class="st">&quot;employment_domestic_total&quot;</span>)</span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="fu">vector_transpose_longer</span>(de_emp_indicator)</span>
-<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 6 × 2</span></span>
-<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   nace_r2                   value</span></span>
-<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   &lt;chr&gt;                     &lt;dbl&gt;</span></span>
-<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 agriculture_group       0.0250 </span></span>
-<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2 industry_group          0.00776</span></span>
-<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3 construction            0.0132 </span></span>
-<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4 trade_group             0.0171 </span></span>
-<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 5 business_services_group 0.00615</span></span>
-<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 6 other_services_group    0.0201</span></span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a>de_emp <span class="ot">&lt;-</span> <span class="fu">primary_input_get</span>(germany_io,</span>
+<span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a>                            <span class="at">primary_input =</span> <span class="st">&quot;employment_domestic_total&quot;</span>)</span>
+<span id="cb6-3"><a href="#cb6-3" tabindex="-1"></a></span>
+<span id="cb6-4"><a href="#cb6-4" tabindex="-1"></a>de_emp_indicator <span class="ot">&lt;-</span> <span class="fu">input_indicator_create</span>( </span>
+<span id="cb6-5"><a href="#cb6-5" tabindex="-1"></a>    <span class="at">data_table =</span> germany_io,</span>
+<span id="cb6-6"><a href="#cb6-6" tabindex="-1"></a>    <span class="at">input_row  =</span> <span class="st">&quot;employment_domestic_total&quot;</span>)</span>
+<span id="cb6-7"><a href="#cb6-7" tabindex="-1"></a></span>
+<span id="cb6-8"><a href="#cb6-8" tabindex="-1"></a><span class="fu">vector_transpose_longer</span>(de_emp_indicator)</span>
+<span id="cb6-9"><a href="#cb6-9" tabindex="-1"></a><span class="co">#&gt; # A tibble: 6 × 2</span></span>
+<span id="cb6-10"><a href="#cb6-10" tabindex="-1"></a><span class="co">#&gt;   nace_r2                   value</span></span>
+<span id="cb6-11"><a href="#cb6-11" tabindex="-1"></a><span class="co">#&gt;   &lt;chr&gt;                     &lt;dbl&gt;</span></span>
+<span id="cb6-12"><a href="#cb6-12" tabindex="-1"></a><span class="co">#&gt; 1 agriculture_group       0.0250 </span></span>
+<span id="cb6-13"><a href="#cb6-13" tabindex="-1"></a><span class="co">#&gt; 2 industry_group          0.00776</span></span>
+<span id="cb6-14"><a href="#cb6-14" tabindex="-1"></a><span class="co">#&gt; 3 construction            0.0132 </span></span>
+<span id="cb6-15"><a href="#cb6-15" tabindex="-1"></a><span class="co">#&gt; 4 trade_group             0.0171 </span></span>
+<span id="cb6-16"><a href="#cb6-16" tabindex="-1"></a><span class="co">#&gt; 5 business_services_group 0.00615</span></span>
+<span id="cb6-17"><a href="#cb6-17" tabindex="-1"></a><span class="co">#&gt; 6 other_services_group    0.0201</span></span></code></pre></div>
 <p>Often we want to analyse the effect of growing domestic demand on
 some natural units, such as employment or <span class="math inline">\(CO_2\)</span> emissions. The only difficulty is
 that we need data that is aggregated / disaggregated precisely with the
@@ -524,23 +523,23 @@ continuing with the simplified 1990 German data.</p>
 <h3>Creating income indicators</h3>
 <p>The input coefficients for value added are created with
 <code>input_indicator_create()</code>.</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>de_gva <span class="ot">&lt;-</span> <span class="fu">primary_input_get</span> ( germany_io,</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>                              <span class="at">primary_input =</span> <span class="st">&quot;gva&quot;</span>) </span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>de_gva_indicator  <span class="ot">&lt;-</span> <span class="fu">input_indicator_create</span>( </span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">data_table  =</span> germany_io,</span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">input_row   =</span> <span class="st">&quot;gva&quot;</span>)</span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="fu">vector_transpose_longer</span>(de_gva_indicator)</span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 6 × 2</span></span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   nace_r2                 value</span></span>
-<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   &lt;chr&gt;                   &lt;dbl&gt;</span></span>
-<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 agriculture_group       0.493</span></span>
-<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2 industry_group          0.366</span></span>
-<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3 construction            0.471</span></span>
-<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4 trade_group             0.577</span></span>
-<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 5 business_services_group 0.600</span></span>
-<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 6 other_services_group    0.717</span></span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a>de_gva <span class="ot">&lt;-</span> <span class="fu">primary_input_get</span> ( germany_io,</span>
+<span id="cb7-2"><a href="#cb7-2" tabindex="-1"></a>                              <span class="at">primary_input =</span> <span class="st">&quot;gva&quot;</span>) </span>
+<span id="cb7-3"><a href="#cb7-3" tabindex="-1"></a></span>
+<span id="cb7-4"><a href="#cb7-4" tabindex="-1"></a>de_gva_indicator  <span class="ot">&lt;-</span> <span class="fu">input_indicator_create</span>( </span>
+<span id="cb7-5"><a href="#cb7-5" tabindex="-1"></a>    <span class="at">data_table  =</span> germany_io,</span>
+<span id="cb7-6"><a href="#cb7-6" tabindex="-1"></a>    <span class="at">input_row   =</span> <span class="st">&quot;gva&quot;</span>)</span>
+<span id="cb7-7"><a href="#cb7-7" tabindex="-1"></a></span>
+<span id="cb7-8"><a href="#cb7-8" tabindex="-1"></a><span class="fu">vector_transpose_longer</span>(de_gva_indicator)</span>
+<span id="cb7-9"><a href="#cb7-9" tabindex="-1"></a><span class="co">#&gt; # A tibble: 6 × 2</span></span>
+<span id="cb7-10"><a href="#cb7-10" tabindex="-1"></a><span class="co">#&gt;   nace_r2                 value</span></span>
+<span id="cb7-11"><a href="#cb7-11" tabindex="-1"></a><span class="co">#&gt;   &lt;chr&gt;                   &lt;dbl&gt;</span></span>
+<span id="cb7-12"><a href="#cb7-12" tabindex="-1"></a><span class="co">#&gt; 1 agriculture_group       0.493</span></span>
+<span id="cb7-13"><a href="#cb7-13" tabindex="-1"></a><span class="co">#&gt; 2 industry_group          0.366</span></span>
+<span id="cb7-14"><a href="#cb7-14" tabindex="-1"></a><span class="co">#&gt; 3 construction            0.471</span></span>
+<span id="cb7-15"><a href="#cb7-15" tabindex="-1"></a><span class="co">#&gt; 4 trade_group             0.577</span></span>
+<span id="cb7-16"><a href="#cb7-16" tabindex="-1"></a><span class="co">#&gt; 5 business_services_group 0.600</span></span>
+<span id="cb7-17"><a href="#cb7-17" tabindex="-1"></a><span class="co">#&gt; 6 other_services_group    0.717</span></span></code></pre></div>
 <p>This is equal to the equation on page 495 of the <a href="https://ec.europa.eu/eurostat/documents/3859598/5902113/KS-RA-07-013-EN.PDF/b0b3d71e-3930-4442-94be-70b36cea9b39?version=1.0">Eurostat
 Manual of Supply, Use and Input-Output Tables</a>. The results above can
 be checked on the bottom of page 498.</p>
@@ -553,19 +552,19 @@ added]</li>
 function by default creates input requirements for final demand. With
 the code below it re-creates the Table 15.14 of the <em>Eurostat
 Manual</em>.</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>direct_effects_de <span class="ot">&lt;-</span> <span class="fu">coefficient_matrix_create</span>(</span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">data_table  =</span> germany_io, </span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">total       =</span> <span class="st">&#39;output&#39;</span>, </span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">return_part =</span> <span class="st">&#39;primary_inputs&#39;</span>)</span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>direct_effects_de[<span class="dv">1</span><span class="sc">:</span><span class="dv">6</span>,<span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>]</span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                 iotables_row agriculture_group industry_group construction</span></span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 7                      total        0.41528126    0.482855094  0.468258104</span></span>
-<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 8                    imports        0.06665908    0.145169837  0.054668860</span></span>
-<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 9   intermediate_consumption        0.50662719    0.634051171  0.529229742</span></span>
-<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 10    compensation_employees        0.21366431    0.274644586  0.320916427</span></span>
-<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 11        net_tax_production       -0.04582100    0.001349766  0.003920914</span></span>
-<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 12 consumption_fixed_capital        0.17925302    0.059075674  0.023859352</span></span></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a>direct_effects_de <span class="ot">&lt;-</span> <span class="fu">coefficient_matrix_create</span>(</span>
+<span id="cb8-2"><a href="#cb8-2" tabindex="-1"></a>  <span class="at">data_table  =</span> germany_io, </span>
+<span id="cb8-3"><a href="#cb8-3" tabindex="-1"></a>  <span class="at">total       =</span> <span class="st">&#39;output&#39;</span>, </span>
+<span id="cb8-4"><a href="#cb8-4" tabindex="-1"></a>  <span class="at">return_part =</span> <span class="st">&#39;primary_inputs&#39;</span>)</span>
+<span id="cb8-5"><a href="#cb8-5" tabindex="-1"></a></span>
+<span id="cb8-6"><a href="#cb8-6" tabindex="-1"></a>direct_effects_de[<span class="dv">1</span><span class="sc">:</span><span class="dv">6</span>,<span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>]</span>
+<span id="cb8-7"><a href="#cb8-7" tabindex="-1"></a><span class="co">#&gt;                 iotables_row agriculture_group industry_group construction</span></span>
+<span id="cb8-8"><a href="#cb8-8" tabindex="-1"></a><span class="co">#&gt; 7                      total        0.41528126    0.482855094  0.468258104</span></span>
+<span id="cb8-9"><a href="#cb8-9" tabindex="-1"></a><span class="co">#&gt; 8                    imports        0.06665908    0.145169837  0.054668860</span></span>
+<span id="cb8-10"><a href="#cb8-10" tabindex="-1"></a><span class="co">#&gt; 9   intermediate_consumption        0.50662719    0.634051171  0.529229742</span></span>
+<span id="cb8-11"><a href="#cb8-11" tabindex="-1"></a><span class="co">#&gt; 10    compensation_employees        0.21366431    0.274644586  0.320916427</span></span>
+<span id="cb8-12"><a href="#cb8-12" tabindex="-1"></a><span class="co">#&gt; 11        net_tax_production       -0.04582100    0.001349766  0.003920914</span></span>
+<span id="cb8-13"><a href="#cb8-13" tabindex="-1"></a><span class="co">#&gt; 12 consumption_fixed_capital        0.17925302    0.059075674  0.023859352</span></span></code></pre></div>
 <p><em>The ‘total’ row above is labelled as Domestic goods and services
 in the</em> Eurostat Manual. <em>The table can be found on page
 498.</em></p>
@@ -609,58 +608,58 @@ Manual of Supply, Use and Input-Output Tables</a> on page 501 (row
 <code>input_multipliers_create()</code> as shown here. Alternatively,
 you can create your own custom multipliers with
 <code>multiplier_create()</code> as shown in the following example.</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>input_reqr <span class="ot">&lt;-</span> <span class="fu">coefficient_matrix_create</span>(</span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>    <span class="at">data_table  =</span> <span class="fu">iotable_get</span>(), </span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">total       =</span> <span class="st">&#39;output&#39;</span>, </span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">return_part =</span> <span class="st">&#39;primary_inputs&#39;</span>) </span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>multipliers <span class="ot">&lt;-</span> <span class="fu">input_multipliers_create</span>(</span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">input_requirements =</span> input_reqr,</span>
-<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">Im =</span> I_de)</span>
-<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>multipliers</span>
-<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                                                                                                                                                                                                                                                                     iotables_row</span></span>
-<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 7  c(&quot;total&quot;, &quot;imports&quot;, &quot;intermediate_consumption&quot;, &quot;compensation_employees&quot;, &quot;net_tax_production&quot;, &quot;consumption_fixed_capital&quot;, &quot;os_mixed_income_net&quot;, &quot;gva&quot;, &quot;output&quot;, &quot;net_tax_products&quot;, &quot;employment_wage_salary&quot;, &quot;employment_self_employed&quot;, &quot;employment_domestic_total&quot;)</span></span>
-<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 8  c(&quot;total&quot;, &quot;imports&quot;, &quot;intermediate_consumption&quot;, &quot;compensation_employees&quot;, &quot;net_tax_production&quot;, &quot;consumption_fixed_capital&quot;, &quot;os_mixed_income_net&quot;, &quot;gva&quot;, &quot;output&quot;, &quot;net_tax_products&quot;, &quot;employment_wage_salary&quot;, &quot;employment_self_employed&quot;, &quot;employment_domestic_total&quot;)</span></span>
-<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 9  c(&quot;total&quot;, &quot;imports&quot;, &quot;intermediate_consumption&quot;, &quot;compensation_employees&quot;, &quot;net_tax_production&quot;, &quot;consumption_fixed_capital&quot;, &quot;os_mixed_income_net&quot;, &quot;gva&quot;, &quot;output&quot;, &quot;net_tax_products&quot;, &quot;employment_wage_salary&quot;, &quot;employment_self_employed&quot;, &quot;employment_domestic_total&quot;)</span></span>
-<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 10 c(&quot;total&quot;, &quot;imports&quot;, &quot;intermediate_consumption&quot;, &quot;compensation_employees&quot;, &quot;net_tax_production&quot;, &quot;consumption_fixed_capital&quot;, &quot;os_mixed_income_net&quot;, &quot;gva&quot;, &quot;output&quot;, &quot;net_tax_products&quot;, &quot;employment_wage_salary&quot;, &quot;employment_self_employed&quot;, &quot;employment_domestic_total&quot;)</span></span>
-<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 11 c(&quot;total&quot;, &quot;imports&quot;, &quot;intermediate_consumption&quot;, &quot;compensation_employees&quot;, &quot;net_tax_production&quot;, &quot;consumption_fixed_capital&quot;, &quot;os_mixed_income_net&quot;, &quot;gva&quot;, &quot;output&quot;, &quot;net_tax_products&quot;, &quot;employment_wage_salary&quot;, &quot;employment_self_employed&quot;, &quot;employment_domestic_total&quot;)</span></span>
-<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 12 c(&quot;total&quot;, &quot;imports&quot;, &quot;intermediate_consumption&quot;, &quot;compensation_employees&quot;, &quot;net_tax_production&quot;, &quot;consumption_fixed_capital&quot;, &quot;os_mixed_income_net&quot;, &quot;gva&quot;, &quot;output&quot;, &quot;net_tax_products&quot;, &quot;employment_wage_salary&quot;, &quot;employment_self_employed&quot;, &quot;employment_domestic_total&quot;)</span></span>
-<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 13 c(&quot;total&quot;, &quot;imports&quot;, &quot;intermediate_consumption&quot;, &quot;compensation_employees&quot;, &quot;net_tax_production&quot;, &quot;consumption_fixed_capital&quot;, &quot;os_mixed_income_net&quot;, &quot;gva&quot;, &quot;output&quot;, &quot;net_tax_products&quot;, &quot;employment_wage_salary&quot;, &quot;employment_self_employed&quot;, &quot;employment_domestic_total&quot;)</span></span>
-<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 14 c(&quot;total&quot;, &quot;imports&quot;, &quot;intermediate_consumption&quot;, &quot;compensation_employees&quot;, &quot;net_tax_production&quot;, &quot;consumption_fixed_capital&quot;, &quot;os_mixed_income_net&quot;, &quot;gva&quot;, &quot;output&quot;, &quot;net_tax_products&quot;, &quot;employment_wage_salary&quot;, &quot;employment_self_employed&quot;, &quot;employment_domestic_total&quot;)</span></span>
-<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 15 c(&quot;total&quot;, &quot;imports&quot;, &quot;intermediate_consumption&quot;, &quot;compensation_employees&quot;, &quot;net_tax_production&quot;, &quot;consumption_fixed_capital&quot;, &quot;os_mixed_income_net&quot;, &quot;gva&quot;, &quot;output&quot;, &quot;net_tax_products&quot;, &quot;employment_wage_salary&quot;, &quot;employment_self_employed&quot;, &quot;employment_domestic_total&quot;)</span></span>
-<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 16 c(&quot;total&quot;, &quot;imports&quot;, &quot;intermediate_consumption&quot;, &quot;compensation_employees&quot;, &quot;net_tax_production&quot;, &quot;consumption_fixed_capital&quot;, &quot;os_mixed_income_net&quot;, &quot;gva&quot;, &quot;output&quot;, &quot;net_tax_products&quot;, &quot;employment_wage_salary&quot;, &quot;employment_self_employed&quot;, &quot;employment_domestic_total&quot;)</span></span>
-<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 17 c(&quot;total&quot;, &quot;imports&quot;, &quot;intermediate_consumption&quot;, &quot;compensation_employees&quot;, &quot;net_tax_production&quot;, &quot;consumption_fixed_capital&quot;, &quot;os_mixed_income_net&quot;, &quot;gva&quot;, &quot;output&quot;, &quot;net_tax_products&quot;, &quot;employment_wage_salary&quot;, &quot;employment_self_employed&quot;, &quot;employment_domestic_total&quot;)</span></span>
-<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 18 c(&quot;total&quot;, &quot;imports&quot;, &quot;intermediate_consumption&quot;, &quot;compensation_employees&quot;, &quot;net_tax_production&quot;, &quot;consumption_fixed_capital&quot;, &quot;os_mixed_income_net&quot;, &quot;gva&quot;, &quot;output&quot;, &quot;net_tax_products&quot;, &quot;employment_wage_salary&quot;, &quot;employment_self_employed&quot;, &quot;employment_domestic_total&quot;)</span></span>
-<span id="cb9-24"><a href="#cb9-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 19 c(&quot;total&quot;, &quot;imports&quot;, &quot;intermediate_consumption&quot;, &quot;compensation_employees&quot;, &quot;net_tax_production&quot;, &quot;consumption_fixed_capital&quot;, &quot;os_mixed_income_net&quot;, &quot;gva&quot;, &quot;output&quot;, &quot;net_tax_products&quot;, &quot;employment_wage_salary&quot;, &quot;employment_self_employed&quot;, &quot;employment_domestic_total&quot;)</span></span>
-<span id="cb9-25"><a href="#cb9-25" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    agriculture_group industry_group construction trade_group</span></span>
-<span id="cb9-26"><a href="#cb9-26" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 7           2.685405       2.697473     2.746360    2.773719</span></span>
-<span id="cb9-27"><a href="#cb9-27" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 8           2.350820       1.736823     2.960627    3.030228</span></span>
-<span id="cb9-28"><a href="#cb9-28" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 9           2.648481       2.546448     2.848667    2.828821</span></span>
-<span id="cb9-29"><a href="#cb9-29" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 10          5.228504       4.828548     4.274868    3.134768</span></span>
-<span id="cb9-30"><a href="#cb9-30" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 11          1.754409     -31.761313    -9.914110   -4.386767</span></span>
-<span id="cb9-31"><a href="#cb9-31" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 12          2.270536       5.635210    12.323323    3.589129</span></span>
-<span id="cb9-32"><a href="#cb9-32" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 13          2.770958      10.779995     3.440553    3.383980</span></span>
-<span id="cb9-33"><a href="#cb9-33" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 14          3.747840       5.325994     4.348257    3.170864</span></span>
-<span id="cb9-34"><a href="#cb9-34" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 15          3.190875       3.563620     3.554629    3.026047</span></span>
-<span id="cb9-35"><a href="#cb9-35" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 16          2.831087       9.949035     9.478301    3.608658</span></span>
-<span id="cb9-36"><a href="#cb9-36" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 17          4.023060       6.239150     4.299240    3.096275</span></span>
-<span id="cb9-37"><a href="#cb9-37" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 18          1.596012      34.019675     8.518983    3.822717</span></span>
-<span id="cb9-38"><a href="#cb9-38" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 19          2.665597       7.395981     4.742600    3.196316</span></span>
-<span id="cb9-39"><a href="#cb9-39" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    business_services_group other_services_group</span></span>
-<span id="cb9-40"><a href="#cb9-40" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 7                 2.687728             2.733341</span></span>
-<span id="cb9-41"><a href="#cb9-41" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 8                 5.097511             2.892089</span></span>
-<span id="cb9-42"><a href="#cb9-42" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 9                 2.850498             2.686567</span></span>
-<span id="cb9-43"><a href="#cb9-43" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 10                5.684347             1.967902</span></span>
-<span id="cb9-44"><a href="#cb9-44" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 11               -1.624052             2.014459</span></span>
-<span id="cb9-45"><a href="#cb9-45" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 12                2.325327             2.310132</span></span>
-<span id="cb9-46"><a href="#cb9-46" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 13                1.820218             2.474001</span></span>
-<span id="cb9-47"><a href="#cb9-47" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 14                3.051751             2.084234</span></span>
-<span id="cb9-48"><a href="#cb9-48" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 15                2.971231             2.254549</span></span>
-<span id="cb9-49"><a href="#cb9-49" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 16                4.207374             2.022875</span></span>
-<span id="cb9-50"><a href="#cb9-50" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 17                6.792323             2.006822</span></span>
-<span id="cb9-51"><a href="#cb9-51" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 18                7.413313             4.250793</span></span>
-<span id="cb9-52"><a href="#cb9-52" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 19                6.880557             2.149956</span></span></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" tabindex="-1"></a>input_reqr <span class="ot">&lt;-</span> <span class="fu">coefficient_matrix_create</span>(</span>
+<span id="cb9-2"><a href="#cb9-2" tabindex="-1"></a>    <span class="at">data_table  =</span> <span class="fu">iotable_get</span>(), </span>
+<span id="cb9-3"><a href="#cb9-3" tabindex="-1"></a>    <span class="at">total       =</span> <span class="st">&#39;output&#39;</span>, </span>
+<span id="cb9-4"><a href="#cb9-4" tabindex="-1"></a>    <span class="at">return_part =</span> <span class="st">&#39;primary_inputs&#39;</span>) </span>
+<span id="cb9-5"><a href="#cb9-5" tabindex="-1"></a></span>
+<span id="cb9-6"><a href="#cb9-6" tabindex="-1"></a>multipliers <span class="ot">&lt;-</span> <span class="fu">input_multipliers_create</span>(</span>
+<span id="cb9-7"><a href="#cb9-7" tabindex="-1"></a>  <span class="at">input_requirements =</span> input_reqr,</span>
+<span id="cb9-8"><a href="#cb9-8" tabindex="-1"></a>  <span class="at">Im =</span> I_de)</span>
+<span id="cb9-9"><a href="#cb9-9" tabindex="-1"></a></span>
+<span id="cb9-10"><a href="#cb9-10" tabindex="-1"></a>multipliers</span>
+<span id="cb9-11"><a href="#cb9-11" tabindex="-1"></a><span class="co">#&gt;                                                                                                                                                                                                                                                                     iotables_row</span></span>
+<span id="cb9-12"><a href="#cb9-12" tabindex="-1"></a><span class="co">#&gt; 7  c(&quot;total&quot;, &quot;imports&quot;, &quot;intermediate_consumption&quot;, &quot;compensation_employees&quot;, &quot;net_tax_production&quot;, &quot;consumption_fixed_capital&quot;, &quot;os_mixed_income_net&quot;, &quot;gva&quot;, &quot;output&quot;, &quot;net_tax_products&quot;, &quot;employment_wage_salary&quot;, &quot;employment_self_employed&quot;, &quot;employment_domestic_total&quot;)</span></span>
+<span id="cb9-13"><a href="#cb9-13" tabindex="-1"></a><span class="co">#&gt; 8  c(&quot;total&quot;, &quot;imports&quot;, &quot;intermediate_consumption&quot;, &quot;compensation_employees&quot;, &quot;net_tax_production&quot;, &quot;consumption_fixed_capital&quot;, &quot;os_mixed_income_net&quot;, &quot;gva&quot;, &quot;output&quot;, &quot;net_tax_products&quot;, &quot;employment_wage_salary&quot;, &quot;employment_self_employed&quot;, &quot;employment_domestic_total&quot;)</span></span>
+<span id="cb9-14"><a href="#cb9-14" tabindex="-1"></a><span class="co">#&gt; 9  c(&quot;total&quot;, &quot;imports&quot;, &quot;intermediate_consumption&quot;, &quot;compensation_employees&quot;, &quot;net_tax_production&quot;, &quot;consumption_fixed_capital&quot;, &quot;os_mixed_income_net&quot;, &quot;gva&quot;, &quot;output&quot;, &quot;net_tax_products&quot;, &quot;employment_wage_salary&quot;, &quot;employment_self_employed&quot;, &quot;employment_domestic_total&quot;)</span></span>
+<span id="cb9-15"><a href="#cb9-15" tabindex="-1"></a><span class="co">#&gt; 10 c(&quot;total&quot;, &quot;imports&quot;, &quot;intermediate_consumption&quot;, &quot;compensation_employees&quot;, &quot;net_tax_production&quot;, &quot;consumption_fixed_capital&quot;, &quot;os_mixed_income_net&quot;, &quot;gva&quot;, &quot;output&quot;, &quot;net_tax_products&quot;, &quot;employment_wage_salary&quot;, &quot;employment_self_employed&quot;, &quot;employment_domestic_total&quot;)</span></span>
+<span id="cb9-16"><a href="#cb9-16" tabindex="-1"></a><span class="co">#&gt; 11 c(&quot;total&quot;, &quot;imports&quot;, &quot;intermediate_consumption&quot;, &quot;compensation_employees&quot;, &quot;net_tax_production&quot;, &quot;consumption_fixed_capital&quot;, &quot;os_mixed_income_net&quot;, &quot;gva&quot;, &quot;output&quot;, &quot;net_tax_products&quot;, &quot;employment_wage_salary&quot;, &quot;employment_self_employed&quot;, &quot;employment_domestic_total&quot;)</span></span>
+<span id="cb9-17"><a href="#cb9-17" tabindex="-1"></a><span class="co">#&gt; 12 c(&quot;total&quot;, &quot;imports&quot;, &quot;intermediate_consumption&quot;, &quot;compensation_employees&quot;, &quot;net_tax_production&quot;, &quot;consumption_fixed_capital&quot;, &quot;os_mixed_income_net&quot;, &quot;gva&quot;, &quot;output&quot;, &quot;net_tax_products&quot;, &quot;employment_wage_salary&quot;, &quot;employment_self_employed&quot;, &quot;employment_domestic_total&quot;)</span></span>
+<span id="cb9-18"><a href="#cb9-18" tabindex="-1"></a><span class="co">#&gt; 13 c(&quot;total&quot;, &quot;imports&quot;, &quot;intermediate_consumption&quot;, &quot;compensation_employees&quot;, &quot;net_tax_production&quot;, &quot;consumption_fixed_capital&quot;, &quot;os_mixed_income_net&quot;, &quot;gva&quot;, &quot;output&quot;, &quot;net_tax_products&quot;, &quot;employment_wage_salary&quot;, &quot;employment_self_employed&quot;, &quot;employment_domestic_total&quot;)</span></span>
+<span id="cb9-19"><a href="#cb9-19" tabindex="-1"></a><span class="co">#&gt; 14 c(&quot;total&quot;, &quot;imports&quot;, &quot;intermediate_consumption&quot;, &quot;compensation_employees&quot;, &quot;net_tax_production&quot;, &quot;consumption_fixed_capital&quot;, &quot;os_mixed_income_net&quot;, &quot;gva&quot;, &quot;output&quot;, &quot;net_tax_products&quot;, &quot;employment_wage_salary&quot;, &quot;employment_self_employed&quot;, &quot;employment_domestic_total&quot;)</span></span>
+<span id="cb9-20"><a href="#cb9-20" tabindex="-1"></a><span class="co">#&gt; 15 c(&quot;total&quot;, &quot;imports&quot;, &quot;intermediate_consumption&quot;, &quot;compensation_employees&quot;, &quot;net_tax_production&quot;, &quot;consumption_fixed_capital&quot;, &quot;os_mixed_income_net&quot;, &quot;gva&quot;, &quot;output&quot;, &quot;net_tax_products&quot;, &quot;employment_wage_salary&quot;, &quot;employment_self_employed&quot;, &quot;employment_domestic_total&quot;)</span></span>
+<span id="cb9-21"><a href="#cb9-21" tabindex="-1"></a><span class="co">#&gt; 16 c(&quot;total&quot;, &quot;imports&quot;, &quot;intermediate_consumption&quot;, &quot;compensation_employees&quot;, &quot;net_tax_production&quot;, &quot;consumption_fixed_capital&quot;, &quot;os_mixed_income_net&quot;, &quot;gva&quot;, &quot;output&quot;, &quot;net_tax_products&quot;, &quot;employment_wage_salary&quot;, &quot;employment_self_employed&quot;, &quot;employment_domestic_total&quot;)</span></span>
+<span id="cb9-22"><a href="#cb9-22" tabindex="-1"></a><span class="co">#&gt; 17 c(&quot;total&quot;, &quot;imports&quot;, &quot;intermediate_consumption&quot;, &quot;compensation_employees&quot;, &quot;net_tax_production&quot;, &quot;consumption_fixed_capital&quot;, &quot;os_mixed_income_net&quot;, &quot;gva&quot;, &quot;output&quot;, &quot;net_tax_products&quot;, &quot;employment_wage_salary&quot;, &quot;employment_self_employed&quot;, &quot;employment_domestic_total&quot;)</span></span>
+<span id="cb9-23"><a href="#cb9-23" tabindex="-1"></a><span class="co">#&gt; 18 c(&quot;total&quot;, &quot;imports&quot;, &quot;intermediate_consumption&quot;, &quot;compensation_employees&quot;, &quot;net_tax_production&quot;, &quot;consumption_fixed_capital&quot;, &quot;os_mixed_income_net&quot;, &quot;gva&quot;, &quot;output&quot;, &quot;net_tax_products&quot;, &quot;employment_wage_salary&quot;, &quot;employment_self_employed&quot;, &quot;employment_domestic_total&quot;)</span></span>
+<span id="cb9-24"><a href="#cb9-24" tabindex="-1"></a><span class="co">#&gt; 19 c(&quot;total&quot;, &quot;imports&quot;, &quot;intermediate_consumption&quot;, &quot;compensation_employees&quot;, &quot;net_tax_production&quot;, &quot;consumption_fixed_capital&quot;, &quot;os_mixed_income_net&quot;, &quot;gva&quot;, &quot;output&quot;, &quot;net_tax_products&quot;, &quot;employment_wage_salary&quot;, &quot;employment_self_employed&quot;, &quot;employment_domestic_total&quot;)</span></span>
+<span id="cb9-25"><a href="#cb9-25" tabindex="-1"></a><span class="co">#&gt;    agriculture_group industry_group construction trade_group</span></span>
+<span id="cb9-26"><a href="#cb9-26" tabindex="-1"></a><span class="co">#&gt; 7           2.685405       2.697473     2.746360    2.773719</span></span>
+<span id="cb9-27"><a href="#cb9-27" tabindex="-1"></a><span class="co">#&gt; 8           2.350820       1.736823     2.960627    3.030228</span></span>
+<span id="cb9-28"><a href="#cb9-28" tabindex="-1"></a><span class="co">#&gt; 9           2.648481       2.546448     2.848667    2.828821</span></span>
+<span id="cb9-29"><a href="#cb9-29" tabindex="-1"></a><span class="co">#&gt; 10          5.228504       4.828548     4.274868    3.134768</span></span>
+<span id="cb9-30"><a href="#cb9-30" tabindex="-1"></a><span class="co">#&gt; 11          1.754409     -31.761313    -9.914110   -4.386767</span></span>
+<span id="cb9-31"><a href="#cb9-31" tabindex="-1"></a><span class="co">#&gt; 12          2.270536       5.635210    12.323323    3.589129</span></span>
+<span id="cb9-32"><a href="#cb9-32" tabindex="-1"></a><span class="co">#&gt; 13          2.770958      10.779995     3.440553    3.383980</span></span>
+<span id="cb9-33"><a href="#cb9-33" tabindex="-1"></a><span class="co">#&gt; 14          3.747840       5.325994     4.348257    3.170864</span></span>
+<span id="cb9-34"><a href="#cb9-34" tabindex="-1"></a><span class="co">#&gt; 15          3.190875       3.563620     3.554629    3.026047</span></span>
+<span id="cb9-35"><a href="#cb9-35" tabindex="-1"></a><span class="co">#&gt; 16          2.831087       9.949035     9.478301    3.608658</span></span>
+<span id="cb9-36"><a href="#cb9-36" tabindex="-1"></a><span class="co">#&gt; 17          4.023060       6.239150     4.299240    3.096275</span></span>
+<span id="cb9-37"><a href="#cb9-37" tabindex="-1"></a><span class="co">#&gt; 18          1.596012      34.019675     8.518983    3.822717</span></span>
+<span id="cb9-38"><a href="#cb9-38" tabindex="-1"></a><span class="co">#&gt; 19          2.665597       7.395981     4.742600    3.196316</span></span>
+<span id="cb9-39"><a href="#cb9-39" tabindex="-1"></a><span class="co">#&gt;    business_services_group other_services_group</span></span>
+<span id="cb9-40"><a href="#cb9-40" tabindex="-1"></a><span class="co">#&gt; 7                 2.687728             2.733341</span></span>
+<span id="cb9-41"><a href="#cb9-41" tabindex="-1"></a><span class="co">#&gt; 8                 5.097511             2.892089</span></span>
+<span id="cb9-42"><a href="#cb9-42" tabindex="-1"></a><span class="co">#&gt; 9                 2.850498             2.686567</span></span>
+<span id="cb9-43"><a href="#cb9-43" tabindex="-1"></a><span class="co">#&gt; 10                5.684347             1.967902</span></span>
+<span id="cb9-44"><a href="#cb9-44" tabindex="-1"></a><span class="co">#&gt; 11               -1.624052             2.014459</span></span>
+<span id="cb9-45"><a href="#cb9-45" tabindex="-1"></a><span class="co">#&gt; 12                2.325327             2.310132</span></span>
+<span id="cb9-46"><a href="#cb9-46" tabindex="-1"></a><span class="co">#&gt; 13                1.820218             2.474001</span></span>
+<span id="cb9-47"><a href="#cb9-47" tabindex="-1"></a><span class="co">#&gt; 14                3.051751             2.084234</span></span>
+<span id="cb9-48"><a href="#cb9-48" tabindex="-1"></a><span class="co">#&gt; 15                2.971231             2.254549</span></span>
+<span id="cb9-49"><a href="#cb9-49" tabindex="-1"></a><span class="co">#&gt; 16                4.207374             2.022875</span></span>
+<span id="cb9-50"><a href="#cb9-50" tabindex="-1"></a><span class="co">#&gt; 17                6.792323             2.006822</span></span>
+<span id="cb9-51"><a href="#cb9-51" tabindex="-1"></a><span class="co">#&gt; 18                7.413313             4.250793</span></span>
+<span id="cb9-52"><a href="#cb9-52" tabindex="-1"></a><span class="co">#&gt; 19                6.880557             2.149956</span></span></code></pre></div>
 <p><em>You can check these results against the Table 15.16 on page 501
 of the</em> Eurostat Manual. <em>The label ‘total’ refers to domestic
 intermediaries. The ordering of the rows is different from the</em>
@@ -686,27 +685,27 @@ real-life data, such as different missing columns and rows in the
 national variations of the standard European table.</p>
 <p>Please send a bug report on <a href="https://github.com/rOpenGov/iotables/issues">Github</a> if you run
 into further real-life problems.</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>de_emp_indicator <span class="ot">&lt;-</span> <span class="fu">input_indicator_create</span> (</span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">data_table =</span> germany_io, </span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">input =</span> <span class="st">&#39;employment_domestic_total&#39;</span>) </span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>employment_multipliers <span class="ot">&lt;-</span> <span class="fu">multiplier_create</span> ( </span>
-<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">input_vector    =</span> de_emp_indicator,</span>
-<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">Im              =</span> I_de,</span>
-<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">multiplier_name =</span> <span class="st">&quot;employment_multiplier&quot;</span>, </span>
-<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">digits =</span> <span class="dv">4</span> )</span>
-<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a><span class="fu">vector_transpose_longer</span>(employment_multipliers,</span>
-<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>                        <span class="at">values_to=</span><span class="st">&quot;employment_multipliers&quot;</span>)</span>
-<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 6 × 2</span></span>
-<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   nace_r2                 employment_multipliers</span></span>
-<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   &lt;chr&gt;                                    &lt;dbl&gt;</span></span>
-<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 agriculture_group                       0.0665</span></span>
-<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2 industry_group                          0.0574</span></span>
-<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3 construction                            0.0625</span></span>
-<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4 trade_group                             0.0548</span></span>
-<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 5 business_services_group                 0.0423</span></span>
-<span id="cb10-21"><a href="#cb10-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 6 other_services_group                    0.0431</span></span></code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" tabindex="-1"></a>de_emp_indicator <span class="ot">&lt;-</span> <span class="fu">input_indicator_create</span> (</span>
+<span id="cb10-2"><a href="#cb10-2" tabindex="-1"></a>  <span class="at">data_table =</span> germany_io, </span>
+<span id="cb10-3"><a href="#cb10-3" tabindex="-1"></a>  <span class="at">input =</span> <span class="st">&#39;employment_domestic_total&#39;</span>) </span>
+<span id="cb10-4"><a href="#cb10-4" tabindex="-1"></a></span>
+<span id="cb10-5"><a href="#cb10-5" tabindex="-1"></a>employment_multipliers <span class="ot">&lt;-</span> <span class="fu">multiplier_create</span> ( </span>
+<span id="cb10-6"><a href="#cb10-6" tabindex="-1"></a>  <span class="at">input_vector    =</span> de_emp_indicator,</span>
+<span id="cb10-7"><a href="#cb10-7" tabindex="-1"></a>  <span class="at">Im              =</span> I_de,</span>
+<span id="cb10-8"><a href="#cb10-8" tabindex="-1"></a>  <span class="at">multiplier_name =</span> <span class="st">&quot;employment_multiplier&quot;</span>, </span>
+<span id="cb10-9"><a href="#cb10-9" tabindex="-1"></a>  <span class="at">digits =</span> <span class="dv">4</span> )</span>
+<span id="cb10-10"><a href="#cb10-10" tabindex="-1"></a></span>
+<span id="cb10-11"><a href="#cb10-11" tabindex="-1"></a><span class="fu">vector_transpose_longer</span>(employment_multipliers,</span>
+<span id="cb10-12"><a href="#cb10-12" tabindex="-1"></a>                        <span class="at">values_to=</span><span class="st">&quot;employment_multipliers&quot;</span>)</span>
+<span id="cb10-13"><a href="#cb10-13" tabindex="-1"></a><span class="co">#&gt; # A tibble: 6 × 2</span></span>
+<span id="cb10-14"><a href="#cb10-14" tabindex="-1"></a><span class="co">#&gt;   nace_r2                 employment_multipliers</span></span>
+<span id="cb10-15"><a href="#cb10-15" tabindex="-1"></a><span class="co">#&gt;   &lt;chr&gt;                                    &lt;dbl&gt;</span></span>
+<span id="cb10-16"><a href="#cb10-16" tabindex="-1"></a><span class="co">#&gt; 1 agriculture_group                       0.0665</span></span>
+<span id="cb10-17"><a href="#cb10-17" tabindex="-1"></a><span class="co">#&gt; 2 industry_group                          0.0574</span></span>
+<span id="cb10-18"><a href="#cb10-18" tabindex="-1"></a><span class="co">#&gt; 3 construction                            0.0625</span></span>
+<span id="cb10-19"><a href="#cb10-19" tabindex="-1"></a><span class="co">#&gt; 4 trade_group                             0.0548</span></span>
+<span id="cb10-20"><a href="#cb10-20" tabindex="-1"></a><span class="co">#&gt; 5 business_services_group                 0.0423</span></span>
+<span id="cb10-21"><a href="#cb10-21" tabindex="-1"></a><span class="co">#&gt; 6 other_services_group                    0.0431</span></span></code></pre></div>
 <p>You can check against the <a href="https://ec.europa.eu/eurostat/documents/3859598/5902113/KS-RA-07-013-EN.PDF/b0b3d71e-3930-4442-94be-70b36cea9b39?version=1.0">Eurostat
 Manual of Supply, Use and Input-Output Tables</a> page 501 that these
 values are correct and on page 501 that the highest employment
@@ -729,23 +728,23 @@ coefficients which is no longer part of SNA as of SNA2010.</p>
 products / intermediates].</li>
 </ol>
 <p><span class="math inline">\(x_i\)</span>: output of sector i</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>de_input_coeff <span class="ot">&lt;-</span> <span class="fu">input_coefficient_matrix_create</span>( </span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">data_table =</span> <span class="fu">iotable_get</span>(), </span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">digits =</span> <span class="dv">4</span>)</span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>output_multipliers <span class="ot">&lt;-</span> <span class="fu">output_multiplier_create</span> (<span class="at">input_coefficient_matrix =</span> de_input_coeff)</span>
-<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a><span class="fu">vector_transpose_longer</span>(output_multipliers, </span>
-<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>                        <span class="at">values_to =</span> <span class="st">&quot;output_multipliers&quot;</span>)</span>
-<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 6 × 2</span></span>
-<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   nace_r2                 output_multipliers</span></span>
-<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   &lt;chr&gt;                                &lt;dbl&gt;</span></span>
-<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 agriculture_group                     1.70</span></span>
-<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2 industry_group                        1.84</span></span>
-<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3 construction                          1.81</span></span>
-<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4 trade_group                           1.60</span></span>
-<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 5 business_services_group               1.59</span></span>
-<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 6 other_services_group                  1.38</span></span></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" tabindex="-1"></a>de_input_coeff <span class="ot">&lt;-</span> <span class="fu">input_coefficient_matrix_create</span>( </span>
+<span id="cb11-2"><a href="#cb11-2" tabindex="-1"></a>  <span class="at">data_table =</span> <span class="fu">iotable_get</span>(), </span>
+<span id="cb11-3"><a href="#cb11-3" tabindex="-1"></a>  <span class="at">digits =</span> <span class="dv">4</span>)</span>
+<span id="cb11-4"><a href="#cb11-4" tabindex="-1"></a></span>
+<span id="cb11-5"><a href="#cb11-5" tabindex="-1"></a>output_multipliers <span class="ot">&lt;-</span> <span class="fu">output_multiplier_create</span> (<span class="at">input_coefficient_matrix =</span> de_input_coeff)</span>
+<span id="cb11-6"><a href="#cb11-6" tabindex="-1"></a></span>
+<span id="cb11-7"><a href="#cb11-7" tabindex="-1"></a><span class="fu">vector_transpose_longer</span>(output_multipliers, </span>
+<span id="cb11-8"><a href="#cb11-8" tabindex="-1"></a>                        <span class="at">values_to =</span> <span class="st">&quot;output_multipliers&quot;</span>)</span>
+<span id="cb11-9"><a href="#cb11-9" tabindex="-1"></a><span class="co">#&gt; # A tibble: 6 × 2</span></span>
+<span id="cb11-10"><a href="#cb11-10" tabindex="-1"></a><span class="co">#&gt;   nace_r2                 output_multipliers</span></span>
+<span id="cb11-11"><a href="#cb11-11" tabindex="-1"></a><span class="co">#&gt;   &lt;chr&gt;                                &lt;dbl&gt;</span></span>
+<span id="cb11-12"><a href="#cb11-12" tabindex="-1"></a><span class="co">#&gt; 1 agriculture_group                     1.70</span></span>
+<span id="cb11-13"><a href="#cb11-13" tabindex="-1"></a><span class="co">#&gt; 2 industry_group                        1.84</span></span>
+<span id="cb11-14"><a href="#cb11-14" tabindex="-1"></a><span class="co">#&gt; 3 construction                          1.81</span></span>
+<span id="cb11-15"><a href="#cb11-15" tabindex="-1"></a><span class="co">#&gt; 4 trade_group                           1.60</span></span>
+<span id="cb11-16"><a href="#cb11-16" tabindex="-1"></a><span class="co">#&gt; 5 business_services_group               1.59</span></span>
+<span id="cb11-17"><a href="#cb11-17" tabindex="-1"></a><span class="co">#&gt; 6 other_services_group                  1.38</span></span></code></pre></div>
 <p><em>These multipliers can be checked against the Table 15.15 (The
 8th, ‘Total’ row) on the page 500 of the</em> Eurostat Manual.</p>
 </div>
@@ -765,20 +764,20 @@ backward linkages. The concert attracts visitors that creates new
 opportunities for the hotel industry in forward linkages.</p>
 <div id="backward-linkages" class="section level3">
 <h3>Backward linkages</h3>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>de_coeff <span class="ot">&lt;-</span> <span class="fu">input_coefficient_matrix_create</span>(<span class="fu">iotable_get</span>(), <span class="at">digits =</span> <span class="dv">4</span>)</span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>I_de     <span class="ot">&lt;-</span> <span class="fu">leontief_inverse_create</span> (de_coeff)</span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="fu">vector_transpose_longer</span>(<span class="fu">backward_linkages</span>(I_de),</span>
-<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>                        <span class="at">values_to =</span> <span class="st">&quot;backward_linkage_strength&quot;</span>)</span>
-<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 6 × 2</span></span>
-<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   nace_r2                 backward_linkage_strength</span></span>
-<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   &lt;chr&gt;                                       &lt;dbl&gt;</span></span>
-<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 agriculture_group                            1.70</span></span>
-<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2 industry_group                               1.84</span></span>
-<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3 construction                                 1.81</span></span>
-<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4 trade_group                                  1.60</span></span>
-<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 5 business_services_group                      1.59</span></span>
-<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 6 other_services_group                         1.38</span></span></code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" tabindex="-1"></a>de_coeff <span class="ot">&lt;-</span> <span class="fu">input_coefficient_matrix_create</span>(<span class="fu">iotable_get</span>(), <span class="at">digits =</span> <span class="dv">4</span>)</span>
+<span id="cb12-2"><a href="#cb12-2" tabindex="-1"></a>I_de     <span class="ot">&lt;-</span> <span class="fu">leontief_inverse_create</span> (de_coeff)</span>
+<span id="cb12-3"><a href="#cb12-3" tabindex="-1"></a></span>
+<span id="cb12-4"><a href="#cb12-4" tabindex="-1"></a><span class="fu">vector_transpose_longer</span>(<span class="fu">backward_linkages</span>(I_de),</span>
+<span id="cb12-5"><a href="#cb12-5" tabindex="-1"></a>                        <span class="at">values_to =</span> <span class="st">&quot;backward_linkage_strength&quot;</span>)</span>
+<span id="cb12-6"><a href="#cb12-6" tabindex="-1"></a><span class="co">#&gt; # A tibble: 6 × 2</span></span>
+<span id="cb12-7"><a href="#cb12-7" tabindex="-1"></a><span class="co">#&gt;   nace_r2                 backward_linkage_strength</span></span>
+<span id="cb12-8"><a href="#cb12-8" tabindex="-1"></a><span class="co">#&gt;   &lt;chr&gt;                                       &lt;dbl&gt;</span></span>
+<span id="cb12-9"><a href="#cb12-9" tabindex="-1"></a><span class="co">#&gt; 1 agriculture_group                            1.70</span></span>
+<span id="cb12-10"><a href="#cb12-10" tabindex="-1"></a><span class="co">#&gt; 2 industry_group                               1.84</span></span>
+<span id="cb12-11"><a href="#cb12-11" tabindex="-1"></a><span class="co">#&gt; 3 construction                                 1.81</span></span>
+<span id="cb12-12"><a href="#cb12-12" tabindex="-1"></a><span class="co">#&gt; 4 trade_group                                  1.60</span></span>
+<span id="cb12-13"><a href="#cb12-13" tabindex="-1"></a><span class="co">#&gt; 5 business_services_group                      1.59</span></span>
+<span id="cb12-14"><a href="#cb12-14" tabindex="-1"></a><span class="co">#&gt; 6 other_services_group                         1.38</span></span></code></pre></div>
 <p><em>You can check the results against Table 15.19 on page 506 of
 the</em> Eurostat Manual.</p>
 <p>Manufacturing has the highest backward linkages, and other services
@@ -800,31 +799,31 @@ Ghosh-inverse. The Ghosh-inverse is not explicitly named in the
 United Nations’ similar manual <a href="https://unstats.un.org/unsd/nationalaccount/docs/SUT_IOT_HB_Final_Cover.pdf">Handbook
 on Supply and Use Tables and Input-Output Tables with Extensions and
 Applications</a> (see pp 636–638).</p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>de_out <span class="ot">&lt;-</span> <span class="fu">output_coefficient_matrix_create</span>(</span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">data_table =</span> germany_io, </span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">total =</span> <span class="st">&quot;final_demand&quot;</span>, </span>
-<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">digits =</span> <span class="dv">4</span></span>
-<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a><span class="fu">ghosh_inverse_create</span>(de_out, <span class="at">digits =</span> <span class="dv">4</span>)[,<span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>]</span>
-<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;              iotables_row agriculture_group industry_group construction</span></span>
-<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1       agriculture_group            1.0339         0.8612       0.0560</span></span>
-<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2          industry_group            0.0117         1.4292       0.0901</span></span>
-<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3            construction            0.0037         0.0839       1.0290</span></span>
-<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4             trade_group            0.0103         0.2426       0.0484</span></span>
-<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 5 business_services_group            0.0117         0.3229       0.0888</span></span>
-<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 6    other_services_group            0.0042         0.0625       0.0105</span></span></code></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" tabindex="-1"></a>de_out <span class="ot">&lt;-</span> <span class="fu">output_coefficient_matrix_create</span>(</span>
+<span id="cb13-2"><a href="#cb13-2" tabindex="-1"></a>  <span class="at">data_table =</span> germany_io, </span>
+<span id="cb13-3"><a href="#cb13-3" tabindex="-1"></a>  <span class="at">total =</span> <span class="st">&quot;final_demand&quot;</span>, </span>
+<span id="cb13-4"><a href="#cb13-4" tabindex="-1"></a>  <span class="at">digits =</span> <span class="dv">4</span></span>
+<span id="cb13-5"><a href="#cb13-5" tabindex="-1"></a>  )</span>
+<span id="cb13-6"><a href="#cb13-6" tabindex="-1"></a></span>
+<span id="cb13-7"><a href="#cb13-7" tabindex="-1"></a><span class="fu">ghosh_inverse_create</span>(de_out, <span class="at">digits =</span> <span class="dv">4</span>)[,<span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>]</span>
+<span id="cb13-8"><a href="#cb13-8" tabindex="-1"></a><span class="co">#&gt;              iotables_row agriculture_group industry_group construction</span></span>
+<span id="cb13-9"><a href="#cb13-9" tabindex="-1"></a><span class="co">#&gt; 1       agriculture_group            1.0339         0.8612       0.0560</span></span>
+<span id="cb13-10"><a href="#cb13-10" tabindex="-1"></a><span class="co">#&gt; 2          industry_group            0.0117         1.4292       0.0901</span></span>
+<span id="cb13-11"><a href="#cb13-11" tabindex="-1"></a><span class="co">#&gt; 3            construction            0.0037         0.0839       1.0290</span></span>
+<span id="cb13-12"><a href="#cb13-12" tabindex="-1"></a><span class="co">#&gt; 4             trade_group            0.0103         0.2426       0.0484</span></span>
+<span id="cb13-13"><a href="#cb13-13" tabindex="-1"></a><span class="co">#&gt; 5 business_services_group            0.0117         0.3229       0.0888</span></span>
+<span id="cb13-14"><a href="#cb13-14" tabindex="-1"></a><span class="co">#&gt; 6    other_services_group            0.0042         0.0625       0.0105</span></span></code></pre></div>
 <p>The Ghosh-inverse is </p>
 <p>where B = the output coefficient matrix.</p>
 <p>The forward linkages are the rowwise sums of the Ghosh-inverse</p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">forward_linkages</span>(<span class="at">output_coefficient_matrix =</span> de_out)</span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;              iotables_row forward_linkages</span></span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1       agriculture_group         2.112754</span></span>
-<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2          industry_group         1.690891</span></span>
-<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3            construction         1.355896</span></span>
-<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4             trade_group         1.584989</span></span>
-<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 5 business_services_group         2.104036</span></span>
-<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 6    other_services_group         1.210504</span></span></code></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" tabindex="-1"></a><span class="fu">forward_linkages</span>(<span class="at">output_coefficient_matrix =</span> de_out)</span>
+<span id="cb14-2"><a href="#cb14-2" tabindex="-1"></a><span class="co">#&gt;              iotables_row forward_linkages</span></span>
+<span id="cb14-3"><a href="#cb14-3" tabindex="-1"></a><span class="co">#&gt; 1       agriculture_group         2.112754</span></span>
+<span id="cb14-4"><a href="#cb14-4" tabindex="-1"></a><span class="co">#&gt; 2          industry_group         1.690891</span></span>
+<span id="cb14-5"><a href="#cb14-5" tabindex="-1"></a><span class="co">#&gt; 3            construction         1.355896</span></span>
+<span id="cb14-6"><a href="#cb14-6" tabindex="-1"></a><span class="co">#&gt; 4             trade_group         1.584989</span></span>
+<span id="cb14-7"><a href="#cb14-7" tabindex="-1"></a><span class="co">#&gt; 5 business_services_group         2.104036</span></span>
+<span id="cb14-8"><a href="#cb14-8" tabindex="-1"></a><span class="co">#&gt; 6    other_services_group         1.210504</span></span></code></pre></div>
 <p><em>You can check the values of the forward linkages against the
 Table 15.20 on page 507 of</em> the Eurostat Manual.</p>
 </div>
@@ -835,76 +834,76 @@ Table 15.20 on page 507 of</em> the Eurostat Manual.</p>
 For getting Eurostat’s air pollution account data, use
 <code>airpol_get()</code>. We have included in the package the German
 emissions data from the <em>Eurostat Manual</em>.</p>
-<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(<span class="st">&quot;germany_airpol&quot;</span>)</span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>emissions_de <span class="ot">&lt;-</span> germany_airpol[, <span class="sc">-</span><span class="dv">3</span>] <span class="sc">%&gt;%</span></span>
-<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">vector_transpose_wider</span>(<span class="at">names_from =</span> <span class="st">&quot;iotables_col&quot;</span>, </span>
-<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>                         <span class="at">values_from =</span> <span class="st">&quot;value&quot;</span>)</span></code></pre></div>
-<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>emissions_de</span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 9 × 9</span></span>
-<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   airpol agriculture_g…¹ indus…² const…³ trade…⁴ busin…⁵ other…⁶ final…⁷ outpu…⁸</span></span>
-<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   &lt;chr&gt;            &lt;int&gt;   &lt;int&gt;   &lt;int&gt;   &lt;int&gt;   &lt;int&gt;   &lt;int&gt;   &lt;int&gt;   &lt;int&gt;</span></span>
-<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 CO2              10448  558327   11194   71269    8792   26990  217137  904158</span></span>
-<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2 CH4               1534    1160       1       4       1    1058     136    3894</span></span>
-<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3 N2O                 77     100       0       3       0      11      17     209</span></span>
-<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4 SO2                 12    1705      18      50       4      24     180    1994</span></span>
-<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 5 NOx                 62     722      64     452      23      58     585    1967</span></span>
-<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 6 CO                  43    1616      86     434     103     188    4198    6667</span></span>
-<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 7 NMVOC               20    1209      17     101      15     143     520    2024</span></span>
-<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 8 Dust                57     165       7      34       1       7      58     329</span></span>
-<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 9 Total            12252  565005   11388   72347    8939   28479  222831  921241</span></span>
-<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # … with abbreviated variable names ¹​agriculture_group, ²​industry_group,</span></span>
-<span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   ³​construction, ⁴​trade_group, ⁵​business_services_group,</span></span>
-<span id="cb16-16"><a href="#cb16-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   ⁶​other_services_group, ⁷​final_consumption_households, ⁸​output_bp</span></span></code></pre></div>
-<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>output_bp <span class="ot">&lt;-</span> <span class="fu">output_get</span>(germany_io)</span></code></pre></div>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" tabindex="-1"></a><span class="fu">data</span>(<span class="st">&quot;germany_airpol&quot;</span>)</span>
+<span id="cb15-2"><a href="#cb15-2" tabindex="-1"></a>emissions_de <span class="ot">&lt;-</span> germany_airpol[, <span class="sc">-</span><span class="dv">3</span>] <span class="sc">%&gt;%</span></span>
+<span id="cb15-3"><a href="#cb15-3" tabindex="-1"></a>  <span class="fu">vector_transpose_wider</span>(<span class="at">names_from =</span> <span class="st">&quot;iotables_col&quot;</span>, </span>
+<span id="cb15-4"><a href="#cb15-4" tabindex="-1"></a>                         <span class="at">values_from =</span> <span class="st">&quot;value&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" tabindex="-1"></a>emissions_de</span>
+<span id="cb16-2"><a href="#cb16-2" tabindex="-1"></a><span class="co">#&gt; # A tibble: 9 × 9</span></span>
+<span id="cb16-3"><a href="#cb16-3" tabindex="-1"></a><span class="co">#&gt;   airpol agriculture_group industry_group construction trade_group</span></span>
+<span id="cb16-4"><a href="#cb16-4" tabindex="-1"></a><span class="co">#&gt;   &lt;chr&gt;              &lt;int&gt;          &lt;int&gt;        &lt;int&gt;       &lt;int&gt;</span></span>
+<span id="cb16-5"><a href="#cb16-5" tabindex="-1"></a><span class="co">#&gt; 1 CO2                10448         558327        11194       71269</span></span>
+<span id="cb16-6"><a href="#cb16-6" tabindex="-1"></a><span class="co">#&gt; 2 CH4                 1534           1160            1           4</span></span>
+<span id="cb16-7"><a href="#cb16-7" tabindex="-1"></a><span class="co">#&gt; 3 N2O                   77            100            0           3</span></span>
+<span id="cb16-8"><a href="#cb16-8" tabindex="-1"></a><span class="co">#&gt; 4 SO2                   12           1705           18          50</span></span>
+<span id="cb16-9"><a href="#cb16-9" tabindex="-1"></a><span class="co">#&gt; 5 NOx                   62            722           64         452</span></span>
+<span id="cb16-10"><a href="#cb16-10" tabindex="-1"></a><span class="co">#&gt; 6 CO                    43           1616           86         434</span></span>
+<span id="cb16-11"><a href="#cb16-11" tabindex="-1"></a><span class="co">#&gt; 7 NMVOC                 20           1209           17         101</span></span>
+<span id="cb16-12"><a href="#cb16-12" tabindex="-1"></a><span class="co">#&gt; 8 Dust                  57            165            7          34</span></span>
+<span id="cb16-13"><a href="#cb16-13" tabindex="-1"></a><span class="co">#&gt; 9 Total              12252         565005        11388       72347</span></span>
+<span id="cb16-14"><a href="#cb16-14" tabindex="-1"></a><span class="co">#&gt; # ℹ 4 more variables: business_services_group &lt;int&gt;,</span></span>
+<span id="cb16-15"><a href="#cb16-15" tabindex="-1"></a><span class="co">#&gt; #   other_services_group &lt;int&gt;, final_consumption_households &lt;int&gt;,</span></span>
+<span id="cb16-16"><a href="#cb16-16" tabindex="-1"></a><span class="co">#&gt; #   output_bp &lt;int&gt;</span></span></code></pre></div>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" tabindex="-1"></a>output_bp <span class="ot">&lt;-</span> <span class="fu">output_get</span>(germany_io)</span></code></pre></div>
 <p>The output coefficients are created from the emission matrix with =
 </p>
-<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>emission_coeffs <span class="ot">&lt;-</span> germany_io <span class="sc">%&gt;%</span></span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">supplementary_add</span>(emissions_de) <span class="sc">%&gt;%</span></span>
-<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">input_indicator_create</span>(<span class="at">input_row =</span> <span class="fu">as.character</span>(emissions_de<span class="sc">$</span>airpol), <span class="at">digits =</span> <span class="dv">4</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" tabindex="-1"></a>emission_coeffs <span class="ot">&lt;-</span> germany_io <span class="sc">%&gt;%</span></span>
+<span id="cb18-2"><a href="#cb18-2" tabindex="-1"></a>  <span class="fu">supplementary_add</span>(emissions_de) <span class="sc">%&gt;%</span></span>
+<span id="cb18-3"><a href="#cb18-3" tabindex="-1"></a>  <span class="fu">input_indicator_create</span>(<span class="at">input_row =</span> <span class="fu">as.character</span>(emissions_de<span class="sc">$</span>airpol), <span class="at">digits =</span> <span class="dv">4</span>)</span></code></pre></div>
 <p>The emissions coefficients are expressed as 1000 tons per millions of
 euro output (at basic prices).</p>
-<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>emission_coeffs[<span class="sc">-</span><span class="dv">1</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>]</span>
-<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;       iotables_row agriculture_group industry_group</span></span>
-<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 20   CO2_indicator            0.2379         0.5172</span></span>
-<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 21   CH4_indicator            0.0349         0.0011</span></span>
-<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 22   N2O_indicator            0.0018         0.0001</span></span>
-<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 23   SO2_indicator            0.0003         0.0016</span></span>
-<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 24   NOx_indicator            0.0014         0.0007</span></span>
-<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 25    CO_indicator            0.0010         0.0015</span></span>
-<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 26 NMVOC_indicator            0.0005         0.0011</span></span>
-<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 27  Dust_indicator            0.0013         0.0002</span></span>
-<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 28 Total_indicator            0.2790         0.5234</span></span></code></pre></div>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" tabindex="-1"></a>emission_coeffs[<span class="sc">-</span><span class="dv">1</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>]</span>
+<span id="cb19-2"><a href="#cb19-2" tabindex="-1"></a><span class="co">#&gt;       iotables_row agriculture_group industry_group</span></span>
+<span id="cb19-3"><a href="#cb19-3" tabindex="-1"></a><span class="co">#&gt; 20   CO2_indicator            0.2379         0.5172</span></span>
+<span id="cb19-4"><a href="#cb19-4" tabindex="-1"></a><span class="co">#&gt; 21   CH4_indicator            0.0349         0.0011</span></span>
+<span id="cb19-5"><a href="#cb19-5" tabindex="-1"></a><span class="co">#&gt; 22   N2O_indicator            0.0018         0.0001</span></span>
+<span id="cb19-6"><a href="#cb19-6" tabindex="-1"></a><span class="co">#&gt; 23   SO2_indicator            0.0003         0.0016</span></span>
+<span id="cb19-7"><a href="#cb19-7" tabindex="-1"></a><span class="co">#&gt; 24   NOx_indicator            0.0014         0.0007</span></span>
+<span id="cb19-8"><a href="#cb19-8" tabindex="-1"></a><span class="co">#&gt; 25    CO_indicator            0.0010         0.0015</span></span>
+<span id="cb19-9"><a href="#cb19-9" tabindex="-1"></a><span class="co">#&gt; 26 NMVOC_indicator            0.0005         0.0011</span></span>
+<span id="cb19-10"><a href="#cb19-10" tabindex="-1"></a><span class="co">#&gt; 27  Dust_indicator            0.0013         0.0002</span></span>
+<span id="cb19-11"><a href="#cb19-11" tabindex="-1"></a><span class="co">#&gt; 28 Total_indicator            0.2790         0.5234</span></span></code></pre></div>
 <p>And the multipliers (which include both the direct and indirect
 emissions of the industries) are created with</p>
 <p>You can create a single multiplier with
 <code>?multiplier_create</code>.</p>
-<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">multiplier_create</span>( </span>
-<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">input_vector    =</span> emission_coeffs[<span class="dv">2</span>,],</span>
-<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">Im              =</span> I_de,</span>
-<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">multiplier_name =</span> <span class="st">&quot;CO2_multiplier&quot;</span>, </span>
-<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">digits =</span> <span class="dv">4</span> )</span>
-<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     iotables_row agriculture_group industry_group construction trade_group</span></span>
-<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 CO2_multiplier            0.4185         0.7686       0.2726      0.2358</span></span>
-<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   business_services_group other_services_group</span></span>
-<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1                  0.0583               0.1234</span></span></code></pre></div>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" tabindex="-1"></a><span class="fu">multiplier_create</span>( </span>
+<span id="cb20-2"><a href="#cb20-2" tabindex="-1"></a>  <span class="at">input_vector    =</span> emission_coeffs[<span class="dv">2</span>,],</span>
+<span id="cb20-3"><a href="#cb20-3" tabindex="-1"></a>  <span class="at">Im              =</span> I_de,</span>
+<span id="cb20-4"><a href="#cb20-4" tabindex="-1"></a>  <span class="at">multiplier_name =</span> <span class="st">&quot;CO2_multiplier&quot;</span>, </span>
+<span id="cb20-5"><a href="#cb20-5" tabindex="-1"></a>  <span class="at">digits =</span> <span class="dv">4</span> )</span>
+<span id="cb20-6"><a href="#cb20-6" tabindex="-1"></a><span class="co">#&gt;     iotables_row agriculture_group industry_group construction trade_group</span></span>
+<span id="cb20-7"><a href="#cb20-7" tabindex="-1"></a><span class="co">#&gt; 1 CO2_multiplier            0.4185         0.7686       0.2726      0.2358</span></span>
+<span id="cb20-8"><a href="#cb20-8" tabindex="-1"></a><span class="co">#&gt;   business_services_group other_services_group</span></span>
+<span id="cb20-9"><a href="#cb20-9" tabindex="-1"></a><span class="co">#&gt; 1                  0.0583               0.1234</span></span></code></pre></div>
 <p>To create a tidy table of indicators of using a loop:</p>
-<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(emission_coeffs)[<span class="dv">1</span>] <span class="ot">&lt;-</span> <span class="fu">names</span>(I_de)[<span class="dv">1</span>]</span>
-<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>emission_multipliers <span class="ot">&lt;-</span> <span class="fu">cbind</span> (</span>
-<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">key_column_create</span>(<span class="fu">names</span>(emission_coeffs)[<span class="dv">1</span>], </span>
-<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>                    <span class="fu">gsub</span>(<span class="st">&quot;_indicator&quot;</span>, <span class="st">&quot;_multiplier&quot;</span>, <span class="fu">unlist</span>(emission_coeffs[<span class="sc">-</span><span class="dv">1</span>,<span class="dv">1</span>]))), </span>
-<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">do.call</span>( rbind, </span>
-<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>           <span class="fu">lapply</span> ( <span class="dv">2</span><span class="sc">:</span><span class="fu">nrow</span>(emission_coeffs), </span>
-<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>                    <span class="cf">function</span>(x) <span class="fu">equation_solve</span>(emission_coeffs[x, ], I_de) )</span>
-<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a>           ) <span class="sc">%&gt;%</span> <span class="fu">as.data.frame</span>()</span>
-<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a>emission_multipliers[, <span class="sc">-</span><span class="dv">1</span>] <span class="ot">&lt;-</span> <span class="fu">round</span>(emission_multipliers[, <span class="sc">-</span><span class="dv">1</span>], <span class="dv">4</span>)</span>
-<span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-13"><a href="#cb21-13" aria-hidden="true" tabindex="-1"></a>emission_multipliers[<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>,<span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>]</span>
-<span id="cb21-14"><a href="#cb21-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     iotables_row agriculture_group industry_group construction</span></span>
-<span id="cb21-15"><a href="#cb21-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 CO2_multiplier            0.4185         0.7686       0.2726</span></span>
-<span id="cb21-16"><a href="#cb21-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2 CH4_multiplier            0.0365         0.0029       0.0008</span></span>
-<span id="cb21-17"><a href="#cb21-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3 N2O_multiplier            0.0019         0.0002       0.0001</span></span></code></pre></div>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" tabindex="-1"></a><span class="fu">names</span>(emission_coeffs)[<span class="dv">1</span>] <span class="ot">&lt;-</span> <span class="fu">names</span>(I_de)[<span class="dv">1</span>]</span>
+<span id="cb21-2"><a href="#cb21-2" tabindex="-1"></a>emission_multipliers <span class="ot">&lt;-</span> <span class="fu">cbind</span> (</span>
+<span id="cb21-3"><a href="#cb21-3" tabindex="-1"></a>  <span class="fu">key_column_create</span>(<span class="fu">names</span>(emission_coeffs)[<span class="dv">1</span>], </span>
+<span id="cb21-4"><a href="#cb21-4" tabindex="-1"></a>                    <span class="fu">gsub</span>(<span class="st">&quot;_indicator&quot;</span>, <span class="st">&quot;_multiplier&quot;</span>, <span class="fu">unlist</span>(emission_coeffs[<span class="sc">-</span><span class="dv">1</span>,<span class="dv">1</span>]))), </span>
+<span id="cb21-5"><a href="#cb21-5" tabindex="-1"></a>  <span class="fu">do.call</span>( rbind, </span>
+<span id="cb21-6"><a href="#cb21-6" tabindex="-1"></a>           <span class="fu">lapply</span> ( <span class="dv">2</span><span class="sc">:</span><span class="fu">nrow</span>(emission_coeffs), </span>
+<span id="cb21-7"><a href="#cb21-7" tabindex="-1"></a>                    <span class="cf">function</span>(x) <span class="fu">equation_solve</span>(emission_coeffs[x, ], I_de) )</span>
+<span id="cb21-8"><a href="#cb21-8" tabindex="-1"></a>           ) <span class="sc">%&gt;%</span> <span class="fu">as.data.frame</span>()</span>
+<span id="cb21-9"><a href="#cb21-9" tabindex="-1"></a>  )</span>
+<span id="cb21-10"><a href="#cb21-10" tabindex="-1"></a></span>
+<span id="cb21-11"><a href="#cb21-11" tabindex="-1"></a>emission_multipliers[, <span class="sc">-</span><span class="dv">1</span>] <span class="ot">&lt;-</span> <span class="fu">round</span>(emission_multipliers[, <span class="sc">-</span><span class="dv">1</span>], <span class="dv">4</span>)</span>
+<span id="cb21-12"><a href="#cb21-12" tabindex="-1"></a></span>
+<span id="cb21-13"><a href="#cb21-13" tabindex="-1"></a>emission_multipliers[<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>,<span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>]</span>
+<span id="cb21-14"><a href="#cb21-14" tabindex="-1"></a><span class="co">#&gt;     iotables_row agriculture_group industry_group construction</span></span>
+<span id="cb21-15"><a href="#cb21-15" tabindex="-1"></a><span class="co">#&gt; 1 CO2_multiplier            0.4185         0.7686       0.2726</span></span>
+<span id="cb21-16"><a href="#cb21-16" tabindex="-1"></a><span class="co">#&gt; 2 CH4_multiplier            0.0365         0.0029       0.0008</span></span>
+<span id="cb21-17"><a href="#cb21-17" tabindex="-1"></a><span class="co">#&gt; 3 N2O_multiplier            0.0019         0.0002       0.0001</span></span></code></pre></div>
 <p><em>You can check the results against the Table 15.13 of the</em> <a href="https://ec.europa.eu/eurostat/documents/3859598/5902113/KS-RA-07-013-EN.PDF/b0b3d71e-3930-4442-94be-70b36cea9b39?version=1.0">Eurostat
 Manual of Supply, Use and Input-Output Tables</a> <em>on page
 494.</em></p>
@@ -914,25 +913,25 @@ final_consumption_government + inventory_change +
 gross_capital_formation + exports</p>
 <p>we can calculate the final demand for the products of industries with
 creating the rowwise sums of the appropriate columns</p>
-<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>final_demand <span class="ot">&lt;-</span> <span class="fu">rowSums</span>(germany_io[<span class="dv">1</span><span class="sc">:</span><span class="dv">6</span>, <span class="dv">9</span><span class="sc">:</span><span class="dv">13</span>])</span></code></pre></div>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" tabindex="-1"></a>final_demand <span class="ot">&lt;-</span> <span class="fu">rowSums</span>(germany_io[<span class="dv">1</span><span class="sc">:</span><span class="dv">6</span>, <span class="dv">9</span><span class="sc">:</span><span class="dv">13</span>])</span></code></pre></div>
 <p>And at last the emission content of the final demand is given by</p>
 <p>where the term</p>
 <p>is the definition of the emission multipliers.</p>
-<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>emission_content <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(</span>
-<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">round</span>(<span class="fu">as.matrix</span>(emission_multipliers[<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>, <span class="sc">-</span><span class="dv">1</span>]) <span class="sc">%*%</span> <span class="fu">diag</span>(final_demand), <span class="dv">0</span>)</span>
-<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(emission_content) <span class="ot">&lt;-</span> <span class="fu">names</span>(emission_multipliers[,<span class="sc">-</span><span class="dv">1</span>])</span>
-<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>emission_content <span class="ot">&lt;-</span> <span class="fu">data.frame</span> ( </span>
-<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">iotables_row =</span> <span class="fu">gsub</span>(<span class="st">&quot;_multiplier&quot;</span>, <span class="st">&quot;_content&quot;</span>, emission_multipliers[<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>,<span class="dv">1</span>])</span>
-<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
-<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cbind</span>(emission_content ) </span>
-<span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-11"><a href="#cb23-11" aria-hidden="true" tabindex="-1"></a>emission_content[,<span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>]</span>
-<span id="cb23-12"><a href="#cb23-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   iotables_row agriculture_group industry_group construction</span></span>
-<span id="cb23-13"><a href="#cb23-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1  CO2_content              6369         476026        53447</span></span>
-<span id="cb23-14"><a href="#cb23-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2  CH4_content               555           1796          157</span></span>
-<span id="cb23-15"><a href="#cb23-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3  N2O_content                29            124           20</span></span></code></pre></div>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" tabindex="-1"></a>emission_content <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(</span>
+<span id="cb23-2"><a href="#cb23-2" tabindex="-1"></a>  <span class="fu">round</span>(<span class="fu">as.matrix</span>(emission_multipliers[<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>, <span class="sc">-</span><span class="dv">1</span>]) <span class="sc">%*%</span> <span class="fu">diag</span>(final_demand), <span class="dv">0</span>)</span>
+<span id="cb23-3"><a href="#cb23-3" tabindex="-1"></a>)</span>
+<span id="cb23-4"><a href="#cb23-4" tabindex="-1"></a><span class="fu">names</span>(emission_content) <span class="ot">&lt;-</span> <span class="fu">names</span>(emission_multipliers[,<span class="sc">-</span><span class="dv">1</span>])</span>
+<span id="cb23-5"><a href="#cb23-5" tabindex="-1"></a></span>
+<span id="cb23-6"><a href="#cb23-6" tabindex="-1"></a>emission_content <span class="ot">&lt;-</span> <span class="fu">data.frame</span> ( </span>
+<span id="cb23-7"><a href="#cb23-7" tabindex="-1"></a>  <span class="at">iotables_row =</span> <span class="fu">gsub</span>(<span class="st">&quot;_multiplier&quot;</span>, <span class="st">&quot;_content&quot;</span>, emission_multipliers[<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>,<span class="dv">1</span>])</span>
+<span id="cb23-8"><a href="#cb23-8" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb23-9"><a href="#cb23-9" tabindex="-1"></a>  <span class="fu">cbind</span>(emission_content ) </span>
+<span id="cb23-10"><a href="#cb23-10" tabindex="-1"></a></span>
+<span id="cb23-11"><a href="#cb23-11" tabindex="-1"></a>emission_content[,<span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>]</span>
+<span id="cb23-12"><a href="#cb23-12" tabindex="-1"></a><span class="co">#&gt;   iotables_row agriculture_group industry_group construction</span></span>
+<span id="cb23-13"><a href="#cb23-13" tabindex="-1"></a><span class="co">#&gt; 1  CO2_content              6369         476026        53447</span></span>
+<span id="cb23-14"><a href="#cb23-14" tabindex="-1"></a><span class="co">#&gt; 2  CH4_content               555           1796          157</span></span>
+<span id="cb23-15"><a href="#cb23-15" tabindex="-1"></a><span class="co">#&gt; 3  N2O_content                29            124           20</span></span></code></pre></div>
 <p><em>This final result can be found on the bottom of the page 494 of
 the</em> <a href="https://ec.europa.eu/eurostat/documents/3859598/5902113/KS-RA-07-013-EN.PDF/b0b3d71e-3930-4442-94be-70b36cea9b39?version=1.0">Eurostat
 Manual of Supply, Use and Input-Output Tables</a>.</p>

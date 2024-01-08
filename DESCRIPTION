@@ -2,8 +2,8 @@ Package: iotables
 Type: Package
 Title: Reproducible Input-Output Economics Analysis, Economic and
         Environmental Impact Assessment with Empirical Data
-Date: 2022-09-24
-Version: 0.9.1
+Date: 2024-01-08
+Version: 0.9.3
 Authors@R: 
     c(person("Daniel", "Antal", role = c("aut", "cre"),
              email = "daniel.antal@dataobservatory.eu", 
@@ -27,18 +27,20 @@ BugReports: https://github.com/rOpenGov/iotables/issues
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 7.2.1
+RoxygenNote: 7.2.3
 Imports: dplyr, eurostat, magrittr, tidyr, forcats, utils, plyr,
-        lubridate, knitr, kableExtra, tibble, readxl, rlang,
-        assertthat, glue, tidyselect
-Suggests: testthat, rmarkdown, spelling, covr
+        lubridate, knitr, kableExtra, tibble, readxl, assertthat, glue,
+        tidyselect, rlang
+Suggests: testthat, rmarkdown, spelling, covr, roxyglobals
 Depends: R(>= 3.5.0)
 VignetteBuilder: knitr
-Language: en-GB
+Language: en-US
+Config/roxyglobals/filename: globals.R
+Config/roxyglobals/unique: FALSE
 NeedsCompilation: no
-Packaged: 2022-09-24 11:46:17 UTC; Daniel Antal
+Packaged: 2024-01-08 13:06:15 UTC; antal
 Author: Daniel Antal [aut, cre] (<https://orcid.org/0000-0001-7513-6760>),
   Kasia Kulma [ctb] (<https://orcid.org/0000-0002-2952-9720>),
   Pyry Kantanen [ctb] (<https://orcid.org/0000-0003-2853-2765>)
 Repository: CRAN
-Date/Publication: 2022-09-24 12:00:02 UTC
+Date/Publication: 2024-01-08 20:10:02 UTC

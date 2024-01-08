@@ -23,13 +23,14 @@
 #' @importFrom dplyr filter select mutate left_join rename ungroup summarize group_by
 #' @importFrom tidyr spread
 #' @importFrom eurostat get_eurostat
-#' @importFrom rlang .data
+
 #' @source Eurostat statistic 
 #' \href{https://ec.europa.eu/eurostat/web/products-datasets/-/lfsq_egan22d}{Employment 
 #' by sex, age and detailed economic activity (from 2008 onwards, NACE Rev. 2 two digit level) - 1 000}
 #' @return A data.frame with auxiliary metadata to conform the symmetric
 #' input-output tables.
 #' @family import functions
+#' @autoglobal
 #' @examples
 #' \dontrun{
 #'  io_tables <- get_employment ( 
@@ -54,6 +55,8 @@ employment_get <- function ( geo,
   if ( ! labelling %in% c("iotables", 'prod_na', 'induse')) {
     stop("Labelling must be any of 'iotables', 'prod_na' [product x product] or 'induse' [industry x industry]")
   }
+  
+  year_number <- as.numeric(year)
   
   ## Avoiding no visible binding for global variable 'data' ----------
   getdata <- function(...)
@@ -144,31 +147,40 @@ employment_get <- function ( geo,
  
  ## Geo selection and exception handling--------------------------------  
  if ( geo %in% unique (emp$geo) ) {
-    emp <- emp %>% dplyr::filter ( .data$geo == geo )
+   select_geo <- which(as.character(emp$geo) %in% as.character(geo))
+   emp <- emp[select_geo, ]
   } else {
     stop ("No employment data found with geo parameter = ", geo )
+  }
+  
+  if ( "TIME_PERIOD" %in% names(emp) ) {
+    # Breaking change from eurostat 4.0.0
+    emp <- emp %>% rename ( time = TIME_PERIOD)
   }
   
   emp$year <- as.numeric(substr(as.character(emp$time), start = 1, stop = 4))
   
   ## Year selection and exception handling -------------------------------------  
   
-  if ( year %in% unique ( emp$year ) ) {
-    emp <- emp %>% filter ( .data$year == year )
+  if ( year %in% unique (emp$year) ) {
+    select_year <- which(emp$year %in% year_number)
+    emp <- emp[select_year, ]
   } else {
     stop ("No employment data found with the year parameter = ", year )
   }
   
   ## Age group selection and exception handling ---------------------------------  
   if ( age %in% unique (emp$age) ) {
-    emp <- emp %>% filter (.data$age == age)
+    select_age <- which(as.character(emp$age) %in% as.character(age))
+    emp <- emp[select_age, ]
   } else {
     stop ("No employment data found with the age parameter = ", age )
   }
   
   ## Sex variable selection and exception handling-------------------------------- 
   if ( sex %in% unique (emp$sex) ) {
-    emp <- emp %>% filter (.data$sex == sex)
+    select_sex <- which(as.character(emp$sex) %in% as.character(sex))
+    emp <- emp[select_sex, ]
   } else {
     stop ("No employment data found with sex parameter = ", sex )
   }
@@ -179,14 +191,14 @@ employment_get <- function ( geo,
   ## Data processing for employment variables ------------------------------------ 
   employment <- emp %>%
     mutate (   nace_r2 = as.character(.data$nace_r2) ) %>%
-    group_by ( .data$nace_r2, .data$year ) %>%
-    summarize ( values = mean(.data$values)) %>%
-    dplyr::rename ( emp_code = .data$nace_r2 ) %>%
+    group_by ( nace_r2, year ) %>%
+    summarize ( values = mean(.data$values), .groups = "drop") %>%
+    dplyr::rename ( emp_code = nace_r2 ) %>%
     ungroup () %>%
     left_join ( employment_metadata, 
                        by = "emp_code") %>%  # iotables:::employment_metadata
-    dplyr::group_by (  .data$code, .data$variable, .data$iotables_label ) %>%
-    dplyr::summarize ( values = sum(.data$values)) 
+    dplyr::group_by (  code, variable, iotables_label ) %>%
+    dplyr::summarize ( values = sum(.data$values), .groups = "drop") 
   
   
   ## If data_directory exists, save results ------------------------------- 
@@ -211,7 +223,7 @@ employment_get <- function ( geo,
     )
     
     primary_employment_input <- employment %>%
-      filter ( .data$variable == "prod_na" ) #does not matter which, not used
+      filter ( variable == "prod_na" ) #does not matter which, not used
     
     ##No employment for imputed rent column-------------------------------- 
     
@@ -220,8 +232,8 @@ employment_get <- function ( geo,
     )
     primary_employment_input <-  primary_employment_input %>% 
       dplyr::ungroup() %>%
-      select ( .data$iotables_label, .data$values ) %>%
-      tidyr::spread ( .data$iotables_label, .data$values )    #use iotables_label in this case
+      select ( iotables_label, values ) %>%
+      tidyr::spread ( iotables_label, values )    #use iotables_label in this case
     
   } else if ( labelling == "prod_na" ){  ## this is the product x product labelling format 
     prefix <- data.frame ( 
@@ -229,15 +241,15 @@ employment_get <- function ( geo,
     )
     
     primary_employment_input <- employment %>%
-      dplyr::filter ( .data$variable == "prod_na" )
+      dplyr::filter ( variable == "prod_na" )
     
     imputed_rent <- data.frame ( 
       CPA_L68A = 0
     )
     primary_employment_input <-  primary_employment_input %>% 
       dplyr::ungroup() %>%
-      dplyr::select ( .data$code, .data$values ) %>%
-      tidyr::spread ( .data$code, .data$values )     #use code for standard Eurostat library
+      dplyr::select ( code, values ) %>%
+      tidyr::spread ( code, values )     #use code for standard Eurostat library
     
   } else if (labelling == "induse" ) {  # this is the industry x industry labelling format
     prefix <- data.frame ( 
@@ -245,15 +257,15 @@ employment_get <- function ( geo,
     )
     
     primary_employment_input <- employment %>%
-      dplyr::filter ( .data$variable == "induse" )
+      dplyr::filter ( variable == "induse" )
     
     imputed_rent <- data.frame ( 
       L68A = 0
     )
     primary_employment_input <-  primary_employment_input %>% 
       dplyr::ungroup() %>%
-      dplyr::select ( .data$code, .data$values ) %>%
-      tidyr::spread ( .data$code, .data$values )      #use code for standard Eurostat library
+      dplyr::select ( code, values ) %>%
+      tidyr::spread ( code, values )      #use code for standard Eurostat library
     
   } else {
     warning("No L68A was added.")

@@ -10,7 +10,7 @@
 #' no rounding takes place. Rounding is important if you replicate examples from the literature,
 #' rounding differences can add up to visible differences in matrix equations.
 #' @importFrom dplyr select mutate across
-#' @importFrom rlang .data
+
 #' @return A data frame with the vector of multipliers and the an 
 #' auxiliary metadata column, containing an automatically given row identifier (for joining with other matrixes) 
 #' which can be  overruled with setting \code{multiplier_name}.  
@@ -54,6 +54,13 @@ input_multipliers_create <- function ( input_requirements,
   key_column                <- subset ( input_requirements, select = 1)
   input_requirements_matrix <- input_requirements[,-1]
   inverse                   <- Im[, -1]
+  
+  if(! all(names(input_requirements_matrix) %in% names(inverse))) {
+    mismatch_1 <-  names(input_requirements_matrix)[which(!names(input_requirements_matrix) %in% names(inverse))]
+    mismatch_2 <-  names(inverse)[which(!names(inverse) %in% names(input_requirements_matrix))]
+    stop("input_multipliers_create() error. Non-conforming matrixes: ",  paste0(mismatch_1, mismatch_2),
+    " is not present in both input_requirements and Im.")
+  }
 
   inverse                   <- as.matrix ( inverse )
   input_requirements_matrix <- as.matrix ( input_requirements_matrix )

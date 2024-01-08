@@ -33,47 +33,52 @@ adjust_stk_flow <- function( stk_flow, source ) {
 }
 
 #' @keywords internal
+#' @autoglobal
 get_vocabulary_prod_ind <- function() {
   getdata ("metadata") %>%  # For tables that follow prod_ind vocabulary
-    filter( .data$variable == "prod_na") %>%
-    dplyr::rename ( prod_na = .data$code) %>%
-    dplyr::rename ( prod_na_lab = .data$label ) %>%
-    dplyr::rename ( row_order = .data$numeric_label ) %>%
-    dplyr::rename ( iotables_row = .data$iotables_label )
+    filter( variable == "prod_na") %>%
+    dplyr::rename ( prod_na = code) %>%
+    dplyr::rename ( prod_na_lab = label ) %>%
+    dplyr::rename ( row_order = numeric_label ) %>%
+    dplyr::rename ( iotables_row = iotables_label )
 }
 
 #' @keywords internal
+#' @autoglobal
 get_vocabulary_induse <- function() {
   getdata("metadata") %>%  # For tables that follow the induse vocabulary
-    filter( .data$variable == "induse") %>%
-    dplyr::rename ( induse = .data$code) %>%
-    dplyr::rename ( induse_lab = .data$label )%>%
-    dplyr::rename ( col_order = .data$numeric_label ) %>%
-    dplyr::rename ( iotables_col = .data$iotables_label )
+    filter( variable == "induse") %>%
+    dplyr::rename ( induse = code) %>%
+    dplyr::rename ( induse_lab = label )%>%
+    dplyr::rename ( col_order = numeric_label ) %>%
+    dplyr::rename ( iotables_col = iotables_label )
 }
 
 #' @keywords internal
+#' @autoglobal
 get_vocabulary_t_rows <- function() {
   getdata("metadata") %>%
-    filter( .data$variable == "t_rows") %>%
-    dplyr::rename ( t_rows2 = .data$code) %>%
-    dplyr::rename ( t_rows2_lab = .data$label ) %>%
-    dplyr::rename ( row_order = .data$numeric_label ) %>%
-    dplyr::rename ( iotables_row = .data$iotables_label )
+    filter( variable == "t_rows") %>%
+    dplyr::rename ( t_rows2 = code) %>%
+    dplyr::rename ( t_rows2_lab = label ) %>%
+    dplyr::rename ( row_order = numeric_label ) %>%
+    dplyr::rename ( iotables_row = iotables_label )
 }
 
 #' @importFrom dplyr rename
 #' @keywords internal
+#' @autoglobal
 get_vocabulary_t_cols <- function() {
   getdata("metadata") %>%
-    filter( .data$variable == "t_cols") %>%
-    dplyr::rename ( t_cols2 = .data$code) %>%
-    dplyr::rename ( t_cols2_lab = .data$label ) %>%
-    dplyr::rename ( col_order = .data$numeric_label ) %>%
-    dplyr::rename ( iotables_col = .data$iotables_label )
+    filter( variable == "t_cols") %>%
+    dplyr::rename ( t_cols2 = code) %>%
+    dplyr::rename ( t_cols2_lab = label ) %>%
+    dplyr::rename ( col_order = numeric_label ) %>%
+    dplyr::rename ( iotables_col = iotables_label )
 }
 
 #' @keywords internal
+#' @autoglobal
 get_metadata_rows <- function(source) {
   prod_ind <- define_prod_ind()
   trow_tcol <- croatia_files <- c('croatia_2010_1700', 'croatia_2010_1800', 
@@ -98,6 +103,7 @@ get_metadata_rows <- function(source) {
 }
 
 #' @keywords internal
+#' @autoglobal
 get_metadata_cols <- function(source) {
   prod_ind <- define_prod_ind()
   
@@ -113,7 +119,7 @@ get_metadata_cols <- function(source) {
   } else if ( source %in% uk_tables ) {
     getdata("metadata_uk_2010")  %>%
       filter( !is.na(.data$uk_col)) %>%
-      select( -.data$uk_row, -.data$uk_row_label, -.data$prod_na, -.data$row_order) %>%
+      select( -uk_row, -uk_row_label, -prod_na, -row_order) %>%
       mutate ( uk_col = gsub("\\.", "-", as.character(.data$uk_col))) %>%
       mutate ( uk_col = gsub(" & ", "-", as.character(.data$uk_col))) %>%
       mutate ( uk_col = trimws(.data$uk_col, 'both'))

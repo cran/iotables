@@ -13,7 +13,7 @@
 #' To save the file for further use (which is necessary in analytical work because
 #' download times are long) set the  \code{download_directory} [see parameters]. 
 #' The function will make a copy of the rds file in this directory.
-#'  \itemize{
+#'  \describe{
 ##'  \item{\code{naio_10_cp1700}}{Symmetric input-output table at basic prices (product by product)}
 ##'  \item{\code{naio_10_pyp1700}}{Symmetric input-output table at basic prices (product by product) (previous years prices)}
 ##'  \item{\code{naio_10_cp1750}}{Symmetric input-output table at basic prices (industry by industry)}
@@ -45,7 +45,9 @@
 #' @importFrom lubridate year
 #' @importFrom rlang set_names
 #' @importFrom glue glue
+#' @importFrom assertthat assert_that
 #' @family import functions
+#' @autoglobal
 #' @examples
 #' \donttest{
 #'  io_tables <- iotables_download(source = "naio_10_pyp1750")
@@ -68,9 +70,9 @@ iotables_download <- function ( source = "naio_10_cp1700",
     return(downloaded)
   }
   
-  assertthat::assert_that(
+  assert_that(
     'data.frame' %in% class(downloaded) & ncol(downloaded)>6 & nrow(downloaded)>1, 
-    msg = glue::glue("The download of {source} was not successful.")
+    msg = glue("The download of {source} was not successful.")
   )
   
   lab_names <- paste0(names(downloaded), "_lab")
@@ -79,7 +81,7 @@ iotables_download <- function ( source = "naio_10_cp1700",
   downloaded_labelled <- downloaded  %>%
     eurostat::label_eurostat (fix_duplicated = TRUE) 
   
-  assertthat::assert_that(
+  assert_that(
     length(names(downloaded_labelled)) == length(lab_names), 
     msg = "in iotables_download() ncol(downloaded_labelled) != ncol(downloaded)"
     )
@@ -87,16 +89,30 @@ iotables_download <- function ( source = "naio_10_cp1700",
   downloaded_labelled <- downloaded_labelled %>%   # add meaningful labels to raw data
     rlang::set_names(lab_names) %>%  
     mutate ( rows = seq_len(nrow(downloaded)) ) %>%  # because long and wide formats are not symmetric
-    rename ( values = .data$values_lab ) %>%
-    mutate ( year = lubridate::year(.data$time_lab))
+    rename ( values = values_lab ) 
+  
+  if ( "TIME_PERIOD_lab"  %in% names(downloaded_labelled) ) {
+    ## Breaking change in eurostat 4.0.0 
+    ## keep this for backward compatiblitiy
+    downloaded_labelled <- downloaded_labelled %>%   
+      rename ( time_lab = TIME_PERIOD_lab )
+  }
+  
+  downloaded_labelled <- downloaded_labelled %>% 
+    mutate ( year = lubridate::year(time_lab))
   
   # Join the labelled and the not labelled files, so that both versions are avialable
   
   downloaded <- downloaded  %>%
     mutate ( rows = seq_len(nrow(downloaded)) ) %>%
-    left_join ( downloaded_labelled, by = c("rows", "values"))
-  
-  names(downloaded)
+    left_join ( downloaded_labelled, by = c("rows", "values")) 
+
+  if ( "TIME_PERIOD"  %in% names(downloaded) ) {
+    ## Breaking change in eurostat 4.0.0 
+    ## keep this for backward compatiblitiy
+    downloaded <- downloaded  %>% 
+      rename ( time = TIME_PERIOD )
+  }
   
   if ( source == "naio_cp17_r2" ){
     downloaded$t_cols2 <- plyr::mapvalues(
@@ -133,15 +149,15 @@ iotables_download <- function ( source = "naio_10_cp1700",
   if ( "stk_flow" %in% names ( downloaded ) ) {
     downloaded_nested <- nest (
       downloaded, 
-      data = -any_of(c( "geo", "geo_lab", "time", "time_lab", 
-                        "year", "unit", "unit_lab", "stk_flow", "stk_flow_lab"))
-      ) 
+      data = -any_of(c("geo", "geo_lab", "time", "time_lab", 
+                       "year", "unit", "unit_lab", "stk_flow", "stk_flow_lab"))
+    ) 
   } else { 
     downloaded_nested <- nest (
       downloaded, 
-      data = -any_of(c( "geo", "geo_lab", "time", "time_lab", 
-                        "year", "unit", "unit_lab"))
-      ) 
+      data = -any_of(c("geo", "geo_lab", "time", "time_lab", 
+                       "year", "unit", "unit_lab"))
+    ) 
   }
 
   if( !is.null(data_directory) ) {
