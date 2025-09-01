@@ -14,14 +14,14 @@ uk_2010_results_get(path = NULL)
 \code{file.path()} function.}
 }
 \description{
-This function will retrieve the published effects and multipliers from the 
-United Kingdom Input-Output Analytical Tables, 2010												
+This function will retrieve the published effects and multipliers from the
+United Kingdom Input-Output Analytical Tables, 2010
 (consistent with UK National Accounts Blue Book 2013 &
- UK Balance of Payments Pink Book 2013)							
+UK Balance of Payments Pink Book 2013)
 by Richard Wild.
 }
 \examples{
 \dontrun{
-uk_results <- iotables:::uk_2010_results_get ()
+uk_results <- iotables:::uk_2010_results_get()
 }
 }

@@ -1,46 +1,46 @@
 Package: iotables
 Type: Package
-Title: Reproducible Input-Output Economics Analysis, Economic and
+Title: Reproducible Input–Output Economics Analysis, Economic and
         Environmental Impact Assessment with Empirical Data
-Date: 2024-01-08
-Version: 0.9.3
+Version: 0.9.4
+Date: 2025-09-01
 Authors@R: 
-    c(person("Daniel", "Antal", role = c("aut", "cre"),
-             email = "daniel.antal@dataobservatory.eu", 
+    c(
+      person("Daniel", "Antal", 
+             email = "daniel.antal@dataobservatory.eu",
+             role = c("aut", "cre"),
              comment = c(ORCID = "0000-0001-7513-6760")),
-      person(given = "Kasia",
-             family = "Kulma",
-             role = "ctb", 
+      person("Kasia", "Kulma", 
+             role = "ctb",
              comment = c(ORCID = "0000-0002-2952-9720")),
-      person(given = "Pyry",
-             family = "Kantanen", 
-             role = "ctb", 
+      person("Pyry", "Kantanen",
+             role = "ctb",
              comment = c(ORCID = "0000-0003-2853-2765"))
-             )
+    )
 Maintainer: Daniel Antal <daniel.antal@dataobservatory.eu>
-Description: Pre-processing and basic analytical tasks related to working
-    with Eurostat's symmetric input-output tables and provide basic
-    input-output economics calculations. The package is part of rOpenGov
-    <http://ropengov.github.io/> to open source open government initiatives.
-URL: https://iotables.dataobservatory.eu/
-BugReports: https://github.com/rOpenGov/iotables/issues
+Description: Pre-processing and basic analytical tasks for working with 
+    Eurostat's symmetric input–output tables, and basic input–output 
+    economics calculations. Part of rOpenGov <https://ropengov.github.io/> 
+    for open source open government initiatives.
 License: MIT + file LICENSE
-Encoding: UTF-8
+URL: https://iotables.dataobservatory.eu/,
+        https://github.com/rOpenGov/iotables
+BugReports: https://github.com/rOpenGov/iotables/issues
 LazyData: true
-RoxygenNote: 7.2.3
-Imports: dplyr, eurostat, magrittr, tidyr, forcats, utils, plyr,
-        lubridate, knitr, kableExtra, tibble, readxl, assertthat, glue,
-        tidyselect, rlang
-Suggests: testthat, rmarkdown, spelling, covr, roxyglobals
-Depends: R(>= 3.5.0)
+Depends: R (>= 3.5.0)
+Imports: assertthat, dplyr, eurostat, forcats, glue, kableExtra, knitr,
+        lubridate, magrittr, readxl, rlang, stats, tibble, tidyr,
+        tidyselect, utils
+Suggests: covr, rmarkdown, spelling, testthat (>= 3.0.0)
+Encoding: UTF-8
+Language: en-GB
+RoxygenNote: 7.3.2
 VignetteBuilder: knitr
-Language: en-US
-Config/roxyglobals/filename: globals.R
-Config/roxyglobals/unique: FALSE
 NeedsCompilation: no
-Packaged: 2024-01-08 13:06:15 UTC; antal
-Author: Daniel Antal [aut, cre] (<https://orcid.org/0000-0001-7513-6760>),
-  Kasia Kulma [ctb] (<https://orcid.org/0000-0002-2952-9720>),
-  Pyry Kantanen [ctb] (<https://orcid.org/0000-0003-2853-2765>)
+Packaged: 2025-09-01 17:38:12 UTC; DanielAntal
+Author: Daniel Antal [aut, cre] (ORCID:
+    <https://orcid.org/0000-0001-7513-6760>),
+  Kasia Kulma [ctb] (ORCID: <https://orcid.org/0000-0002-2952-9720>),
+  Pyry Kantanen [ctb] (ORCID: <https://orcid.org/0000-0003-2853-2765>)
 Repository: CRAN
-Date/Publication: 2024-01-08 20:10:02 UTC
+Date/Publication: 2025-09-01 19:10:10 UTC

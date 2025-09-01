@@ -49,7 +49,7 @@ overflow: visible;
 </style>
 <style type="text/css" data-origin="pandoc">
 pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span { line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
@@ -60,7 +60,7 @@ div.sourceCode { overflow: auto; }
 }
 @media print {
 pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
 }
 pre.numberSource code
 { counter-reset: source-line 0; }
@@ -359,10 +359,12 @@ articles (<a href="https://iotables.dataobservatory.eu/articles/intro.html">Intr
 to iotables</a>, <a href="https://iotables.dataobservatory.eu/articles/working_with_eurostat.html">Working
 with Eurostat Data</a>.)</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="co"># For faster building this data has been loaded from &quot;../extdata/environmental_impact_vignette.rda&quot;</span></span>
-<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a>BE <span class="ot">&lt;-</span> <span class="fu">iotable_get</span>(<span class="at">source =</span> <span class="st">&quot;naio_10_cp1700&quot;</span>, <span class="at">geo =</span> <span class="st">&quot;BE&quot;</span>,</span>
-<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a>                  <span class="at">year =</span><span class="dv">2015</span>, </span>
-<span id="cb1-4"><a href="#cb1-4" tabindex="-1"></a>                  <span class="at">labelling =</span> <span class="st">&quot;short&quot;</span>, <span class="at">unit =</span> <span class="st">&quot;MIO_EUR&quot;</span>, </span>
-<span id="cb1-5"><a href="#cb1-5" tabindex="-1"></a>                  <span class="at">stk_flow =</span> <span class="st">&quot;TOTAL&quot;</span>)</span></code></pre></div>
+<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a>BE <span class="ot">&lt;-</span> <span class="fu">iotable_get</span>(</span>
+<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a>  <span class="at">source =</span> <span class="st">&quot;naio_10_cp1700&quot;</span>, <span class="at">geo =</span> <span class="st">&quot;BE&quot;</span>,</span>
+<span id="cb1-4"><a href="#cb1-4" tabindex="-1"></a>  <span class="at">year =</span> <span class="dv">2015</span>,</span>
+<span id="cb1-5"><a href="#cb1-5" tabindex="-1"></a>  <span class="at">labelling =</span> <span class="st">&quot;short&quot;</span>, <span class="at">unit =</span> <span class="st">&quot;MIO_EUR&quot;</span>,</span>
+<span id="cb1-6"><a href="#cb1-6" tabindex="-1"></a>  <span class="at">stk_flow =</span> <span class="st">&quot;TOTAL&quot;</span></span>
+<span id="cb1-7"><a href="#cb1-7" tabindex="-1"></a>)</span></code></pre></div>
 <p>The following expression gets the the greenhouse gas emissions in
 <span class="math inline">\(CO_2\)</span>-equivalent thousand tons for
 Belgium in 2020. Under the hood, we download the air emissions accounts
@@ -371,7 +373,7 @@ way that is fully compatible with the concepts, principles and data of
 the national accounts, but needs further adjustment to input-output
 tables, which is accomplished by <code>airpol_get()</code></p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="co"># For faster building this data has been loaded from &quot;../extdata/environmental_impact_vignette.rda&quot;</span></span>
-<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a>ghg <span class="ot">&lt;-</span> <span class="fu">airpol_get</span>(<span class="at">airpol=</span><span class="st">&quot;GHG&quot;</span>, <span class="at">geo=</span><span class="st">&quot;BE&quot;</span>, <span class="at">year=</span><span class="dv">2020</span>, <span class="at">unit=</span><span class="st">&quot;THS_T&quot;</span>)</span></code></pre></div>
+<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a>ghg <span class="ot">&lt;-</span> <span class="fu">airpol_get</span>(<span class="at">airpol =</span> <span class="st">&quot;GHG&quot;</span>, <span class="at">geo =</span> <span class="st">&quot;BE&quot;</span>, <span class="at">year =</span> <span class="dv">2020</span>, <span class="at">unit =</span> <span class="st">&quot;THS_T&quot;</span>)</span></code></pre></div>
 <p>See <code>?airpol_get</code> for the type of air pollutants that you
 can add to a European standard SIOT. In this case, we will first use the
 calculated CO2-equivalent of mix of gases. We are calculating in
@@ -388,15 +390,16 @@ emitters.</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a>be_io <span class="ot">&lt;-</span> BE <span class="sc">%&gt;%</span></span>
 <span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a>  <span class="fu">supplementary_add</span>(ghg)</span>
 <span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a></span>
-<span id="cb3-4"><a href="#cb3-4" tabindex="-1"></a>ghg_indicator <span class="ot">&lt;-</span> <span class="fu">input_indicator_create</span>( </span>
+<span id="cb3-4"><a href="#cb3-4" tabindex="-1"></a>ghg_indicator <span class="ot">&lt;-</span> <span class="fu">input_indicator_create</span>(</span>
 <span id="cb3-5"><a href="#cb3-5" tabindex="-1"></a>  <span class="at">data_table =</span> be_io,</span>
-<span id="cb3-6"><a href="#cb3-6" tabindex="-1"></a>  <span class="at">input_row  =</span> <span class="st">&quot;GHG_emission&quot;</span>)</span>
-<span id="cb3-7"><a href="#cb3-7" tabindex="-1"></a><span class="co">#&gt; Columns and rows of CPA_U are all zeros and will be removed.</span></span></code></pre></div>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="co"># Only the top 5 is printed, rename, arrange and top_n are tidyverse functions: </span></span>
+<span id="cb3-6"><a href="#cb3-6" tabindex="-1"></a>  <span class="at">input_row  =</span> <span class="st">&quot;GHG_emission&quot;</span></span>
+<span id="cb3-7"><a href="#cb3-7" tabindex="-1"></a>)</span>
+<span id="cb3-8"><a href="#cb3-8" tabindex="-1"></a><span class="co">#&gt; Columns and rows of CPA_U are all zeros and will be removed.</span></span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="co"># Only the top 5 is printed, rename, arrange and top_n are tidyverse functions:</span></span>
 <span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a>ghg_indicator <span class="sc">%&gt;%</span></span>
-<span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a>  <span class="fu">vector_transpose_longer</span>( <span class="at">.keep =</span> <span class="cn">TRUE</span> ) <span class="sc">%&gt;%</span></span>
-<span id="cb4-4"><a href="#cb4-4" tabindex="-1"></a>  <span class="fu">rename</span> ( <span class="at">GHG_emission_indicator =</span> .data<span class="sc">$</span>value ) <span class="sc">%&gt;%</span></span>
-<span id="cb4-5"><a href="#cb4-5" tabindex="-1"></a>  <span class="fu">arrange</span> ( <span class="sc">-</span>.data<span class="sc">$</span>GHG_emission_indicator ) <span class="sc">%&gt;%</span></span>
+<span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a>  <span class="fu">vector_transpose_longer</span>(<span class="at">.keep =</span> <span class="cn">TRUE</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb4-4"><a href="#cb4-4" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">GHG_emission_indicator =</span> .data<span class="sc">$</span>value) <span class="sc">%&gt;%</span></span>
+<span id="cb4-5"><a href="#cb4-5" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="sc">-</span>.data<span class="sc">$</span>GHG_emission_indicator) <span class="sc">%&gt;%</span></span>
 <span id="cb4-6"><a href="#cb4-6" tabindex="-1"></a>  <span class="fu">top_n</span>(<span class="dv">5</span>)</span>
 <span id="cb4-7"><a href="#cb4-7" tabindex="-1"></a><span class="co">#&gt; Warning: Use of .data in tidyselect expressions was deprecated in tidyselect 1.2.0.</span></span>
 <span id="cb4-8"><a href="#cb4-8" tabindex="-1"></a><span class="co">#&gt; ℹ Please use `&quot;value&quot;` instead of `.data$value`</span></span>
@@ -462,65 +465,67 @@ economic activities in the downstream, buyer part of the value chain
 <p>The category of <em>Manufacture of other non-metallic mineral
 products</em> in itself requires a bit of explanation: it may be many
 sort of economic activity such as the transformation of mined or
-quarried nonmetallic minerals (such as sand, gravel, stone, clay, and
+quarried non-metallic minerals (such as sand, gravel, stone, clay, and
 refractory materials) with grinding, mixing, cutting, shaping, and
 honing into products for intermediate or final consumption. So we are
 talking about building products.</p>
 <p>Let’s make a reality check, and calculate only with CO2:</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a>co2 <span class="ot">&lt;-</span> <span class="fu">airpol_get</span>(<span class="at">airpol=</span><span class="st">&quot;CO2&quot;</span>, <span class="at">geo=</span><span class="st">&quot;BE&quot;</span>, <span class="at">year=</span><span class="dv">2020</span>, <span class="at">unit =</span> <span class="st">&quot;THS_T&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a>co2 <span class="ot">&lt;-</span> <span class="fu">airpol_get</span>(<span class="at">airpol =</span> <span class="st">&quot;CO2&quot;</span>, <span class="at">geo =</span> <span class="st">&quot;BE&quot;</span>, <span class="at">year =</span> <span class="dv">2020</span>, <span class="at">unit =</span> <span class="st">&quot;THS_T&quot;</span>)</span></code></pre></div>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a>be_io_c <span class="ot">&lt;-</span> BE <span class="sc">%&gt;%</span></span>
 <span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a>  <span class="fu">supplementary_add</span>(co2)</span>
 <span id="cb6-3"><a href="#cb6-3" tabindex="-1"></a></span>
-<span id="cb6-4"><a href="#cb6-4" tabindex="-1"></a>co2_indicator <span class="ot">&lt;-</span> <span class="fu">input_indicator_create</span> ( </span>
+<span id="cb6-4"><a href="#cb6-4" tabindex="-1"></a>co2_indicator <span class="ot">&lt;-</span> <span class="fu">input_indicator_create</span>(</span>
 <span id="cb6-5"><a href="#cb6-5" tabindex="-1"></a>  <span class="at">data_table  =</span> be_io_c,</span>
-<span id="cb6-6"><a href="#cb6-6" tabindex="-1"></a>  <span class="at">input_row   =</span> <span class="st">&quot;CO2_emission&quot;</span>)</span>
-<span id="cb6-7"><a href="#cb6-7" tabindex="-1"></a><span class="co">#&gt; Columns and rows of CPA_U are all zeros and will be removed.</span></span>
-<span id="cb6-8"><a href="#cb6-8" tabindex="-1"></a></span>
-<span id="cb6-9"><a href="#cb6-9" tabindex="-1"></a><span class="co"># Only the top 5 is printed: </span></span>
-<span id="cb6-10"><a href="#cb6-10" tabindex="-1"></a>co2_indicator <span class="sc">%&gt;%</span> </span>
-<span id="cb6-11"><a href="#cb6-11" tabindex="-1"></a>  <span class="fu">vector_transpose_longer</span>( <span class="at">.keep =</span> <span class="cn">TRUE</span> ) <span class="sc">%&gt;%</span></span>
-<span id="cb6-12"><a href="#cb6-12" tabindex="-1"></a>  <span class="fu">rename</span> ( <span class="at">CO2_emission_indicator =</span> .data<span class="sc">$</span>value ) <span class="sc">%&gt;%</span></span>
-<span id="cb6-13"><a href="#cb6-13" tabindex="-1"></a>  <span class="fu">arrange</span> ( <span class="sc">-</span>.data<span class="sc">$</span>CO2_emission_indicator ) <span class="sc">%&gt;%</span></span>
-<span id="cb6-14"><a href="#cb6-14" tabindex="-1"></a>  <span class="fu">top_n</span>(<span class="dv">5</span>)</span>
-<span id="cb6-15"><a href="#cb6-15" tabindex="-1"></a><span class="co">#&gt; Selecting by CO2_emission_indicator</span></span>
-<span id="cb6-16"><a href="#cb6-16" tabindex="-1"></a><span class="co">#&gt; # A tibble: 5 × 3</span></span>
-<span id="cb6-17"><a href="#cb6-17" tabindex="-1"></a><span class="co">#&gt;   prod_na                nace_r2 CO2_emission_indicator</span></span>
-<span id="cb6-18"><a href="#cb6-18" tabindex="-1"></a><span class="co">#&gt;   &lt;chr&gt;                  &lt;chr&gt;                    &lt;dbl&gt;</span></span>
-<span id="cb6-19"><a href="#cb6-19" tabindex="-1"></a><span class="co">#&gt; 1 CO2_emission_indicator CPA_A03                  1.52 </span></span>
-<span id="cb6-20"><a href="#cb6-20" tabindex="-1"></a><span class="co">#&gt; 2 CO2_emission_indicator CPA_C23                  1.14 </span></span>
-<span id="cb6-21"><a href="#cb6-21" tabindex="-1"></a><span class="co">#&gt; 3 CO2_emission_indicator CPA_H51                  1.12 </span></span>
-<span id="cb6-22"><a href="#cb6-22" tabindex="-1"></a><span class="co">#&gt; 4 CO2_emission_indicator CPA_D                    1.08 </span></span>
-<span id="cb6-23"><a href="#cb6-23" tabindex="-1"></a><span class="co">#&gt; 5 CO2_emission_indicator CPA_H50                  0.748</span></span></code></pre></div>
+<span id="cb6-6"><a href="#cb6-6" tabindex="-1"></a>  <span class="at">input_row   =</span> <span class="st">&quot;CO2_emission&quot;</span></span>
+<span id="cb6-7"><a href="#cb6-7" tabindex="-1"></a>)</span>
+<span id="cb6-8"><a href="#cb6-8" tabindex="-1"></a><span class="co">#&gt; Columns and rows of CPA_U are all zeros and will be removed.</span></span>
+<span id="cb6-9"><a href="#cb6-9" tabindex="-1"></a></span>
+<span id="cb6-10"><a href="#cb6-10" tabindex="-1"></a><span class="co"># Only the top 5 is printed:</span></span>
+<span id="cb6-11"><a href="#cb6-11" tabindex="-1"></a>co2_indicator <span class="sc">%&gt;%</span></span>
+<span id="cb6-12"><a href="#cb6-12" tabindex="-1"></a>  <span class="fu">vector_transpose_longer</span>(<span class="at">.keep =</span> <span class="cn">TRUE</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb6-13"><a href="#cb6-13" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">CO2_emission_indicator =</span> .data<span class="sc">$</span>value) <span class="sc">%&gt;%</span></span>
+<span id="cb6-14"><a href="#cb6-14" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="sc">-</span>.data<span class="sc">$</span>CO2_emission_indicator) <span class="sc">%&gt;%</span></span>
+<span id="cb6-15"><a href="#cb6-15" tabindex="-1"></a>  <span class="fu">top_n</span>(<span class="dv">5</span>)</span>
+<span id="cb6-16"><a href="#cb6-16" tabindex="-1"></a><span class="co">#&gt; Selecting by CO2_emission_indicator</span></span>
+<span id="cb6-17"><a href="#cb6-17" tabindex="-1"></a><span class="co">#&gt; # A tibble: 5 × 3</span></span>
+<span id="cb6-18"><a href="#cb6-18" tabindex="-1"></a><span class="co">#&gt;   prod_na                nace_r2 CO2_emission_indicator</span></span>
+<span id="cb6-19"><a href="#cb6-19" tabindex="-1"></a><span class="co">#&gt;   &lt;chr&gt;                  &lt;chr&gt;                    &lt;dbl&gt;</span></span>
+<span id="cb6-20"><a href="#cb6-20" tabindex="-1"></a><span class="co">#&gt; 1 CO2_emission_indicator CPA_A03                  1.52 </span></span>
+<span id="cb6-21"><a href="#cb6-21" tabindex="-1"></a><span class="co">#&gt; 2 CO2_emission_indicator CPA_C23                  1.14 </span></span>
+<span id="cb6-22"><a href="#cb6-22" tabindex="-1"></a><span class="co">#&gt; 3 CO2_emission_indicator CPA_H51                  1.12 </span></span>
+<span id="cb6-23"><a href="#cb6-23" tabindex="-1"></a><span class="co">#&gt; 4 CO2_emission_indicator CPA_D                    1.08 </span></span>
+<span id="cb6-24"><a href="#cb6-24" tabindex="-1"></a><span class="co">#&gt; 5 CO2_emission_indicator CPA_H50                  0.748</span></span></code></pre></div>
 <p><em>Crop and animal production, hunting and related service
 activities</em> falls out, and <em>CPA_H50 Water transport</em> comes
 back. Are those barges really so clean? And what happened with the
 agriculture?</p>
 <p>Let’s check methane, which is a far more potent green house gas than
 CO2.</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a>methane <span class="ot">&lt;-</span> <span class="fu">airpol_get</span> (<span class="at">airpol =</span> <span class="st">&quot;CH4&quot;</span>, <span class="at">geo=</span><span class="st">&quot;BE&quot;</span>, <span class="at">year =</span> <span class="dv">2020</span>, <span class="at">unit =</span> <span class="st">&quot;THS_T&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a>methane <span class="ot">&lt;-</span> <span class="fu">airpol_get</span>(<span class="at">airpol =</span> <span class="st">&quot;CH4&quot;</span>, <span class="at">geo =</span> <span class="st">&quot;BE&quot;</span>, <span class="at">year =</span> <span class="dv">2020</span>, <span class="at">unit =</span> <span class="st">&quot;THS_T&quot;</span>)</span></code></pre></div>
 <div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a>be_io_m <span class="ot">&lt;-</span> BE <span class="sc">%&gt;%</span></span>
 <span id="cb8-2"><a href="#cb8-2" tabindex="-1"></a>  <span class="fu">supplementary_add</span>(methane)</span>
 <span id="cb8-3"><a href="#cb8-3" tabindex="-1"></a></span>
-<span id="cb8-4"><a href="#cb8-4" tabindex="-1"></a>methane_indicator <span class="ot">&lt;-</span> <span class="fu">input_indicator_create</span> ( </span>
+<span id="cb8-4"><a href="#cb8-4" tabindex="-1"></a>methane_indicator <span class="ot">&lt;-</span> <span class="fu">input_indicator_create</span>(</span>
 <span id="cb8-5"><a href="#cb8-5" tabindex="-1"></a>  <span class="at">data_table =</span> be_io_m,</span>
-<span id="cb8-6"><a href="#cb8-6" tabindex="-1"></a>  <span class="at">input_row  =</span> <span class="st">&quot;CH4_emission&quot;</span>)</span>
-<span id="cb8-7"><a href="#cb8-7" tabindex="-1"></a><span class="co">#&gt; Columns and rows of CPA_U are all zeros and will be removed.</span></span>
-<span id="cb8-8"><a href="#cb8-8" tabindex="-1"></a></span>
-<span id="cb8-9"><a href="#cb8-9" tabindex="-1"></a><span class="co"># Only the top 5 is printed: </span></span>
-<span id="cb8-10"><a href="#cb8-10" tabindex="-1"></a>methane_indicator <span class="sc">%&gt;%</span> </span>
-<span id="cb8-11"><a href="#cb8-11" tabindex="-1"></a>  <span class="fu">vector_transpose_longer</span>( <span class="at">.keep =</span> <span class="cn">TRUE</span> ) <span class="sc">%&gt;%</span></span>
-<span id="cb8-12"><a href="#cb8-12" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">CH4_emission_indicator =</span> .data<span class="sc">$</span>value) <span class="sc">%&gt;%</span></span>
-<span id="cb8-13"><a href="#cb8-13" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="sc">-</span>.data<span class="sc">$</span>CH4_emission_indicator) <span class="sc">%&gt;%</span></span>
-<span id="cb8-14"><a href="#cb8-14" tabindex="-1"></a>  <span class="fu">top_n</span>(<span class="dv">5</span>)</span>
-<span id="cb8-15"><a href="#cb8-15" tabindex="-1"></a><span class="co">#&gt; Selecting by CH4_emission_indicator</span></span>
-<span id="cb8-16"><a href="#cb8-16" tabindex="-1"></a><span class="co">#&gt; # A tibble: 5 × 3</span></span>
-<span id="cb8-17"><a href="#cb8-17" tabindex="-1"></a><span class="co">#&gt;   prod_na                nace_r2    CH4_emission_indicator</span></span>
-<span id="cb8-18"><a href="#cb8-18" tabindex="-1"></a><span class="co">#&gt;   &lt;chr&gt;                  &lt;chr&gt;                       &lt;dbl&gt;</span></span>
-<span id="cb8-19"><a href="#cb8-19" tabindex="-1"></a><span class="co">#&gt; 1 CH4_emission_indicator CPA_A01                  0.0233  </span></span>
-<span id="cb8-20"><a href="#cb8-20" tabindex="-1"></a><span class="co">#&gt; 2 CH4_emission_indicator CPA_E37-39               0.00382 </span></span>
-<span id="cb8-21"><a href="#cb8-21" tabindex="-1"></a><span class="co">#&gt; 3 CH4_emission_indicator CPA_D                    0.00165 </span></span>
-<span id="cb8-22"><a href="#cb8-22" tabindex="-1"></a><span class="co">#&gt; 4 CH4_emission_indicator CPA_B                    0.00137 </span></span>
-<span id="cb8-23"><a href="#cb8-23" tabindex="-1"></a><span class="co">#&gt; 5 CH4_emission_indicator CPA_A02                  0.000184</span></span></code></pre></div>
+<span id="cb8-6"><a href="#cb8-6" tabindex="-1"></a>  <span class="at">input_row  =</span> <span class="st">&quot;CH4_emission&quot;</span></span>
+<span id="cb8-7"><a href="#cb8-7" tabindex="-1"></a>)</span>
+<span id="cb8-8"><a href="#cb8-8" tabindex="-1"></a><span class="co">#&gt; Columns and rows of CPA_U are all zeros and will be removed.</span></span>
+<span id="cb8-9"><a href="#cb8-9" tabindex="-1"></a></span>
+<span id="cb8-10"><a href="#cb8-10" tabindex="-1"></a><span class="co"># Only the top 5 is printed:</span></span>
+<span id="cb8-11"><a href="#cb8-11" tabindex="-1"></a>methane_indicator <span class="sc">%&gt;%</span></span>
+<span id="cb8-12"><a href="#cb8-12" tabindex="-1"></a>  <span class="fu">vector_transpose_longer</span>(<span class="at">.keep =</span> <span class="cn">TRUE</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb8-13"><a href="#cb8-13" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">CH4_emission_indicator =</span> .data<span class="sc">$</span>value) <span class="sc">%&gt;%</span></span>
+<span id="cb8-14"><a href="#cb8-14" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="sc">-</span>.data<span class="sc">$</span>CH4_emission_indicator) <span class="sc">%&gt;%</span></span>
+<span id="cb8-15"><a href="#cb8-15" tabindex="-1"></a>  <span class="fu">top_n</span>(<span class="dv">5</span>)</span>
+<span id="cb8-16"><a href="#cb8-16" tabindex="-1"></a><span class="co">#&gt; Selecting by CH4_emission_indicator</span></span>
+<span id="cb8-17"><a href="#cb8-17" tabindex="-1"></a><span class="co">#&gt; # A tibble: 5 × 3</span></span>
+<span id="cb8-18"><a href="#cb8-18" tabindex="-1"></a><span class="co">#&gt;   prod_na                nace_r2    CH4_emission_indicator</span></span>
+<span id="cb8-19"><a href="#cb8-19" tabindex="-1"></a><span class="co">#&gt;   &lt;chr&gt;                  &lt;chr&gt;                       &lt;dbl&gt;</span></span>
+<span id="cb8-20"><a href="#cb8-20" tabindex="-1"></a><span class="co">#&gt; 1 CH4_emission_indicator CPA_A01                  0.0233  </span></span>
+<span id="cb8-21"><a href="#cb8-21" tabindex="-1"></a><span class="co">#&gt; 2 CH4_emission_indicator CPA_E37-39               0.00382 </span></span>
+<span id="cb8-22"><a href="#cb8-22" tabindex="-1"></a><span class="co">#&gt; 3 CH4_emission_indicator CPA_D                    0.00165 </span></span>
+<span id="cb8-23"><a href="#cb8-23" tabindex="-1"></a><span class="co">#&gt; 4 CH4_emission_indicator CPA_B                    0.00137 </span></span>
+<span id="cb8-24"><a href="#cb8-24" tabindex="-1"></a><span class="co">#&gt; 5 CH4_emission_indicator CPA_A02                  0.000184</span></span></code></pre></div>
 <table>
 <colgroup>
 <col width="40%" />
@@ -583,32 +588,34 @@ interrelated with <em>Mining and quarrying</em>. Making building more
 sustainable would be a great achievement, but there is no really clear
 path: as we can see, <em>Forestry and logging</em> come with their
 problems, too.</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" tabindex="-1"></a>I_be <span class="ot">&lt;-</span> <span class="fu">input_coefficient_matrix_create</span>( </span>
-<span id="cb9-2"><a href="#cb9-2" tabindex="-1"></a>     <span class="at">data_table =</span> BE, </span>
-<span id="cb9-3"><a href="#cb9-3" tabindex="-1"></a>     <span class="at">digits =</span> <span class="dv">4</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb9-4"><a href="#cb9-4" tabindex="-1"></a>  <span class="fu">leontief_inverse_create</span>()</span>
-<span id="cb9-5"><a href="#cb9-5" tabindex="-1"></a></span>
-<span id="cb9-6"><a href="#cb9-6" tabindex="-1"></a>ghg_multipliers <span class="ot">&lt;-</span> <span class="fu">multiplier_create</span>( </span>
-<span id="cb9-7"><a href="#cb9-7" tabindex="-1"></a>  <span class="at">input_vector    =</span> ghg_indicator,</span>
-<span id="cb9-8"><a href="#cb9-8" tabindex="-1"></a>  <span class="at">Im              =</span> I_be,</span>
-<span id="cb9-9"><a href="#cb9-9" tabindex="-1"></a>  <span class="at">multiplier_name =</span> <span class="st">&quot;GHG_multiplier&quot;</span>, </span>
-<span id="cb9-10"><a href="#cb9-10" tabindex="-1"></a>  <span class="at">digits =</span> <span class="dv">4</span> )</span>
-<span id="cb9-11"><a href="#cb9-11" tabindex="-1"></a></span>
-<span id="cb9-12"><a href="#cb9-12" tabindex="-1"></a><span class="co"># Only the top 5 is printed: </span></span>
-<span id="cb9-13"><a href="#cb9-13" tabindex="-1"></a>ghg_multipliers <span class="sc">%&gt;%</span></span>
-<span id="cb9-14"><a href="#cb9-14" tabindex="-1"></a>  <span class="fu">vector_transpose_longer</span>(<span class="at">.keep =</span> <span class="cn">TRUE</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb9-15"><a href="#cb9-15" tabindex="-1"></a>  <span class="fu">rename</span> ( <span class="at">GHG_multiplier =</span> .data<span class="sc">$</span>value ) <span class="sc">%&gt;%</span></span>
-<span id="cb9-16"><a href="#cb9-16" tabindex="-1"></a>  <span class="fu">arrange</span> ( <span class="sc">-</span>.data<span class="sc">$</span>GHG_multiplier ) <span class="sc">%&gt;%</span></span>
-<span id="cb9-17"><a href="#cb9-17" tabindex="-1"></a>  <span class="fu">top_n</span>(<span class="dv">5</span>)</span>
-<span id="cb9-18"><a href="#cb9-18" tabindex="-1"></a><span class="co">#&gt; # A tibble: 5 × 3</span></span>
-<span id="cb9-19"><a href="#cb9-19" tabindex="-1"></a><span class="co">#&gt;   prod_na        nace_r2 GHG_multiplier</span></span>
-<span id="cb9-20"><a href="#cb9-20" tabindex="-1"></a><span class="co">#&gt;   &lt;chr&gt;          &lt;chr&gt;            &lt;dbl&gt;</span></span>
-<span id="cb9-21"><a href="#cb9-21" tabindex="-1"></a><span class="co">#&gt; 1 GHG_multiplier CPA_A01           1.85</span></span>
-<span id="cb9-22"><a href="#cb9-22" tabindex="-1"></a><span class="co">#&gt; 2 GHG_multiplier CPA_A03           1.82</span></span>
-<span id="cb9-23"><a href="#cb9-23" tabindex="-1"></a><span class="co">#&gt; 3 GHG_multiplier CPA_C23           1.65</span></span>
-<span id="cb9-24"><a href="#cb9-24" tabindex="-1"></a><span class="co">#&gt; 4 GHG_multiplier CPA_H51           1.64</span></span>
-<span id="cb9-25"><a href="#cb9-25" tabindex="-1"></a><span class="co">#&gt; 5 GHG_multiplier CPA_D             1.48</span></span></code></pre></div>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" tabindex="-1"></a><span class="fu">save</span>(methane, co2, ghg, BE, <span class="at">file =</span> <span class="fu">file.path</span>(<span class="st">&quot;..&quot;</span> , <span class="st">&quot;inst&quot;</span>, <span class="st">&quot;extdata&quot;</span>, <span class="st">&quot;environmental_impact_vignette.rda&quot;</span>) )</span></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" tabindex="-1"></a>I_be <span class="ot">&lt;-</span> <span class="fu">input_coefficient_matrix_create</span>(</span>
+<span id="cb9-2"><a href="#cb9-2" tabindex="-1"></a>  <span class="at">data_table =</span> BE,</span>
+<span id="cb9-3"><a href="#cb9-3" tabindex="-1"></a>  <span class="at">digits =</span> <span class="dv">4</span></span>
+<span id="cb9-4"><a href="#cb9-4" tabindex="-1"></a>) <span class="sc">%&gt;%</span></span>
+<span id="cb9-5"><a href="#cb9-5" tabindex="-1"></a>  <span class="fu">leontief_inverse_create</span>()</span>
+<span id="cb9-6"><a href="#cb9-6" tabindex="-1"></a></span>
+<span id="cb9-7"><a href="#cb9-7" tabindex="-1"></a>ghg_multipliers <span class="ot">&lt;-</span> <span class="fu">multiplier_create</span>(</span>
+<span id="cb9-8"><a href="#cb9-8" tabindex="-1"></a>  <span class="at">input_vector =</span> ghg_indicator,</span>
+<span id="cb9-9"><a href="#cb9-9" tabindex="-1"></a>  <span class="at">Im =</span> I_be,</span>
+<span id="cb9-10"><a href="#cb9-10" tabindex="-1"></a>  <span class="at">multiplier_name =</span> <span class="st">&quot;GHG_multiplier&quot;</span>,</span>
+<span id="cb9-11"><a href="#cb9-11" tabindex="-1"></a>  <span class="at">digits =</span> <span class="dv">4</span></span>
+<span id="cb9-12"><a href="#cb9-12" tabindex="-1"></a>)</span>
+<span id="cb9-13"><a href="#cb9-13" tabindex="-1"></a></span>
+<span id="cb9-14"><a href="#cb9-14" tabindex="-1"></a><span class="co"># Only the top 5 is printed:</span></span>
+<span id="cb9-15"><a href="#cb9-15" tabindex="-1"></a>ghg_multipliers <span class="sc">%&gt;%</span></span>
+<span id="cb9-16"><a href="#cb9-16" tabindex="-1"></a>  <span class="fu">vector_transpose_longer</span>(<span class="at">.keep =</span> <span class="cn">TRUE</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb9-17"><a href="#cb9-17" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">GHG_multiplier =</span> .data<span class="sc">$</span>value) <span class="sc">%&gt;%</span></span>
+<span id="cb9-18"><a href="#cb9-18" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="sc">-</span>.data<span class="sc">$</span>GHG_multiplier) <span class="sc">%&gt;%</span></span>
+<span id="cb9-19"><a href="#cb9-19" tabindex="-1"></a>  <span class="fu">top_n</span>(<span class="dv">5</span>)</span>
+<span id="cb9-20"><a href="#cb9-20" tabindex="-1"></a><span class="co">#&gt; # A tibble: 5 × 3</span></span>
+<span id="cb9-21"><a href="#cb9-21" tabindex="-1"></a><span class="co">#&gt;   prod_na        nace_r2 GHG_multiplier</span></span>
+<span id="cb9-22"><a href="#cb9-22" tabindex="-1"></a><span class="co">#&gt;   &lt;chr&gt;          &lt;chr&gt;            &lt;dbl&gt;</span></span>
+<span id="cb9-23"><a href="#cb9-23" tabindex="-1"></a><span class="co">#&gt; 1 GHG_multiplier CPA_A01           1.85</span></span>
+<span id="cb9-24"><a href="#cb9-24" tabindex="-1"></a><span class="co">#&gt; 2 GHG_multiplier CPA_A03           1.82</span></span>
+<span id="cb9-25"><a href="#cb9-25" tabindex="-1"></a><span class="co">#&gt; 3 GHG_multiplier CPA_C23           1.65</span></span>
+<span id="cb9-26"><a href="#cb9-26" tabindex="-1"></a><span class="co">#&gt; 4 GHG_multiplier CPA_H51           1.64</span></span>
+<span id="cb9-27"><a href="#cb9-27" tabindex="-1"></a><span class="co">#&gt; 5 GHG_multiplier CPA_D             1.48</span></span></code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" tabindex="-1"></a><span class="fu">save</span>(methane, co2, ghg, BE, <span class="at">file =</span> <span class="fu">file.path</span>(<span class="st">&quot;..&quot;</span>, <span class="st">&quot;inst&quot;</span>, <span class="st">&quot;extdata&quot;</span>, <span class="st">&quot;environmental_impact_vignette.rda&quot;</span>))</span></code></pre></div>
 </div>
 
 
